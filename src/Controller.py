@@ -19,11 +19,13 @@ def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        return "Hello!!!  <a href='/logout'>Logout</a>"
+        return registro()
  
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    if request.form['pass'] == 'password' and request.form['username'] == 'admin':
+    username = request.form['username']
+    password = request.form['pass']
+    if username == 'admin' and password == 'admin':
         session['logged_in'] = True
     else:
         flash('wrong password!')
@@ -34,6 +36,14 @@ def logout():
     session['logged_in'] = False
     return home()
 
+@app.route("/registro")
+def registro():
+    if session.get('logged_in'):
+        return render_template('registro.html')
+    else:
+        flash('wrong password!')
+        return home()
+        
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
     app.secret_key = os.urandom(12)
