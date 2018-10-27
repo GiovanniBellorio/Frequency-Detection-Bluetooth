@@ -10,9 +10,11 @@ import os
 import logging
 from flask import Flask, session, request, flash
 from flask.templating import render_template
+from Model import Model
 
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__) # Applicazione Flask!
+app.model = Model()
 
 @app.route('/')
 def home():
@@ -31,7 +33,7 @@ def do_admin_login():
         flash('wrong password!')
     return home()
  
-@app.route("/logout")
+@app.route("/logout", methods=['POST'])
 def logout():
     session['logged_in'] = False
     return home()
