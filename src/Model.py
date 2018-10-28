@@ -18,9 +18,9 @@ class Model(object):
         self.id = "Model_" + date.today().isoformat()
         self.dataMapper = DM_CDB() # DataMapper verso CouchDB
         
+    def getCountUsernamePassword(self, username, password):
+        count = self.dataMapper.getCountUsernamePassword(username, password)
+        return count
         
-        
-    
-    
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper

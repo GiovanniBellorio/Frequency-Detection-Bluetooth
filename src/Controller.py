@@ -27,7 +27,9 @@ def home():
 def do_admin_login():
     username = request.form['username']
     password = request.form['pass']
-    if username == 'admin' and password == 'admin':
+    
+    count = app.model.getCountUsernamePassword(username, password)
+    if count == 1:
         session['logged_in'] = True
     else:
         flash('wrong password!')
