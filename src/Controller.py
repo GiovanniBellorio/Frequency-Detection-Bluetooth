@@ -27,10 +27,10 @@ def home():
 def do_admin_login():
     username = request.form['username']
     password = request.form['pass']
-    
     count = app.model.getCountUsernamePassword(username, password)
     if count == 1:
         session['logged_in'] = True
+        session['username']  = username
     else:
         flash('wrong password!')
     return home()
@@ -38,12 +38,13 @@ def do_admin_login():
 @app.route("/logout", methods=['POST'])
 def logout():
     session['logged_in'] = False
+    session['username']  = ""
     return home()
 
 @app.route("/registro")
 def registro():
     if session.get('logged_in'):
-        return render_template('registro.html')
+        return render_template('registro.html', username=session.get('username'))
     else:
         flash('wrong password!')
         return home()
