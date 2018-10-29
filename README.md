@@ -5,11 +5,13 @@
 ## Indice
 
 * [Progetto](#Progetto)
-  * [Web App (WA)](#Web-App-(WA))
-  * [Flask](#Flask)
-  * [CouchDb](#CouchDb)
-  * [Template Grafico](#Template-Grafico)
-* [Documentazione](#Documentazione)
+  * [Web App (WA)](#Web-App)
+    * [Flask](#Flask)
+    * [CouchDb](#CouchDb)
+    * [Template Grafico](#Template-Grafico)
+    * [Deploy Applicazione Python](#Deploy-Applicazione-Python)
+  * [Pairing Bluetooth App (PBA)](#Pairing-Bluetooth-App)
+  * [Documentazione](#Documentazione)
 * [Collaborazione](#Collaborazione)
 * [Licenza](#Licenza)
 
@@ -69,13 +71,15 @@ Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, 
 L'idea è di esportare questa applicazione per farla girare per esempio su un webserver `Apache`.
 
 ### Pairing Bluetooth App (PBA)
-...
+
+...to do
 
 ### Documentazione
 
 L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `GitHub`.
 
 ## Collaborazione
+
 Per critiche o nuove idee contattare liberamente giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO) o simone.girardi@studenti.univr.it (SIMONE GIRARDI).
 
 ## Licenza
