@@ -29,10 +29,6 @@ Riassumiamo e descriviamo i passi principali per la realizzazione del nostro sis
 
 Applicazione web per la memorizzazione delle presenze in linguaggio `python3` interpretato a lato server. Costruzione di un web-server attraverso il modulo `Flask` interfacciato al database NoSQL `CouchDb` basato su `JSON`. Il sistema accetta principalmente due tipologie di persone: admin e utente normale. L'admin ha una propria view per controllare l'andamento delle presenze. L'utente è colui che utilizza questo servizio di "timbratura" digitale attraverso il proprio smartphone.
 
-- [x] Analisi dei requisiti
-- [ ] Analisi di fattibilità
-- [ ] Analisi dell'infrastruttura
-
 #### Flask
 
 Installazione del modulo attraverso:
@@ -51,9 +47,9 @@ if __name__ == '__main__':
 
 In questo modo possiamo attivare un web-server sul quale fare girare le nostre pagine.
 
-- [ ] Installazione del modulo Flask
-- [ ] Avvio tramite applicazione python sulla porta 5000
-- [ ] Costruire un sistema modulare: controller, model e data-mapper.
+- [x] Installazione del modulo Flask
+- [x] Avvio tramite applicazione python sulla porta 5000
+- [x] Costruire un sistema modulare: controller, model e data-mapper.
 
 #### CouchDb
 
@@ -74,10 +70,10 @@ def __open(cls)
 
 Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
 
-- [ ] Installazione di apache-CouchDB in locale
+- [x] Installazione di apache-CouchDB in locale
 - [ ] Analisi della struttura dati
 - [ ] Costruzione delle view
-- [ ] Interrogazione alla base di dati in python
+- [x] Interrogazione alla base di dati in python
 
 #### Template Grafico
 
