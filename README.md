@@ -1,33 +1,18 @@
 # Frequency-Detection-Bluetooth ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-Frequency-Detection-Bluetoothis è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth.
+[Frequency-Detection-Bluetoothis](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth.
 
 ## Progetto
 
-### Requirements
-* Linux
-* Python 3.3 and up
+### Web App (WA)
 
-`$ pip install foobar`
+#### Flask
 
-## Usage
+#### CouchDb
 
-```python
-import foobar
+### Pairing Bluetooth App (PBA)
 
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
-```
-
-## Development
-```
-$ virtualenv foobar
-$ . foobar/bin/activate
-$ pip install -e .
-```
-
-## Contributing
+## Collaborazione
 Per critiche o nuove idee contattare liberamente giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO) o simone.girardi@studenti.univr.it (SIMONE GIRARDI).
 
 ## License
