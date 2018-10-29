@@ -3,7 +3,7 @@ Created on 26 ott 2018
 
 DataMapper
 
-@author: Giovanni
+@author: Giovanni, ...
 '''
 
 #from datetime import datetime
@@ -76,14 +76,35 @@ class DM_CDB():
         self.__del__()
     
     def getCountUsernamePassword(self, username, password):
+        """ """
         cur = DM_CDB.__cursor()
-        count = 0
+        num_rows = 0
+        id_utente = 0
         for item in cur.view('_design/documenti-view/_view/view_usr_pwd'):
             username_db = item.key
             password_db = item.value
             if username == username_db and password == password_db:
-                count += 1
-        return count
+                num_rows += 1
+                id_utente = item.id
+        return num_rows, id_utente
+    
+    def getRuoloUsername(self, id_utente):
+        """ """
+        cur = DM_CDB.__cursor()
+        ruolo = 0
+        for item in cur.view('_design/documenti-view/_view/view_id_ruolo'):
+            if item.key == id_utente:
+                ruolo = item.value
+        return ruolo 
+       
+    def getFrequenzaUsername(self, id_utente):
+        """ """
+        cur = DM_CDB.__cursor()
+        frequenza = []
+        for item in cur.view('_design/documenti-view/_view/view_id_frequenza'):
+            if item.key == id_utente:
+                frequenza = item.value
+        return frequenza
         
     def __del__(self):
         DM_CDB.__nIstanze -= 1

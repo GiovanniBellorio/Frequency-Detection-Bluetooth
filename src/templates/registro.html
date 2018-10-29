@@ -11,13 +11,16 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/animate/animate.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/select2/select2.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<!--<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util_table.css')}}">-->
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main_table.css')}}">
 </head>
 <body>
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('{{url_for('static', filename='images/img-01.jpg')}}');">
-			<div class="wrap-login100 p-t-190 p-b-30">
+			<div class="wrap-login100 p-t-190" style="padding-top:90px">
 				<form class="login100-form validate-form" action="/logout" method="POST">
 					<div class="login100-form-avatar">
 						<img src="{{url_for('static', filename='images/avatar-02.jpg')}}" alt="AVATAR">
@@ -31,20 +34,54 @@
 						<button class="login100-form-btn" type="submit">
 							Logout
 						</button>
-					</div>
-
-					
-
-
-					<div class="">
-						<!-- frequency detection with bluetooth pairing -->
-					</div>
-
-
-					
-					
+					</div>	
 				</form>
 			</div>
+
+			{%- if id_utente == "2" %}
+			<div class="container-table100">
+				<div class="wrap-table100">
+					<div class="table100 ver1 m-b-110">
+						<div class="table100-head">
+							<table>
+								<thead>
+									<tr class="row100 head">
+										<th class="cell100 column1">Utente</th>
+										<th class="cell100 column2">Data</th>
+										<th class="cell100 column3">Inizio</th>
+										<th class="cell100 column4">Fine</th>
+										<th class="cell100 column5">Durata</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+
+						<div class="table100-body js-pscroll">
+							<table>
+								<tbody>
+									{%- for rilevazione in frequenza %}
+										<tr class="row100 body">
+												<td class="cell100 column1">{{ username }}</td>
+										{%- for key,value in rilevazione.items() %}
+											{%- if key == "data" %}
+												<td class="cell100 column2">{{ value }}</td>
+											{%- elif key == "ora_inizio" %}
+												<td class="cell100 column3">{{ value }}</td>
+											{%- elif key == "ora_fine" %}
+												<td class="cell100 column4">{{ value }}</td>
+											{%- endif %}
+										{%- endfor %}
+											<td class="cell100 column5">???</td>
+										</tr>
+									{%- endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			{%- endif %}
+		
 		</div>
 	</div>
 	
@@ -53,5 +90,14 @@
 	<script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
 	<script src="{{url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
 	<script src="{{url_for('static', filename='js/main.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
+	<script>
+		$('.js-pscroll').each(function(){
+			var ps = new PerfectScrollbar(this);
+			$(window).on('resize', function(){
+				ps.update();
+			})
+		});
+	</script>
 </body>
 </html>

@@ -3,7 +3,7 @@ Created on 26 0tt 2018
 
 Controller dell'applicazione web
 
-@author: Giovanni
+@author: Giovanni, ...
 '''
 
 import os
@@ -27,10 +27,11 @@ def home():
 def do_admin_login():
     username = request.form['username']
     password = request.form['pass']
-    count = app.model.getCountUsernamePassword(username, password)
-    if count == 1:
+    num_rows, id_utente = app.model.getCountUsernamePassword(username, password)
+    if num_rows == 1:
         session['logged_in'] = True
         session['username']  = username
+        session['id_utente'] = id_utente
     else:
         flash('wrong password!')
     return home()
@@ -39,12 +40,20 @@ def do_admin_login():
 def logout():
     session['logged_in'] = False
     session['username']  = ""
+    session['id_utente'] = 0
     return home()
 
 @app.route("/registro")
 def registro():
     if session.get('logged_in'):
-        return render_template('registro.html', username=session.get('username'))
+        username  = session.get('username')
+        id_utente = session.get('id_utente')
+        ruolo = app.model.getRuoloUsername(id_utente) # 1 --> admin, 2 --> utente normale
+        if ruolo == "2":
+            frequenza = app.model.getFrequenzaUsername(id_utente)
+        elif ruolo == "1":
+            frequenza = 0  
+        return render_template('registro.html', username=username, id_utente=id_utente, ruolo=ruolo, frequenza=frequenza)
     else:
         flash('wrong password!')
         return home()
