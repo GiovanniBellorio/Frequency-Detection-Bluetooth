@@ -2,7 +2,7 @@
 
 [Frequency-Detection-Bluetoothis](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth.
 
-# Table of Contents
+## Table of Contents
 
 * [Progetto](#Progetto)
 * [Collaborazione](#Collaborazione)
