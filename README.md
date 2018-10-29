@@ -12,12 +12,16 @@
     * [Deploy Applicazione Python](#Deploy-Applicazione-Python)
   * [Pairing Bluetooth App](#Pairing-Bluetooth-App)
   * [Documentazione](#Documentazione)
-* [Collaborazione](#Collaborazione)
+* [Autori](#Autori)
 * [Licenza](#Licenza)
 
 ## Progetto
 
 Il progetto si basa su una `Web App` e su un applicazione che gestisce la rete `Pairing Bluetooth`. L'admin dopo aver eseguito l'associazione utente:uuid fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
+
+- [x] Analisi dei requisiti
+- [ ] Analisi di fattibilità
+- [ ] Analisi dell'infrastruttura
 
 Riassumiamo e descriviamo i passi principali per la realizzazione del nostro sistema:
 
@@ -43,6 +47,10 @@ if __name__ == '__main__':
 
 In questo modo possiamo attivare un web-server sul quale fare girare le nostre pagine.
 
+- [x] Installazione del modulo Flask
+- [x] Avvio tramite applicazione python sulla porta 5000
+- [x] Costruire un sistema modulare: controller, model e data-mapper.
+
 #### CouchDb
 
 Installazione del modulo attraverso:
@@ -62,13 +70,27 @@ def __open(cls)
 
 Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
 
+- [x] Installazione di apache-CouchDB in locale
+- [ ] Analisi della struttura dati
+- [ ] Costruzione delle view
+- [x] Interrogazione alla base di dati in python
+
 #### Template Grafico
 
 Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, soprattutto responsive.
 
+- [ ] Pagina di login
+- [ ] Pagina privata per l'utente
+- [ ] Pagina privata per l'admin
+
 #### Deploy Applicazione Python
 
 L'idea è di esportare questa applicazione per farla girare per esempio su un webserver `Apache`.
+
+- [ ] Creare un webserver con apache
+- [ ] Installare database CouchDB
+- [ ] Aggiornamento del database
+- [ ] Porting della web-app
 
 ### Pairing Bluetooth App
 
@@ -78,7 +100,12 @@ L'idea è di esportare questa applicazione per farla girare per esempio su un we
 
 L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `GitHub`.
 
-## Collaborazione
+- [x] Realizzazione repository
+- [x] Creazione branch (master e dev) di lavoro
+- [x] Condivisione della repository
+- [ ] Realizzazione e aggiornamento del file README.MD
+
+## Autori
 
 Per critiche o nuove idee contattare liberamente:	
 
