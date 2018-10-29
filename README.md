@@ -19,6 +19,12 @@
 
 Il progetto si basa su una `Web App` e su un applicazione che gestisce la rete `Pairing Bluetooth`. L'admin dopo aver eseguito l'associazione utente:uuid fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
 
+Attività:
+
+- [x] Analisi dei requisiti
+- [ ] Analisi di fattibilità
+- [ ] Analisi dell'infrastruttura
+
 Riassumiamo e descriviamo i passi principali per la realizzazione del nostro sistema:
 
 ### Web App
