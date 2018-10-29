@@ -80,7 +80,10 @@ L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `
 
 ## Collaborazione
 
-Per critiche o nuove idee contattare liberamente giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO) o simone.girardi@studenti.univr.it (SIMONE GIRARDI).
+Per critiche o nuove idee contattare liberamente:	
+
+* giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO)
+* simone.girardi@studenti.univr.it (SIMONE GIRARDI)
 
 ## Licenza
 [GNU](https://www.gnu.org/licenses/gpl-3.0.html)
