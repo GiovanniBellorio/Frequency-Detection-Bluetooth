@@ -5,10 +5,10 @@
 ## Indice
 
 * [Progetto](#Progetto)
-** [Web App (WA)](#Web-App-(WA))
-** [Flask](#Flask)
-** [CouchDb](#CouchDb)
-** [Template Grafico](#Template-Grafico)
+  * [Web App (WA)](#Web-App-(WA))
+  * [Flask](#Flask)
+  * [CouchDb](#CouchDb)
+  * [Template Grafico](#Template-Grafico)
 * [Documentazione](#Documentazione)
 * [Collaborazione](#Collaborazione)
 * [Licenza](#Licenza)
