@@ -1,6 +1,6 @@
 # Frequency Detection Bluetooth ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-[Frequency Detection Bluetooth](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth.
+[Frequency Detection Bluetooth](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth. Verrà effettuata un'associazione univoca tra l'utente e il codice `UUID` del proprio dispositivo per registrare la presenza una volta connesso all'antenna master del sistema. 
 
 ## Indice
 
@@ -15,15 +15,23 @@
 
 ## Progetto
 
-Descriviamo i passi principali per la realizzazione della nostra idea:
+Il progetto si basa su una `Web App` e su un applicazione che gestisce la rete `Pairing Bluetooth`. L'admin dopo aver eseguito l'associazione utente:uuid fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
+
+Riassumiamo e descriviamo i passi principali per la realizzazione del nostro sistema:
 
 ### Web App (WA)
 
-Applicazione web per la memorizzazione delle presenze scritta in `python` attraverso il modulo `Flask` interfacciato al database `CouchDb` basato su `JSON`. Ci sono principalmente due tipologie di persone: admin e utente normale. L'admin ha una propria view per controllare l'andamento delle presenze. L'utente è colui che utilizza questo servizio di "timbratura" digitale attraverso il proprio smartphone.
+Applicazione web per la memorizzazione delle presenze in linguaggio `python3` interpretato a lato server. Costruzione di un web-server attraverso il modulo `Flask` interfacciato al database NoSQL `CouchDb` basato su `JSON`. Il sistema accetta principalmente due tipologie di persone: admin e utente normale. L'admin ha una propria view per controllare l'andamento delle presenze. L'utente è colui che utilizza questo servizio di "timbratura" digitale attraverso il proprio smartphone.
 
 #### Flask
 
-```pyhon
+Installazione del modulo attraverso:
+
+`$ pip3 install Flask`
+
+e utilizzo del medesimo nel programma python:
+
+```python
 from flask import Flask, session, request, flash
 from flask.templating import render_template
 
@@ -31,9 +39,17 @@ if __name__ == '__main__':
     app.run(debug = True)
 ```
 
+In questo modo possiamo attivare un web-server sul quale fare girare le nostre pagine.
+
 #### CouchDb
 
-```pyhon
+Installazione del modulo attraverso:
+
+`$ pip3 install couchdb`
+
+e utilizzo del medesimo nel programma python:
+
+```python
 import logging
 import couchdb
 
@@ -42,9 +58,15 @@ def __open(cls)
 	logging.info("Connection to database " + cls.__dbName + " created.")
 ```
 
+Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
+
 #### Template Grafico
 
-Template basato su `html5`, `css3` e `javascript`.
+Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, soprattutto responsive.
+
+#### Deploy Applicazione Python
+
+L'idea è di esportare questa applicazione per farla girare per esempio su un webserver `Apache`.
 
 ### Pairing Bluetooth App (PBA)
 ...
