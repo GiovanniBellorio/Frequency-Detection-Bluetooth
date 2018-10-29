@@ -1,6 +1,6 @@
 # Frequency Detection Bluetooth ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-[Frequency Detection Bluetoothis](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth.
+[Frequency Detection Bluetooth](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth.
 
 ## Indice
 
