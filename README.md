@@ -5,12 +5,12 @@
 ## Indice
 
 * [Progetto](#Progetto)
-  * [Web App (WA)](#Web-App)
+  * [Web App](#Web-App)
     * [Flask](#Flask)
     * [CouchDb](#CouchDb)
     * [Template Grafico](#Template-Grafico)
     * [Deploy Applicazione Python](#Deploy-Applicazione-Python)
-  * [Pairing Bluetooth App (PBA)](#Pairing-Bluetooth-App)
+  * [Pairing Bluetooth App](#Pairing-Bluetooth-App)
   * [Documentazione](#Documentazione)
 * [Collaborazione](#Collaborazione)
 * [Licenza](#Licenza)
@@ -21,7 +21,7 @@ Il progetto si basa su una `Web App` e su un applicazione che gestisce la rete `
 
 Riassumiamo e descriviamo i passi principali per la realizzazione del nostro sistema:
 
-### Web App (WA)
+### Web App
 
 Applicazione web per la memorizzazione delle presenze in linguaggio `python3` interpretato a lato server. Costruzione di un web-server attraverso il modulo `Flask` interfacciato al database NoSQL `CouchDb` basato su `JSON`. Il sistema accetta principalmente due tipologie di persone: admin e utente normale. L'admin ha una propria view per controllare l'andamento delle presenze. L'utente è colui che utilizza questo servizio di "timbratura" digitale attraverso il proprio smartphone.
 
@@ -70,7 +70,7 @@ Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, 
 
 L'idea è di esportare questa applicazione per farla girare per esempio su un webserver `Apache`.
 
-### Pairing Bluetooth App (PBA)
+### Pairing Bluetooth App
 
 ...to do
 
