@@ -1,67 +1,34 @@
 '''
 Created on 26 ott 2018
 
-Semplice Model.
+Model.
 Questo Model mantiene anche un log delle chiamate ai metodi.
 La separazione con il database è forzata.
 
-@author: Giovanni
+@author: Giovanni, ...
 '''
 
-from datetime import date, datetime
-from DM_PG import DM_PG
+from datetime import date
+from DM_CDB import DM_CDB
 
 class Model(object):
     """ Realizza il modello dei dati da pubblicare. """
     
     def __init__(self):
         self.id = "Model_" + date.today().isoformat()
-        self.dataMapper = DM_PG() # DataMapper verso PostgreSQL
-    
-    def getFacolta(self, name):
-        """ Ritorna struct della facoltà con nome 'name' """
-        fac = self.dataMapper.getFacolta(name)
-        self.dataMapper.log(self.id, datetime.today(), 'getFacolta')
-        return fac
-    
-    def getCorsiStudi(self, idF):
-        """ Ritorna list di {id,nome,codice,durataAnni} dei corsi di studio della facolta 'idFS' """
-        cs = self.dataMapper.getCorsoStudiFacolta(int(idF))
-        self.dataMapper.log(self.id, datetime.today(), 'getCorsiStudi')
-        return cs
-    
-    def getAnniAccademici(self, idF):
-        """ Ritorna list di stringhe con gli anni accademici presenti nei corsi di studio della facoltà 'idFS' """
-        aa = self.dataMapper.getAnniAccademiciFacolta(int(idF))
-        self.dataMapper.log(self.id, datetime.today(), 'getAnniAccademici')
-        return aa
-
-    def getInsEroConDoc(self, corsoStudi, annoA):
-        """ Ritorna lista ins. erogati nel 'corsoStudi' nell'anno accademico 'annoA'.
-            Ogni elemento della lista è {id,nome,discr,hamoduli,modulo,nomeModulo,discriminanteModulo,haunita,nomeUnita,crediti,docente} """
-        listaIns = self.dataMapper.getInsEroConDoc(int(corsoStudi), annoA)
-        if not listaIns: # una lista vuota è sempre false!
-            return listaIns
+        self.dataMapper = DM_CDB() # DataMapper verso CouchDB
         
-        # listaIns può avere più righe per uno stesso insegnamento se ci sono più docenti.
-        # Tali righe si devono unire unendo i docenti.
-        
-        listaInsFinale = []
-        rigaPrecedente = listaIns[0]
-        for riga in listaIns :
-            if riga['id'] == rigaPrecedente['id'] and riga != rigaPrecedente:
-                riga['docente'] = riga ['docente'] + "\n" + rigaPrecedente['docente']
-            else:
-                listaInsFinale.append(riga)
-        
-        self.dataMapper.log(self.id, datetime.today(), 'getInsEroConDoc')
-        return listaInsFinale
+    def getCountUsernamePassword(self, username, password):
+        num_rows, id_utente = self.dataMapper.getCountUsernamePassword(username, password)
+        return num_rows, id_utente
     
-    def getCorsoStudi(self, idCS):
-        """ Ritorna {idCS,nome,codice,durataAnni,annoaccademico,stato} del corso di studi 'idCS' dove stato è lo stato di attivazione. """
-        cs = self.dataMapper.getCorsoStudi(int(idCS))
-        self.dataMapper.log(self.id, datetime.today() , 'getCorsoStudi')
-        return cs
-
+    def getRuoloUsername(self, id_utente):
+        ruolo = self.dataMapper.getRuoloUsername(id_utente)
+        return ruolo
+    
+    def getFrequenzaUsername(self, id_utente):
+        frequenza = self.dataMapper.getFrequenzaUsername(id_utente)
+        return frequenza
+        
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper
