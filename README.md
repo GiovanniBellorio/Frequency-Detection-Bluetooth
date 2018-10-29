@@ -1,8 +1,8 @@
 # Frequency-Detection-Bluetooth ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-Frequency-Detection-Bluetoothis a Python library for dealing with word pluralization.
+Frequency-Detection-Bluetoothis è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth.
 
-## Installation
+## Progetto
 
 ### Requirements
 * Linux
@@ -28,9 +28,7 @@ $ pip install -e .
 ```
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+Per critiche o nuove idee contattare liberamente giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO) o simone.girardi@studenti.univr.it (SIMONE GIRARDI).
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[GNU](https://www.gnu.org/licenses/gpl-3.0.html)
