@@ -54,7 +54,6 @@ def registro():
             return render_template('registro.html', username=username, id_utente=id_utente, ruolo=ruolo, frequenza=frequenza)
         elif ruolo == "1":
             utenti_punteggi = app.model.getUtentiPunteggi()
-            print(utenti_punteggi)
             return render_template('registro.html', username=username, id_utente=id_utente, ruolo=ruolo, utenti_punteggi=utenti_punteggi)
     else:
         flash('wrong password!')
