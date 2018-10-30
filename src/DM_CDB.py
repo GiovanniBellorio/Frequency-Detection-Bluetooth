@@ -9,16 +9,16 @@ DataMapper
 #from datetime import datetime
 import logging
 import couchdb
+from DB_CONNECT import DB_CONNECT
 
 class DM_CDB():
-    """ Data mapper verso CouchDB. Per semplicità, i parametri di connessione sono attributi di classe: dovrebbero essere
-        scritti in un file esterno e caricati durante __init__. """
-    __server = "localhost"
-    __dbName = 'db_detection'
+    """ Data mapper verso CouchDB. """
+    __server = None
+    __dbName = None
+    __db4Log = None
+    __user = None
+    __pw = None
     __db = None
-    __db4Log = 'admin'
-    __user = 'admin'
-    __pw = 'admin'
     __dbCon = None # La connessione è condivisa !
     __db4LogCon = None # La connessione è condivisa !
     __nIstanze = 0
@@ -68,6 +68,15 @@ class DM_CDB():
 
 
     def __init__(self):
+        """ Import parametri da file """
+        self.db_connect = DB_CONNECT()
+        DM_CDB.__server = self.db_connect.get__server()
+        DM_CDB.__dbName = self.db_connect.get__dbName()
+        DM_CDB.__db4Log = self.db_connect.get__db4Log()
+        DM_CDB.__user   = self.db_connect.get__user()
+        DM_CDB.__pw     = self.db_connect.get__pw()
+        
+        """ Connessione db """
         DM_CDB.__open()
         DM_CDB.__nIstanze += 1
 
