@@ -28,7 +28,8 @@ def home():
 def do_admin_login():
     username = strip_tags(request.form['username'])
     password = strip_tags(request.form['pass'])
-    num_rows, id_utente = app.model.getCountUsernamePassword(username, password)
+    password_codificata = app.model.make_md5(app.model.make_md5(password))
+    num_rows, id_utente = app.model.getCountUsernamePassword(username, password_codificata)
     if num_rows == 1:
         session['logged_in'] = True
         session['username']  = username
