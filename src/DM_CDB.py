@@ -114,6 +114,15 @@ class DM_CDB():
             if item.key == id_utente:
                 frequenza = item.value
         return frequenza
+    
+    def getUtentiPunteggi(self):
+        """ """
+        cur = DM_CDB.__cursor()
+        utenti_punteggi  = []
+        for item in cur.view('_design/documenti-view/_view/view_utenti_punteggi'):
+            if item.key == "2": # utente normale
+                utenti_punteggi.append(item.value)
+        return utenti_punteggi 
         
     def __del__(self):
         DM_CDB.__nIstanze -= 1

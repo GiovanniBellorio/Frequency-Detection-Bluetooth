@@ -29,6 +29,10 @@ class Model(object):
     def getFrequenzaUsername(self, id_utente):
         frequenza = self.dataMapper.getFrequenzaUsername(id_utente)
         return frequenza
+    
+    def getUtentiPunteggi(self):
+        utenti_punteggi = self.dataMapper.getUtentiPunteggi()
+        return utenti_punteggi
         
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper
