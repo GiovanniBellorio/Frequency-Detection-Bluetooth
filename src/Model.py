@@ -8,6 +8,7 @@ La separazione con il database è forzata.
 @author: Giovanni, ...
 '''
 
+from hashlib import md5
 from datetime import date
 from DM_CDB import DM_CDB
 
@@ -33,6 +34,10 @@ class Model(object):
     def getUtentiPunteggi(self):
         utenti_punteggi = self.dataMapper.getUtentiPunteggi()
         return utenti_punteggi
+    
+    def make_md5(self, s):
+        encoding = 'utf-8'
+        return md5(s.encode(encoding)).hexdigest()
         
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper
