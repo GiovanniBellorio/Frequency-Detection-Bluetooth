@@ -11,6 +11,7 @@ import logging
 from flask import Flask, session, request, flash
 from flask.templating import render_template
 from Model import Model
+from django.utils.html import strip_tags
 
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__) # Applicazione Flask!
@@ -25,8 +26,8 @@ def home():
  
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    username = request.form['username']
-    password = request.form['pass']
+    username = strip_tags(request.form['username'])
+    password = strip_tags(request.form['pass'])
     num_rows, id_utente = app.model.getCountUsernamePassword(username, password)
     if num_rows == 1:
         session['logged_in'] = True
