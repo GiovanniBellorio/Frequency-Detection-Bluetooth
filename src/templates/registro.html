@@ -36,9 +36,21 @@
 						</button>
 					</div>	
 				</form>
+
+				<!-- USER -->
+				{%- if ruolo == "2" %}
+				<form class="login100-form validate-form" action="/view_modify_pwd" method="POST">
+					<div class="container-login100-form-btn p-t-10">
+						<button class="login100-form-btn" type="submit">
+							Cambia password
+						</button>
+					</div>	
+				</form>
+				{%- endif %}
 			</div>
 
-			{%- if ruolo == "1" %}
+			{%- if ruolo == "1" %} 
+			<!-- ADMIN -->
 			<div class="container-table100">
 				<div class="wrap-table100">
 					<div class="table100 ver1 m-b-110">
@@ -76,6 +88,7 @@
 			</div>
 
 			{%- elif ruolo == "2" %}
+			<!-- USER -->
 			<div class="container-table100">
 				<div class="wrap-table100">
 					<div class="table100 ver1 m-b-110">

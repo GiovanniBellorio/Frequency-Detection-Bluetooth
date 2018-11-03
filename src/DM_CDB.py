@@ -123,6 +123,17 @@ class DM_CDB():
             if item.key == "2": # utente normale
                 utenti_punteggi.append(item.value)
         return utenti_punteggi 
+    
+    def updateUserPwd(self, id_utente, password):
+        """ """
+        ack_pwd = False
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id_utente)]
+        if not ack_pwd:
+            doc['pwd'] = password
+            cur[doc.id] = doc
+            ack_pwd = True
+        return ack_pwd
         
     def __del__(self):
         DM_CDB.__nIstanze -= 1
