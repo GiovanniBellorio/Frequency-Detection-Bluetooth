@@ -14,10 +14,12 @@ from flask.templating import render_template
 from Model import Model
 from django.utils.html import strip_tags
 
+
 sessione = Session()
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__) # Applicazione Flask!
 app.model = Model()
+
 
 @app.route('/')
 def home():
@@ -45,6 +47,7 @@ def logout():
     session['logged_in'] = False
     session['username']  = ""
     session['id_utente'] = 0
+    
     session.clear();
     return home()
 
@@ -85,7 +88,9 @@ def registro():
         
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
-    app.config['SECRET_KEY']   = os.urandom(12)
     app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['SESSION_KEY']   = os.urandom(12)
+    #app.secret_key = os.urandom(12)
+    
     sessione.init_app(app)
     app.run(debug = True)  # Debug permette anche di ricaricare i file modificati senza rinizializzare il web server.
