@@ -35,6 +35,10 @@ class Model(object):
         utenti_punteggi = self.dataMapper.getUtentiPunteggi()
         return utenti_punteggi
     
+    def updateUserPwd(self, id_utente, password):
+        ack_pwd = self.dataMapper.updateUserPwd(id_utente, password)
+        return ack_pwd
+    
     def make_md5(self, s):
         encoding = 'utf-8'
         return md5(s.encode(encoding)).hexdigest()

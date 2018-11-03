@@ -25,7 +25,7 @@ def home():
         return registro()
  
 @app.route('/login', methods=['POST'])
-def do_admin_login():
+def login():
     username = strip_tags(request.form['username'])
     password = strip_tags(request.form['pass'])
     password_codificata = app.model.make_md5(app.model.make_md5(password))
@@ -44,6 +44,25 @@ def logout():
     session['username']  = ""
     session['id_utente'] = 0
     return home()
+
+@app.route("/view_modify_pwd", methods=['POST'])
+def view_modify_pwd():
+    return render_template('modify_pwd.html')
+
+@app.route("/modify_pwd", methods=['POST'])
+def modify_pwd():
+    password1 = strip_tags(request.form['pass1'])
+    password2 = strip_tags(request.form['pass2'])
+    if password1 == password2:
+        password_codificata = app.model.make_md5(app.model.make_md5(password2))
+        id_utente = session.get('id_utente')
+        ack_pwd = app.model.updateUserPwd(id_utente, password_codificata)
+        if ack_pwd:
+            return registro()
+        else:
+            return view_modify_pwd()
+    else:
+        return view_modify_pwd()
 
 @app.route("/registro")
 def registro():
