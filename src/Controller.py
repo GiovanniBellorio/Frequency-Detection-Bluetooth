@@ -29,25 +29,24 @@ def home():
         print("ciao")
         return registro()
  
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        username = strip_tags(request.form['username'])
-        password = strip_tags(request.form['pass'])
-        password_codificata = app.model.make_md5(app.model.make_md5(password))
-        num_rows, id_utente = app.model.getCountUsernamePassword(username, password_codificata)
-        if num_rows == 1:
-            session['logged_in'] = True
-            session['username']  = username
-            session['id_utente'] = id_utente
-        else:
-            flash('wrong password!')
-        return home()
+    username = strip_tags(request.form['username'])
+    password = strip_tags(request.form['pass'])
+    password_codificata = app.model.make_md5(app.model.make_md5(password))
+    num_rows, id_utente = app.model.getCountUsernamePassword(username, password_codificata)
+    if num_rows == 1:
+        session['logged_in'] = True
+        session['username']  = username
+        session['id_utente'] = id_utente
     else:
-        return home()
+        flash('wrong password!')
+    return home()
  
 @app.route("/logout", methods=['POST'])
 def logout():
+    print(session.get('logged_in'))
+    
     session['logged_in'] = False
     session['username']  = ""
     session['id_utente'] = 0
@@ -97,7 +96,7 @@ def registro():
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['SESSION_KEY']   = os.urandom(16)
-    #app.secret_key = os.urandom(12)
+    app.secret_key = os.urandom(12)
     
     sessione.init_app(app)
     app.run(debug = True)  # Debug permette anche di ricaricare i file modificati senza rinizializzare il web server.
