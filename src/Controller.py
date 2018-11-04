@@ -8,7 +8,7 @@ Controller dell'applicazione web
 
 import os
 import logging
-from flask import Flask, session, request, flash
+from flask import Flask, session, request, flash, escape
 from flask_sessionstore import Session
 from flask.templating import render_template
 from Model import Model
@@ -26,21 +26,25 @@ def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
+        print("ciao")
         return registro()
  
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    username = strip_tags(request.form['username'])
-    password = strip_tags(request.form['pass'])
-    password_codificata = app.model.make_md5(app.model.make_md5(password))
-    num_rows, id_utente = app.model.getCountUsernamePassword(username, password_codificata)
-    if num_rows == 1:
-        session['logged_in'] = True
-        session['username']  = username
-        session['id_utente'] = id_utente
+    if request.method == 'POST':
+        username = strip_tags(request.form['username'])
+        password = strip_tags(request.form['pass'])
+        password_codificata = app.model.make_md5(app.model.make_md5(password))
+        num_rows, id_utente = app.model.getCountUsernamePassword(username, password_codificata)
+        if num_rows == 1:
+            session['logged_in'] = True
+            session['username']  = username
+            session['id_utente'] = id_utente
+        else:
+            flash('wrong password!')
+        return home()
     else:
-        flash('wrong password!')
-    return home()
+        return home()
  
 @app.route("/logout", methods=['POST'])
 def logout():
@@ -49,6 +53,9 @@ def logout():
     session['id_utente'] = 0
     
     session.clear();
+    
+    print(session.get('logged_in'))
+    
     return home()
 
 @app.route("/view_modify_pwd", methods=['POST'])
@@ -89,7 +96,7 @@ def registro():
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.config['SESSION_KEY']   = os.urandom(12)
+    app.config['SESSION_KEY']   = os.urandom(16)
     #app.secret_key = os.urandom(12)
     
     sessione.init_app(app)
