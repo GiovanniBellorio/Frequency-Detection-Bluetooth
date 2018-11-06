@@ -57,7 +57,7 @@ In questo modo possiamo attivare un web-server sul quale fare girare le nostre p
 - [ ] Avvio tramite applicazione python sulla porta 5000
 - [ ] Costruire un sistema modulare: controller, model e data-mapper.
 
-##### Gestione delle Sessioni - Cache - Cookie (Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
+##### Gestione delle Sessioni Cache Cookie (Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
 
 ...to do
 
@@ -77,6 +77,10 @@ def __open(cls)
 	cls.__db4LogCon = couchdb.Server("http://%s:%s@%s:5984/" % (cls.__user, cls.__pw, cls.__server))
 	logging.info("Connection to database " + cls.__dbName + " created.")
 ```
+
+Installare: 
+
+`$ brew install gnu-sed`
 
 Per eseguire il Backup del database: 
 
