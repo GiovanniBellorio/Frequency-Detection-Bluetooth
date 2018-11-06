@@ -9,13 +9,13 @@ Controller dell'applicazione web
 import os
 import logging
 from flask import Flask, session, request, flash, escape
-from flask_sessionstore import Session
+#from flask_sessionstore import Session
 from flask.templating import render_template
 from Model import Model
 from django.utils.html import strip_tags
 
 
-sessione = Session()
+#sessione = Session()
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__) # Applicazione Flask!
 app.model = Model()
@@ -26,7 +26,6 @@ def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
-        print("ciao")
         return registro()
  
 @app.route('/login', methods=['POST'])
@@ -44,17 +43,11 @@ def login():
     return home()
  
 @app.route("/logout", methods=['POST'])
-def logout():
-    print(session.get('logged_in'))
-    
+def logout():    
     session['logged_in'] = False
     session['username']  = ""
     session['id_utente'] = 0
-    
-    session.clear();
-    
-    print(session.get('logged_in'))
-    
+    #session.clear();
     return home()
 
 @app.route("/view_modify_pwd", methods=['POST'])
@@ -94,9 +87,8 @@ def registro():
         
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
-    app.config['SESSION_TYPE'] = 'filesystem'
+    #app.config['SESSION_TYPE'] = 'filesystem'
     app.config['SESSION_KEY']   = os.urandom(16)
     app.secret_key = os.urandom(12)
-    
-    sessione.init_app(app)
+    #sessione.init_app(app)
     app.run(debug = True)  # Debug permette anche di ricaricare i file modificati senza rinizializzare il web server.
