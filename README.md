@@ -78,7 +78,7 @@ def __open(cls)
 	logging.info("Connection to database " + cls.__dbName + " created.")
 ```
 
-Installare: 
+Per installare il servizio abbiamo utilizzato [Apache CouchDB](http://couchdb.apache.org/), mentre per effettuare il dump:
 
 `$ brew install gnu-sed`
 
