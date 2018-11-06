@@ -19,7 +19,7 @@
 
 Il progetto si basa su una `Web App` e su un applicazione che gestisce la rete `Pairing Bluetooth`. L'admin dopo aver eseguito l'associazione utente:uuid fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
 
-- [x] Analisi dei requisiti
+- [ ] Analisi dei requisiti
 - [ ] Analisi di fattibilità
 - [ ] Analisi dell'infrastruttura
 
@@ -38,20 +38,29 @@ Installazione del modulo attraverso:
 e utilizzo del medesimo nel programma python:
 
 ```python
-from flask import Flask, session, request, flash
+from flask import Flask, session, request, flash, escape
 from flask.templating import render_template
+from django.utils.html import strip_tags
 
 if __name__ == '__main__':
     app.run(debug = True)
 ```
 
+Altri moduli da scaricare e importare:
+
+`$ pip3 ........`
+
 In questo modo possiamo attivare un web-server sul quale fare girare le nostre pagine.
 
-- [x] Installazione del modulo Flask
-- [x] Avvio tramite applicazione python sulla porta 5000
-- [x] Costruire un sistema modulare: controller, model e data-mapper.
+- [ ] Installazione del modulo Flask
+- [ ] Avvio tramite applicazione python sulla porta 5000
+- [ ] Costruire un sistema modulare: controller, model e data-mapper.
 
-#### CouchDb
+##### Gestione delle Sessioni - Cache - Cookie (Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
+
+...to do
+
+#### CouchDb (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
 Installazione del modulo attraverso:
 
@@ -68,12 +77,20 @@ def __open(cls)
 	logging.info("Connection to database " + cls.__dbName + " created.")
 ```
 
+Per eseguire il Backup del database: 
+
+`$ bash couchdb-backup.sh -b -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
+
+Per eseguire il Restore del database: 
+
+`$ bash couchdb-backup.sh -r -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
+
 Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
 
-- [x] Installazione di apache-CouchDB in locale
+- [ ] Installazione di apache-CouchDB in locale
 - [ ] Analisi della struttura dati
 - [ ] Costruzione delle view
-- [x] Interrogazione alla base di dati in python
+- [ ] Interrogazione alla base di dati in python
 
 #### Template Grafico
 
@@ -100,9 +117,9 @@ L'idea è di esportare questa applicazione per farla girare per esempio su un we
 
 L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `GitHub`.
 
-- [x] Realizzazione repository
-- [x] Creazione branch (master e dev) di lavoro
-- [x] Condivisione della repository
+- [ ] Realizzazione repository
+- [ ] Creazione branch (master e dev) di lavoro
+- [ ] Condivisione della repository
 - [ ] Realizzazione e aggiornamento del file README.MD
 
 ## Autori
