@@ -3,7 +3,7 @@ Created on 26 0tt 2018
 
 Controller dell'applicazione web
 
-@author: Giovanni, ...
+@author: Giovanni, Davide
 '''
 
 import os
