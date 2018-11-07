@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
 Altri moduli da scaricare e importare:
 
-`$ pip3 ........`
+`$ pip3 install Django`
 
 In questo modo possiamo attivare un web-server sul quale fare girare le nostre pagine.
 
