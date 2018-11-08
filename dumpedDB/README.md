@@ -1,4 +1,4 @@
-# Installazione Ubuntu
+# Installazione couchDB per Ubuntu
 
 1. Aprire una schell
 
@@ -21,6 +21,17 @@
 	` $ sudo apt-get update && sudo apt-get install couchdb`
 	
 4. Seguire gli step del Setup Wizard che apparirà successivamente (da specificare)
+
+
+# Restore del database
+
+Per eseguire il Restore del database: 
+
+`$ bash couchdb-backup.sh -r -H 127.0.0.1 -d db_detection -f dumpedDB.json -u <nome_utente> -p <password>`
+
+dove `<nome_utente>` è "admin" e `<password>` è la password scelta in fase di installazione nel Setup Wizard.
+
+
 
 
     	
