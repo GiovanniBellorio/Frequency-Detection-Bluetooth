@@ -33,11 +33,11 @@ Dopo la prima installazione il servizio CouchDB risulta già avviato.
 
 In generale, per avviare il servizio lanciare il comando
 
-	`$ service couchdb start`
+`$ service couchdb start`
 
 Analogamente, per arrestare il servizio digitare
 
-	`$ service couchdb stop`
+`$ service couchdb stop`
 	
 Nel momento in cui non fosse più necessario l'utilizzo del servizio CouchDB, è consigliabile arrestarlo, perchè altrimenti risulta sempre attivo all'interno della propria macchina.
 
