@@ -22,6 +22,12 @@
 	
 4. Seguire gli step del Setup Wizard che apparirà successivamente (da specificare)
 
+5. Per controllare che l'installazione sia andata a buon fine:
+
+		* aprire un browser
+		* indirizzare a http://127.0.0.1:5984/_utils/index.html
+		* loggarsi con #Username# = "admin" e #Password# la password scelta in fase di installazione nel Setup Wizard
+
 
 # Restore del database
 
