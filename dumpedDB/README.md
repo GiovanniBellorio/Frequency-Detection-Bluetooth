@@ -1,6 +1,6 @@
 # Installazione CouchDB per Ubuntu
 
-1. Aprire una schell
+1. Aprire una shell
 
 2. Lanciare il comando
 
@@ -22,7 +22,16 @@
 	
 4. Seguire gli step del Setup Wizard che apparirà successivamente (da specificare)
 
-5. Per controllare che l'installazione sia andata a buon fine:
+5. Per far funzionare il CoucDB bisogna creare un apposito utente di sistema, chiamato `coucdb`.
+Eseguire i seguenti comandi:
+
+`$ adduser --system \
+        --shell /bin/bash \
+        --group --gecos \
+        "CouchDB Administrator" couchdb`
+
+
+6. Per controllare che l'installazione sia andata a buon fine:
 
 	* aprire un browser
 	* indirizzare a http://127.0.0.1:5984/_utils/index.html
