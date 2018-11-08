@@ -8,7 +8,7 @@
 	
     		| sudo tee -a /etc/apt/sources.list`
     
-	dove `$ {distribution}` viene scelto in base alla propria versione di Ubuntu:
+	dove `{distribution}` viene scelto in base alla propria versione di Ubuntu:
 
 		* Debian 8: jessie
 		* Debian 9: stretch
