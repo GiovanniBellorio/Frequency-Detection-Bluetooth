@@ -24,9 +24,9 @@
 
 5. Per far funzionare CoucDB bisogna creare un apposito utente di sistema, chiamato `coucdb`.
 
-Eseguire i seguenti comandi
+	Eseguire i seguenti comandi
 
-` $ adduser --system \
+	` $ adduser --system \
             --shell /bin/bash \
             --group --gecos \
             "CouchDB Administrator" couchdb `
