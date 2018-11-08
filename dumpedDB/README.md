@@ -26,10 +26,10 @@
 
 Eseguire i seguenti comandi:
 
-	`$ adduser --system \
+	` $ adduser --system \
         	   --shell /bin/bash \
         	   --group --gecos \
-        	   "CouchDB Administrator" couchdb`
+        	   "CouchDB Administrator" couchdb `
 
 
 6. Per controllare che l'installazione sia andata a buon fine:
