@@ -61,7 +61,7 @@ In questo modo possiamo attivare un web-server sul quale fare girare le nostre p
 
 ...to do
 
-#### CouchDb (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
+#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Bluetooth/tree/dev/dumpedDB) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
 Installazione del modulo attraverso:
 
