@@ -22,13 +22,14 @@
 	
 4. Seguire gli step del Setup Wizard che apparirà successivamente (da specificare)
 
-5. Per far funzionare il CoucDB bisogna creare un apposito utente di sistema, chiamato `coucdb`.
+5. Per far funzionare CoucDB bisogna creare un apposito utente di sistema, chiamato `coucdb`.
+
 Eseguire i seguenti comandi:
 
-`$ adduser --system \
-        --shell /bin/bash \
-        --group --gecos \
-        "CouchDB Administrator" couchdb`
+	`$ adduser --system \
+        	   --shell /bin/bash \
+        	   --group --gecos \
+        	   "CouchDB Administrator" couchdb`
 
 
 6. Per controllare che l'installazione sia andata a buon fine:
