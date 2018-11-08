@@ -1,4 +1,4 @@
-# Installazione couchDB per Ubuntu
+# Installazione CouchDB per Ubuntu
 
 1. Aprire una schell
 
@@ -27,6 +27,19 @@
 	* aprire un browser
 	* indirizzare a http://127.0.0.1:5984/_utils/index.html
 	* loggarsi con Username = "admin" e Password la password scelta in fase di installazione nel Setup Wizard
+	
+
+Dopo la prima installazione il servizio CouchDB risulta già avviato.
+
+In generale, per avviare il servizio lanciare il comando
+
+	`$ service couchdb start`
+
+Analogamente, per arrestare il servizio digitare
+
+	`$ service couchdb stop`
+	
+Nel momento in cui non fosse più necessario l'utilizzo del servizio CouchDB, è consigliabile arrestarlo, perchè altrimenti risulta sempre attivo all'interno della propria macchina.
 
 
 # Restore del database
