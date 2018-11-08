@@ -19,6 +19,10 @@
 3. Aggiornare la cache dei repository e installare il package:
 
 	` $ sudo apt-get update && sudo apt-get install couchdb`
+	
+4. Seguire gli step del Setup Wizard che apparirà successivamente (da specificare)
+
+
     	
     
     
