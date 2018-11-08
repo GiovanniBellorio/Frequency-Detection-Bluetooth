@@ -5,6 +5,7 @@
 2. Lanciare il comando
 
 	`$ echo "deb https://apache.bintray.com/couchdb-deb {distribution} main" \
+	
     		| sudo tee -a /etc/apt/sources.list`
     
 	dove `$ {distribution}` viene scelto in base alla propria versione di Ubuntu:
@@ -14,6 +15,11 @@
 		* Ubuntu 14.04: trusty
 		* Ubuntu 16.04: xenial
 		* Ubuntu 18.04: bionic
+		
+		
+3. Aggiornare la cache dei repository e installare il package:
+
+	` $ sudo apt-get update && sudo apt-get install couchdb`
     	
     
     
