@@ -1,6 +1,6 @@
-# Frequency Detection Bluetooth ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+# Frequency Detection Wireless ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-[Frequency Detection Bluetooth](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth. Verrà effettuata un'associazione univoca tra l'utente e il codice `UUID` del proprio dispositivo per registrare la presenza una volta connesso all'antenna master del sistema. 
+[Frequency Detection Wireless](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth. Verrà effettuata un'associazione univoca tra l'utente e il codice `UUID` del proprio dispositivo per registrare la presenza una volta connesso all'antenna master del sistema. 
 
 ## Indice
 
@@ -11,7 +11,7 @@
     * [CouchDb](#CouchDb)
     * [Template Grafico](#Template-Grafico)
     * [Deploy Applicazione Python](#Deploy-Applicazione-Python)
-  * [Pairing Bluetooth App](#Pairing-Bluetooth-App)
+  * [Wireless Detection App](#Wireless-Detection-App)
   * [Documentazione](#Documentazione)
 * [Autori](#Autori)
 * [Licenza](#Licenza)
@@ -114,7 +114,7 @@ L'idea è di esportare questa applicazione per farla girare per esempio su un we
 - [ ] Aggiornamento del database
 - [ ] Porting della web-app
 
-### Pairing Bluetooth App
+### Wireless Detection App
 
 ...to do
 
