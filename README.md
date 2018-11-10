@@ -1,6 +1,6 @@
 # Frequency Detection Wireless ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-[Frequency Detection Wireless](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth. Verrà effettuata un'associazione univoca tra l'utente e il codice `UUID` del proprio dispositivo per registrare la presenza una volta connesso all'antenna master del sistema. 
+[Frequency Detection Wireless](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione wifi. Verrà effettuata un'associazione univoca tra l'utente e l'indirizzo `MAC` del proprio dispositivo per registrare la presenza una volta rilevato in prossimità del master del sistema. 
 
 ## Indice
 
@@ -18,7 +18,7 @@
 
 ## Progetto
 
-Il progetto si basa su una `Web App` e su un applicazione che gestisce la rete `Pairing Bluetooth`. L'admin dopo aver eseguito l'associazione utente:uuid fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
+Il progetto si basa su una `Web App` e su un applicazione che cattura la presenza nella rete del `Mac adress` del dispositivo. L'admin dopo aver eseguito l'associazione utente:mac fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi, con un errore acnora da stabilire, e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
 
 - [ ] Analisi dei requisiti
 - [ ] Analisi di fattibilità
