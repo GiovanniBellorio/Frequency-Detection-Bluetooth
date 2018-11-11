@@ -1,6 +1,6 @@
 # Frequency Detection Wireless ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-[Frequency Detection Wireless](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione wifi. Verrà effettuata un'associazione univoca tra l'utente e l'indirizzo `MAC` del proprio dispositivo per registrare la presenza una volta rilevato in prossimità del master del sistema. 
+[Frequency Detection Wireless](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione wifi. Verrà effettuata un'associazione univoca tra l'utente e l'indirizzo `MAC` del proprio dispositivo per registrare la presenza una volta rilevato in prossimità del master del sistema.
 
 ## Indice
 
@@ -82,11 +82,11 @@ Per installare il servizio abbiamo utilizzato [Apache CouchDB](http://couchdb.ap
 
 `$ brew install gnu-sed`
 
-Per eseguire il Backup del database: 
+Per eseguire il Backup del database:
 
 `$ bash couchdb-backup.sh -b -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
 
-Per eseguire il Restore del database: 
+Per eseguire il Restore del database:
 
 `$ bash couchdb-backup.sh -r -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
 
@@ -116,7 +116,13 @@ L'idea è di esportare questa applicazione per farla girare per esempio su un we
 
 ### Wireless Detection App
 
-...to do
+Applicazione utilizzata dall'utente master per la rilevazione di reti Wireless basate su tecnologia Wi-Fi.
+Questa applicazione, all'avvio, fornisce due modalità di funzionamento mutualmente esclusive:
+
+* AP-only: L'applicazione apre un access point (WAP) al quale uno o più utenti (slave) possono connettersi e rimanere connessi per tutta la durata della sessione prestabilita. In questa modalità potrebbe non essere consentita la navigazione web ai dispositivi collegati, a causa dei limiti della scheda di rete del dispositivo master o delle configurazioni dell'infrastruttura di rete alla quale si è collegati.
+* Monitor mode: La scheda di rete viene inizialmente settata in modalità monitor. Durante questa modalità vengono rilevati tutti i dispositivi Wireless (MAC Adress e Hostname) in trasmissione nel raggio di 10-20 metri^[Per i limiti del segnale fare riferimento alla propria scheda di rete.], filtrando solo quelli riconosciuti come appartenenti al corso.
+
+Per permettere all'applicazione di riconoscere correttamente i dispositivi ... , è necessario che indirizzi MAC e hostname siano già presenti nel database della Web app.
 
 ### Documentazione
 
@@ -129,7 +135,7 @@ L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `
 
 ## Autori
 
-Per critiche o nuove idee contattare liberamente:	
+Per critiche o nuove idee contattare liberamente:
 
 * giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO)
 * simone.girardi@studenti.univr.it (SIMONE GIRARDI)
