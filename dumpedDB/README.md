@@ -59,17 +59,12 @@ Per eseguire il Restore del database:
 dove `<nome_utente>` è "admin" e `<password>` è la password scelta in fase di installazione nel Setup Wizard.
 
 
+# Backup del database
+
+Per eseguire il Backup del database:
+
+`$ bash couchdb-backup.sh -b -H 127.0.0.1 -d db_detection -f dumpedDB.json -u <nome_utente> -p <password>` 
+
+dove `<nome_utente>` è "admin" e `<password>` è la password scelta in fase di installazione nel Setup Wizard.
 
 
-    	
-    
-    
-
-
-brew install gnu-sed
-
-BACKUP:
-bash couchdb-backup.sh -b -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin
-
-RESTORE:
-bash couchdb-backup.sh -r -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin
