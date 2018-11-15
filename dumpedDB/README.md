@@ -88,12 +88,12 @@ La struttura del databse è la seguente:
 * **macs**: lista dei vari indirizzi MAC del dispositivo con cui un utente utilizza l'applicazione.
 * **incontri**: lista di elementi strutturati che descrivono un _incontro_.
 		ogni _incontro_ è descritto dai seguenti campi:
-		* id: stringa identificativa univocoa per ogni incontro;
-		* descrizione: campo che descrive il tipo di incontro;
-		* data: la data in cui si svolge un certo incontro;
-		* ora_inizio: l'ora in cui inizia l'incontro;
-		* ora_fine: l'ora in cui termina l'incontro;
-		* stato: descrive se l'incontro è già stato svolto o deve svolgersi (_CHIUSO_) oppure se l'evento è attualmente in corso (_APERTO_);
+			* id: stringa identificativa univocoa per ogni incontro;
+			* descrizione: campo che descrive il tipo di incontro;
+			* data: la data in cui si svolge un certo incontro;
+			* ora_inizio: l'ora in cui inizia l'incontro;
+			* ora_fine: l'ora in cui termina l'incontro;
+			* stato: descrive se l'incontro è già stato svolto o deve svolgersi (_CHIUSO_) oppure se l'evento è attualmente in corso (_APERTO_);
 		
 
 
