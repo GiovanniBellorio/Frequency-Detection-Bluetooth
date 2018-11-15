@@ -68,3 +68,18 @@ Per eseguire il Backup del database:
 dove `<nome_utente>` è "admin" e `<password>` è la password scelta in fase di installazione nel Setup Wizard.
 
 
+# Organizzazione della struttura del database
+
+Il database a supporto dell'applicazione Frequency-Detection-Wireless è una base di dati NoSQL, che utilizza il formato json.
+
+La struttura del databse è la seguente:
+
+	* id: identificativo univoco dell'utente che può loggarsi nell'applicazione.
+	* utente: sruttura che memorizza i dati personali dell'utente registrato, quali:
+		* username
+		* nome
+		* cognome
+		* matricola
+		
+
+
