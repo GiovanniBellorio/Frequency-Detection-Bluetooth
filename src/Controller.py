@@ -3,30 +3,32 @@ Created on 26 0tt 2018
 
 Controller dell'applicazione web
 
-@author: Giovanni, ...
+@author: Giovanni, Davide
 '''
 
 import os
 import logging
-from flask import Flask, session, request, flash, escape
-#from flask_sessionstore import Session
+from django.utils.html import strip_tags
+from flask import Flask, session, request, flash, escape, redirect, url_for
+from flask_sessionstore import Session
 from flask.templating import render_template
 from Model import Model
-from django.utils.html import strip_tags
 
 
-#sessione = Session()
+sessione = Session()
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__) # Applicazione Flask!
 app.model = Model()
 
 
+@app.after_request
+def after_request(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
+
 @app.route('/')
 def home():
-    if not session.get('logged_in'):
-        return render_template('login.html')
-    else:
-        return registro()
+    return render_template('login.html')
  
 @app.route('/login', methods=['POST'])
 def login():
@@ -38,36 +40,45 @@ def login():
         session['logged_in'] = True
         session['username']  = username
         session['id_utente'] = id_utente
+        return redirect(url_for('registro'))
     else:
         flash('wrong password!')
-    return home()
+        return redirect(url_for('home'))
  
 @app.route("/logout", methods=['POST'])
 def logout():    
     session['logged_in'] = False
     session['username']  = ""
     session['id_utente'] = 0
-    #session.clear();
-    return home()
+    return redirect(url_for('home'))
 
 @app.route("/view_modify_pwd", methods=['POST'])
 def view_modify_pwd():
-    return render_template('modify_pwd.html')
+    if session.get('logged_in'):
+        return render_template('modify_pwd.html')
+    else:
+        flash('wrong password!')
+        return redirect(url_for('home'))
 
 @app.route("/modify_pwd", methods=['POST'])
 def modify_pwd():
-    password1 = strip_tags(request.form['pass1'])
-    password2 = strip_tags(request.form['pass2'])
-    if password1 == password2:
-        password_codificata = app.model.make_md5(app.model.make_md5(password2))
-        id_utente = session.get('id_utente')
-        ack_pwd = app.model.updateUserPwd(id_utente, password_codificata)
-        if ack_pwd:
-            return registro()
+    if session.get('logged_in'):
+        password1 = strip_tags(request.form['pass1'])
+        password2 = strip_tags(request.form['pass2'])
+        if password1 == password2:
+            password_codificata = app.model.make_md5(app.model.make_md5(password2))
+            id_utente = session.get('id_utente')
+            ack_pwd = app.model.updateUserPwd(id_utente, password_codificata)
+            if ack_pwd:
+                return redirect(url_for('registro'))
+            else:
+                return redirect(url_for('view_modify_pwd'))
         else:
-            return view_modify_pwd()
+            return redirect(url_for('view_modify_pwd'))
     else:
-        return view_modify_pwd()
+        flash('wrong password!')
+        return redirect(url_for('home'))
+        
 
 @app.route("/registro")
 def registro():
@@ -83,12 +94,12 @@ def registro():
             return render_template('registro.html', username=username, id_utente=id_utente, ruolo=ruolo, utenti_punteggi=utenti_punteggi)
     else:
         flash('wrong password!')
-        return home()
+        return redirect(url_for('home'))
         
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
-    #app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['SESSION_TYPE'] = 'filesystem'
     app.config['SESSION_KEY']   = os.urandom(16)
     app.secret_key = os.urandom(12)
-    #sessione.init_app(app)
-    app.run(debug = True)  # Debug permette anche di ricaricare i file modificati senza rinizializzare il web server.
+    sessione.init_app(app)
+    app.run(debug=True, use_reloader=True)  # Debug permette anche di ricaricare i file modificati senza rinizializzare il web server.

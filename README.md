@@ -1,6 +1,6 @@
-# Frequency Detection Bluetooth ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+# Frequency Detection Wireless ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-[Frequency Detection Bluetooth](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione bluetooth. Verrà effettuata un'associazione univoca tra l'utente e il codice `UUID` del proprio dispositivo per registrare la presenza una volta connesso all'antenna master del sistema. 
+[Frequency Detection Wireless](https://github.com/SfideDiProgrammazioneUniVR/PortafoglioVoti/issues/4) è un'applicazione per la rilevazione delle presenze all'interno di un'aula attraverso la connessione wifi. Verrà effettuata un'associazione univoca tra l'utente e l'indirizzo `MAC` del proprio dispositivo per registrare la presenza una volta rilevato in prossimità del master del sistema.
 
 ## Indice
 
@@ -11,14 +11,14 @@
     * [CouchDb](#CouchDb)
     * [Template Grafico](#Template-Grafico)
     * [Deploy Applicazione Python](#Deploy-Applicazione-Python)
-  * [Pairing Bluetooth App](#Pairing-Bluetooth-App)
+  * [Wireless Detection App](#Wireless-Detection-App)
   * [Documentazione](#Documentazione)
 * [Autori](#Autori)
 * [Licenza](#Licenza)
 
 ## Progetto
 
-Il progetto si basa su una `Web App` e su un applicazione che gestisce la rete `Pairing Bluetooth`. L'admin dopo aver eseguito l'associazione utente:uuid fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
+Il progetto si basa su una `Web App` e su un applicazione che cattura la presenza nella rete del `Mac adress` del dispositivo. L'admin dopo aver eseguito l'associazione utente:mac fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi, con un errore acnora da stabilire, e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
 
 - [ ] Analisi dei requisiti
 - [ ] Analisi di fattibilità
@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
 Altri moduli da scaricare e importare:
 
-`$ pip3 ........`
+`$ pip3 install Django`
 
 In questo modo possiamo attivare un web-server sul quale fare girare le nostre pagine.
 
@@ -61,7 +61,7 @@ In questo modo possiamo attivare un web-server sul quale fare girare le nostre p
 
 ...to do
 
-#### CouchDb (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
+#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Bluetooth/tree/dev/dumpedDB) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
 Installazione del modulo attraverso:
 
@@ -82,11 +82,11 @@ Per installare il servizio abbiamo utilizzato [Apache CouchDB](http://couchdb.ap
 
 `$ brew install gnu-sed`
 
-Per eseguire il Backup del database: 
+Per eseguire il Backup del database:
 
 `$ bash couchdb-backup.sh -b -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
 
-Per eseguire il Restore del database: 
+Per eseguire il Restore del database:
 
 `$ bash couchdb-backup.sh -r -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
 
@@ -114,9 +114,15 @@ L'idea è di esportare questa applicazione per farla girare per esempio su un we
 - [ ] Aggiornamento del database
 - [ ] Porting della web-app
 
-### Pairing Bluetooth App
+### Wireless Detection App
 
-...to do
+Applicazione utilizzata dall'utente master per la rilevazione di reti Wireless basate su tecnologia Wi-Fi.
+Questa applicazione, all'avvio, fornisce due modalità di funzionamento mutualmente esclusive:
+
+* AP-only: L'applicazione apre un access point (WAP) al quale uno o più utenti (slave) possono connettersi e rimanere connessi per tutta la durata della sessione prestabilita. In questa modalità potrebbe non essere consentita la navigazione web ai dispositivi collegati, a causa dei limiti della scheda di rete del dispositivo master o delle configurazioni dell'infrastruttura di rete alla quale si è collegati.
+* Monitor mode: La scheda di rete viene inizialmente settata in modalità monitor. Durante questa modalità vengono rilevati tutti i dispositivi Wireless (MAC Adress e Hostname) in trasmissione nel raggio di 10-20 metri^[Per i limiti del segnale fare riferimento alla propria scheda di rete.], filtrando solo quelli riconosciuti come appartenenti al corso.
+
+Per permettere all'applicazione di riconoscere correttamente i dispositivi ... , è necessario che indirizzi MAC e hostname siano già presenti nel database della Web app.
 
 ### Documentazione
 
@@ -129,7 +135,7 @@ L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `
 
 ## Autori
 
-Per critiche o nuove idee contattare liberamente:	
+Per critiche o nuove idee contattare liberamente:
 
 * giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO)
 * simone.girardi@studenti.univr.it (SIMONE GIRARDI)
