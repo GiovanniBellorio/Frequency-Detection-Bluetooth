@@ -74,8 +74,8 @@ Il database a supporto dell'applicazione Frequency-Detection-Wireless è una bas
 
 La struttura del databse è la seguente:
 
-* id: identificativo univoco dell'utente che può loggarsi nell'applicazione.
-* utente: sruttura che memorizza i dati personali dell'utente registrato, quali:
+* **id**: identificativo univoco dell'utente che può loggarsi nell'applicazione.
+* **utente**: sruttura che memorizza i dati personali dell'utente registrato, quali:
 	* username
 	* nome
 	* cognome
