@@ -87,7 +87,7 @@ La struttura del databse è la seguente:
 	* 2: indica che l'utente è un _normale utilizzatore_;
 * **macs**: lista dei vari indirizzi MAC del dispositivo con cui un utente utilizza l'applicazione.
 * **incontri**: lista di elementi strutturati che descrivono un _incontro_.
-		ogni _incontro_ è descritto dai seguenti campi:
+		Ogni _incontro_ è descritto dai seguenti campi:
 	* id: stringa identificativa univocoa per ogni incontro;
 	* descrizione: campo che descrive il tipo di incontro;
 	* data: la data in cui si svolge un certo incontro;
