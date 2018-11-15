@@ -54,22 +54,31 @@ def logout():
 
 @app.route("/view_modify_pwd", methods=['POST'])
 def view_modify_pwd():
-    return render_template('modify_pwd.html')
+    if session.get('logged_in'):
+        return render_template('modify_pwd.html')
+    else:
+        flash('wrong password!')
+        return redirect(url_for('home'))
 
 @app.route("/modify_pwd", methods=['POST'])
 def modify_pwd():
-    password1 = strip_tags(request.form['pass1'])
-    password2 = strip_tags(request.form['pass2'])
-    if password1 == password2:
-        password_codificata = app.model.make_md5(app.model.make_md5(password2))
-        id_utente = session.get('id_utente')
-        ack_pwd = app.model.updateUserPwd(id_utente, password_codificata)
-        if ack_pwd:
-            return redirect(url_for('registro'))
+    if session.get('logged_in'):
+        password1 = strip_tags(request.form['pass1'])
+        password2 = strip_tags(request.form['pass2'])
+        if password1 == password2:
+            password_codificata = app.model.make_md5(app.model.make_md5(password2))
+            id_utente = session.get('id_utente')
+            ack_pwd = app.model.updateUserPwd(id_utente, password_codificata)
+            if ack_pwd:
+                return redirect(url_for('registro'))
+            else:
+                return redirect(url_for('view_modify_pwd'))
         else:
             return redirect(url_for('view_modify_pwd'))
     else:
-        return redirect(url_for('view_modify_pwd'))
+        flash('wrong password!')
+        return redirect(url_for('home'))
+        
 
 @app.route("/registro")
 def registro():
