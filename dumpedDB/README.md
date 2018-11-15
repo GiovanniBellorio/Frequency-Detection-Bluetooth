@@ -74,7 +74,7 @@ Il database a supporto dell'applicazione Frequency-Detection-Wireless è una bas
 
 La struttura del databse è la seguente:
 
-* **id**: identificativo univoco dell'utente che può loggarsi nell'applicazione. Di tipo stringa.
+* **id**: identificativo univoco dell'utente registrato nell'applicazione. Di tipo stringa.
 * **utente**: sruttura che memorizza i dati personali dell'utente registrato, quali:
 	* username
 	* nome
@@ -85,9 +85,15 @@ La struttura del databse è la seguente:
 	* 0: indica che l'utente è un _admin_;
 	* 1: indica che l'utente è un _supervisore_;
 	* 2: indica che l'utente è un _normale utilizzatore_;
-* **macs**: struttura che memorizza i vari indirizzi MAC del dispositivo con cui un utente utilizza l'applicazione.
-
-
+* **macs**: lista dei vari indirizzi MAC del dispositivo con cui un utente utilizza l'applicazione.
+* **incontri**: lista di elementi strutturati che descrivono un _incontro_.
+		ogni _incontro_ è descritto dai seguenti campi:
+		* id: stringa identificativa univocoa per ogni incontro;
+		* descrizione: campo che descrive il tipo di incontro;
+		* data: la data in cui si svolge un certo incontro;
+		* ora_inizio: l'ora in cui inizia l'incontro;
+		* ora_fine: l'ora in cui termina l'incontro;
+		* stato: descrive se l'incontro è già stato svolto o deve svolgersi (_CHIUSO_) oppure se l'evento è attualmente in corso (_APERTO_);
 		
 
 
