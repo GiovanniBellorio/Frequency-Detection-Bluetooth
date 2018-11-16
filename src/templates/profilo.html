@@ -36,8 +36,6 @@
 					</div>	
 				</form>
 
-				<!-- USER -->
-				{%- if ruolo == 2 %}
 				<form class="login100-form validate-form" action="/view_modify_pwd" method="POST">
 					<div class="container-login100-form-btn p-t-10">
 						<button class="login100-form-btn" type="submit">
@@ -45,7 +43,7 @@
 						</button>
 					</div>	
 				</form>
-				{%- elif ruolo == 0 %}
+
 				<form class="login100-form validate-form" action="/registro">
 					<div class="container-login100-form-btn p-t-10">
 						<button class="login100-form-btn" type="submit">
@@ -53,25 +51,9 @@
 						</button>
 					</div>	
 				</form>
-				<form class="login100-form validate-form" action="" method="POST">
-					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Supervisori
-						</button>
-					</div>	
-				</form>
-				<form class="login100-form validate-form" action="" method="POST">
-					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Utenti
-						</button>
-					</div>	
-				</form>
-				{%- endif %}
+				
 			</div>
 
-			{%- if ruolo == 0 %} 
-			<!-- ADMIN -->
 			<div class="container-table100">
 				<div class="wrap-table100">
 					<div class="table100 ver1 m-b-110">
@@ -94,94 +76,13 @@
 						<div class="table100-body js-pscroll">
 							<table>
 								<tbody>
-									{%- for utente in supervisori_punteggi %}
-										<tr class="row100 body">
-											<td class="cell100 column1">{{ utente[0]['matricola'] }}</td>
-											<td class="cell100 column2">{{ utente[0]['nome'] }}</td>
-											<td class="cell100 column3">{{ utente[0]['cognome'] }}</td>
-											<td class="cell100 column4">Supervisore</td>
-											<td class="cell100 column5">{{ utente[1]}}</td>
-											<td class="cell100 column6">{{ utente[2]}}</td>
-											<td class="cell100 column7">
-												<form action="/profilo" method="POST" >	
-													<input type='hidden' name='matricola' value="{{ utente[0]['matricola'] }}"></input>
-													<button type="submit" value="Visualizza">Visualizza</button>
-												</form>	
-											</td>
-										</tr>
-									{%- endfor %}
-									{%- for utente in utenti_punteggi %}
-										<tr class="row100 body">
-											<td class="cell100 column1"><form action="/profilo" method="POST"><button name="matricola" type="submit">{{ utente[0]['matricola'] }}</button></form></td>
-											<td class="cell100 column2">{{ utente[0]['nome'] }}</td>
-											<td class="cell100 column3">{{ utente[0]['cognome'] }}</td>
-											<td class="cell100 column4">Utente</td>
-											<td class="cell100 column5">{{ utente[1]}}</td>
-											<td class="cell100 column6">{{ utente[2]}}</td>
-											<!--
-										{%- set count = [1] -%}
-										{%- for username in utente %}
-											<td class="cell100 column{{ count[0] }}">{{ username }}</td>
-											{%- set __ = count.append(count.pop()+1) -%}
-										{%- endfor %}
-											<td class="cell100 column4">{{ utente[2] }}</td>
-										-->
-										</tr>
-									{%- endfor %}
+									
 								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			{%- elif ruolo == 2 %}
-			<!-- USER -->
-			<div class="container-table100">
-				<div class="wrap-table100">
-					<div class="table100 ver1 m-b-110">
-						<div class="table100-head">
-							<table>
-								<thead>
-									<tr class="row100 head">
-										<th class="cell100 column1">Matricola</th>
-										<th class="cell100 column2">Utente</th>
-										<th class="cell100 column3">Data</th>
-										<th class="cell100 column4">Inizio</th>
-										<th class="cell100 column5">Fine</th>
-										<th class="cell100 column6">Durata</th>
-									</tr>
-								</thead>
-							</table>
-						</div>
-
-						<div class="table100-body js-pscroll">
-							<table>
-								<tbody>
-									{%- for rilevazione in frequenza %}
-										<tr class="row100 body">
-											    <td class="cell100 column1">{{ matricola }}</td>
-												<td class="cell100 column2">{{ username }}</td>
-										{%- for key,value in rilevazione.items() %}
-											{%- if key == "data" %}
-												<td class="cell100 column3">{{ value }}</td>
-											{%- elif key == "ora_inizio" %}
-												<td class="cell100 column4">{{ value }}</td>
-											{%- elif key == "ora_fine" %}
-												<td class="cell100 column5">{{ value }}</td>
-											{%- elif key == "intervallo" %}
-												<td class="cell100 column6">{{ value }}</td>
-											{%- endif %}
-										{%- endfor %}
-										</tr>
-									{%- endfor %}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-			{%- endif %}
 		
 		</div>
 	</div>

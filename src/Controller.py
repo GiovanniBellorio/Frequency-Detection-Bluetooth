@@ -96,11 +96,23 @@ def registro():
         #elif ruolo == 1:
         elif ruolo == 0:
             utenti_punteggi = app.model.getUtentiPunteggi()
-            #supervisori_punteggi = app.model.getSupervisoriPunteggi()
-            return render_template('registro.html', username=username, ruolo=ruolo, utenti_punteggi=utenti_punteggi)
+            supervisori_punteggi = app.model.getSupervisoriPunteggi()
+            return render_template('registro.html', username=username, ruolo=ruolo, supervisori_punteggi=supervisori_punteggi, utenti_punteggi=utenti_punteggi)
         else:
             flash('wrong password!')
             return redirect(url_for('home'))
+    else:
+        flash('wrong password!')
+        return redirect(url_for('home'))
+    
+@app.route("/profilo", methods=['POST'])
+def profilo():
+    if session.get('logged_in'):
+        username  = session.get('username')
+        id_utente = session.get('id_utente')
+        matricola = request.form['matricola']
+        utente    = app.model.getProfiloUtente(matricola)
+        return render_template('profilo.html', username=username, id_utente=id_utente)
     else:
         flash('wrong password!')
         return redirect(url_for('home'))

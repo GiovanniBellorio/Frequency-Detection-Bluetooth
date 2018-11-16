@@ -39,6 +39,10 @@ class Model(object):
         utenti_punteggi = self.dataMapper.getUtentiPunteggi()
         return utenti_punteggi
     
+    def getSupervisoriPunteggi(self):
+        supervisori_punteggi = self.dataMapper.getSupervisoriPunteggi()
+        return supervisori_punteggi
+    
     def updateUserPwd(self, id_utente, password):
         ack_pwd = self.dataMapper.updateUserPwd(id_utente, password)
         return ack_pwd
@@ -46,6 +50,10 @@ class Model(object):
     def make_md5(self, s):
         encoding = 'utf-8'
         return md5(s.encode(encoding)).hexdigest()
+    
+    def getProfiloUtente(self, matricola):
+        utente = self.dataMapper.getProfiloUtente(matricola)
+        return utente
         
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper

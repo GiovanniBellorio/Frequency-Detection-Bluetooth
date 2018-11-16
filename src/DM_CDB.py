@@ -136,6 +136,16 @@ class DM_CDB():
                 utenti_punteggi.append(item.value)
         return utenti_punteggi 
     
+    def getSupervisoriPunteggi(self):
+        """ """
+        cur = DM_CDB.__cursor()
+        utenti_punteggi  = []
+        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
+            ruolo = item.key
+            if ruolo == 1: # utente normale
+                utenti_punteggi.append(item.value)
+        return utenti_punteggi 
+    
     def updateUserPwd(self, id_utente, password):
         """ """
         ack_pwd = False
@@ -146,6 +156,17 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_pwd = True
         return ack_pwd
+    
+    def getProfiloUtente(self, matricola):
+        """ """
+        cur = DM_CDB.__cursor()
+        utente  = []
+        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
+            value = item.value
+            matricola_db = value['matricola']
+            if matricola == matricola_db:
+                id = item.id
+        return utente
         
     def __del__(self):
         DM_CDB.__nIstanze -= 1
