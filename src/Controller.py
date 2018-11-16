@@ -74,7 +74,7 @@ def modify_pwd():
             else:
                 return redirect(url_for('view_modify_pwd'))
         else:
-            return redirect(url_for('view_modify_pwd'))
+            return view_modify_pwd()
     else:
         flash('wrong password!')
         return redirect(url_for('home'))
@@ -85,13 +85,22 @@ def registro():
     if session.get('logged_in'):
         username  = session.get('username')
         id_utente = session.get('id_utente')
-        ruolo = app.model.getRuoloUsername(id_utente) # 1 --> admin, 2 --> utente normale
-        if ruolo == "2":
+        matricola = app.model.getMatricola(id_utente)
+        ruolo = app.model.getRuoloUsername(id_utente) 
+        # 0 --> admin, 
+        # 1 --> supervisore, 
+        # 2 --> utente normale
+        if ruolo == 2:
             frequenza = app.model.getFrequenzaUsername(id_utente)
-            return render_template('registro.html', username=username, id_utente=id_utente, ruolo=ruolo, frequenza=frequenza)
-        elif ruolo == "1":
+            return render_template('registro.html', username=username, matricola=matricola, id_utente=id_utente, ruolo=ruolo, frequenza=frequenza)
+        #elif ruolo == 1:
+        elif ruolo == 0:
             utenti_punteggi = app.model.getUtentiPunteggi()
-            return render_template('registro.html', username=username, id_utente=id_utente, ruolo=ruolo, utenti_punteggi=utenti_punteggi)
+            #supervisori_punteggi = app.model.getSupervisoriPunteggi()
+            return render_template('registro.html', username=username, ruolo=ruolo, utenti_punteggi=utenti_punteggi)
+        else:
+            flash('wrong password!')
+            return redirect(url_for('home'))
     else:
         flash('wrong password!')
         return redirect(url_for('home'))
