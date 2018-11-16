@@ -54,6 +54,7 @@
 				
 			</div>
 
+			<!-- RIASSUNTO -->
 			<div class="container-table100">
 				<div class="wrap-table100">
 					<div class="table100 ver1 m-b-110">
@@ -67,7 +68,6 @@
 										<th class="cell100 column4">Ruolo</th>
 										<th class="cell100 column5">Tempo</th>
 										<th class="cell100 column6">Punteggio</th>
-										<th class="cell100 column7"></th>
 									</tr>
 								</thead>
 							</table>
@@ -76,7 +76,59 @@
 						<div class="table100-body js-pscroll">
 							<table>
 								<tbody>
+									{%- for utente in utente %}
+										<tr class="row100 body">
+											<td class="cell100 column1">{{ utente[0]['matricola'] }}</td>
+											<td class="cell100 column2">{{ utente[0]['nome'] }}</td>
+											<td class="cell100 column3">{{ utente[0]['cognome'] }}</td>
+											<td class="cell100 column4">??</td>
+											<td class="cell100 column5">{{ utente[1]}}</td>
+											<td class="cell100 column6">{{ utente[2]}}</td>
+										</tr>
+									{%- endfor %}
 									
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- PRESENZE -->
+			<div class="container-table100">
+				<div class="wrap-table100">
+					<div class="table100 ver1 m-b-110">
+						<div class="table100-head">
+							<table>
+								<thead>
+									<tr class="row100 head">
+										<th class="cell100 column1">Data</th>
+										<th class="cell100 column2">Inizio</th>
+										<th class="cell100 column3">Fine</th>
+										<th class="cell100 column4">Durata</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+
+						<div class="table100-body js-pscroll">
+							<table>
+								<tbody>
+									{%- for rilevazione in frequenza %}
+										<tr class="row100 body">
+										{%- for key,value in rilevazione.items() %}
+											{%- if key == "data" %}
+												<td class="cell100 column1">{{ value }}</td>
+											{%- elif key == "ora_inizio" %}
+												<td class="cell100 column2">{{ value }}</td>
+											{%- elif key == "ora_fine" %}
+												<td class="cell100 column3">{{ value }}</td>
+											{%- elif key == "intervallo" %}
+												<td class="cell100 column4">{{ value }}</td>
+											{%- endif %}
+										{%- endfor %}
+										</tr>
+									{%- endfor %}
 								</tbody>
 							</table>
 						</div>

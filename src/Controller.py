@@ -111,8 +111,9 @@ def profilo():
         username  = session.get('username')
         id_utente = session.get('id_utente')
         matricola = request.form['matricola']
-        utente    = app.model.getProfiloUtente(matricola)
-        return render_template('profilo.html', username=username, id_utente=id_utente)
+        id, utente = app.model.getProfiloUtente(matricola)
+        frequenza = app.model.getFrequenzaUsername(id)
+        return render_template('profilo.html', username=username, id_utente=id_utente, utente=utente, frequenza=frequenza)
     else:
         flash('wrong password!')
         return redirect(url_for('home'))

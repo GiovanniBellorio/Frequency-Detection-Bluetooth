@@ -112,12 +112,18 @@
 									{%- endfor %}
 									{%- for utente in utenti_punteggi %}
 										<tr class="row100 body">
-											<td class="cell100 column1"><form action="/profilo" method="POST"><button name="matricola" type="submit">{{ utente[0]['matricola'] }}</button></form></td>
+											<td class="cell100 column1">{{ utente[0]['matricola'] }}</td>
 											<td class="cell100 column2">{{ utente[0]['nome'] }}</td>
 											<td class="cell100 column3">{{ utente[0]['cognome'] }}</td>
 											<td class="cell100 column4">Utente</td>
 											<td class="cell100 column5">{{ utente[1]}}</td>
 											<td class="cell100 column6">{{ utente[2]}}</td>
+											<td class="cell100 column7">
+												<form action="/profilo" method="POST" >	
+													<input type='hidden' name='matricola' value="{{ utente[0]['matricola'] }}"></input>
+													<button type="submit" value="Visualizza">Visualizza</button>
+												</form>	
+											</td>
 											<!--
 										{%- set count = [1] -%}
 										{%- for username in utente %}

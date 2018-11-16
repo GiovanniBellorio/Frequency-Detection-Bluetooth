@@ -160,13 +160,19 @@ class DM_CDB():
     def getProfiloUtente(self, matricola):
         """ """
         cur = DM_CDB.__cursor()
+        id = 0
         utente  = []
         for item in cur.view('_design/documenti-view/_view/view_id_utente'):
             value = item.value
             matricola_db = value['matricola']
             if matricola == matricola_db:
                 id = item.id
-        return utente
+                
+        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
+            if id == item.id:
+                utente.append(item.value)
+        
+        return id, utente
         
     def __del__(self):
         DM_CDB.__nIstanze -= 1

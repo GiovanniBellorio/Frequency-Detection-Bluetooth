@@ -52,8 +52,8 @@ class Model(object):
         return md5(s.encode(encoding)).hexdigest()
     
     def getProfiloUtente(self, matricola):
-        utente = self.dataMapper.getProfiloUtente(matricola)
-        return utente
+        id, utente = self.dataMapper.getProfiloUtente(matricola)
+        return id, utente
         
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper
