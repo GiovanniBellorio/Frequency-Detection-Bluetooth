@@ -27,6 +27,10 @@ class Model(object):
         ruolo = self.dataMapper.getRuoloUsername(id_utente)
         return ruolo
     
+    def getMatricola(self, id_utente):
+        matricola = self.dataMapper.getMatricola(id_utente)
+        return matricola
+    
     def getFrequenzaUsername(self, id_utente):
         frequenza = self.dataMapper.getFrequenzaUsername(id_utente)
         return frequenza
