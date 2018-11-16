@@ -105,4 +105,4 @@ venv.bak/
 
 .project
 .pydevproject
-.flask_sessionstore
+/flask_sessionstore
