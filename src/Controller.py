@@ -86,7 +86,7 @@ def registro():
         username  = session.get('username')
         id_utente = session.get('id_utente')
         matricola = app.model.getMatricola(id_utente)
-        ruolo = app.model.getRuoloUsername(id_utente) 
+        ruolo = app.model.getRuoloUsername(id_utente)
         # 0 --> admin, 
         # 1 --> supervisore, 
         # 2 --> utente normale
@@ -137,6 +137,7 @@ def profilo():
         matricola = request.form['matricola']
         id, utente = app.model.getProfiloUtente(matricola)
         ruolo = app.model.getRuoloUsername(id)
+        session['ruolo'] = ruolo
         if ruolo == 0:
             ruolo = "admin"
         elif ruolo == 1:
@@ -148,6 +149,21 @@ def profilo():
     else:
         flash('wrong password!')
         return redirect(url_for('home'))
+    
+@app.route("/cambio_ruolo", methods=['POST'])
+def cambio_ruolo():
+    ruolo        = session.get('ruolo')
+    option_ruolo = request.form['option_ruolo']
+    if ruolo == 1 and option_ruolo == "Supervisore":
+        pass
+    elif ruolo == 2 and option_ruolo == "Utente":
+        pass
+    else:
+        # CAMBIO RUOLO DA IMPLEMENTARE
+        print("diversi")
+    
+    session['ruolo'] = ""
+    return redirect(url_for('registro'))
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
     app.config['SESSION_TYPE'] = 'filesystem'

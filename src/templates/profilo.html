@@ -25,30 +25,22 @@
 						<img src="{{url_for('static', filename='images/avatar-02.jpg')}}" alt="AVATAR">
 					</div>
 
-					<span class="login100-form-title p-t-20 p-b-45">
-						{{ username.upper()  }}
-					</span>
+					<span class="login100-form-title p-t-20 p-b-45">{{ username.upper()  }}</span>
 
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Logout
-						</button>
+						<button class="login100-form-btn" type="submit">Logout</button>
 					</div>	
 				</form>
 
 				<form class="login100-form validate-form" action="/view_modify_pwd" method="POST">
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Cambia password
-						</button>
+						<button class="login100-form-btn" type="submit">Cambia password</button>
 					</div>	
 				</form>
 
 				<form class="login100-form validate-form" action="/registro">
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Registro
-						</button>
+						<button class="login100-form-btn" type="submit">Registro</button>
 					</div>	
 				</form>
 				
@@ -82,14 +74,14 @@
 											<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
 											<td class="cell100 column3">{{ utente[0]['cognome'].capitalize() }}</td>
 											<td class="cell100 column4">
-												<form action="/profilo" method="POST">
-													<select>
+												<form action="/cambio_ruolo" method="POST">
+													<select name="option_ruolo">
 														<option>{{ ruolo.capitalize() }}</option>
 														<option>{%- if ruolo.capitalize() == "Supervisore":  %}
-																		Utente
-																{%-	else %} 
-																		Supervisore
-																{%- endif %}
+																							Utente
+																					{%-	else %} 
+																							Supervisore
+																					{%- endif %}
 														</option>
 													</select>
 													<button type="submit" value="Cambia">Cambia</button>
