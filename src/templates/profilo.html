@@ -68,7 +68,7 @@
 						<div class="table100-body js-pscroll">
 							<table>
 								<tbody>
-									{%- for utente in utente %}
+									{%- for utente in utente_profilo %}
 										<tr class="row100 body">
 											<td class="cell100 column1">{{ utente[0]['matricola'].upper() }}</td>
 											<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
@@ -76,12 +76,12 @@
 											<td class="cell100 column4">
 												<form action="/cambio_ruolo" method="POST">
 													<select name="option_ruolo">
-														<option>{{ ruolo.capitalize() }}</option>
-														<option>{%- if ruolo.capitalize() == "Supervisore":  %}
-																							Utente
-																					{%-	else %} 
-																							Supervisore
-																					{%- endif %}
+														<option>{{ ruolo_profilo.capitalize() }}</option>
+														<option>{%- if ruolo_profilo.capitalize() == "Supervisore":  %}
+																		Utente
+																{%-	else %} 
+																		Supervisore
+																{%- endif %}
 														</option>
 													</select>
 													<button type="submit" value="Cambia">Cambia</button>
@@ -119,7 +119,7 @@
 						<div class="table100-body js-pscroll">
 							<table>
 								<tbody>
-									{%- for rilevazione in frequenza %}
+									{%- for rilevazione in frequenza_profilo %}
 										<tr class="row100 body">
 										{%- for key,value in rilevazione.items() %}
 											{%- if key == "data" %}

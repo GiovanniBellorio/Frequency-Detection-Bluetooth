@@ -173,6 +173,21 @@ class DM_CDB():
                 utente.append(item.value)
         
         return id, utente
+    
+    def updateRuolo(self, id_utente, ruolo):
+        """ """
+        if ruolo == "Supervisore":
+            ruolo = 1
+        elif ruolo == "Utente":
+            ruolo = 2
+        ack_ruolo = False
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id_utente)]
+        if not ack_ruolo:
+            doc['ruolo'] = ruolo
+            cur[doc.id] = doc
+            ack_ruolo = True
+        return ack_ruolo
         
     def __del__(self):
         DM_CDB.__nIstanze -= 1

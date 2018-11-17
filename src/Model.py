@@ -54,6 +54,10 @@ class Model(object):
     def getProfiloUtente(self, matricola):
         id, utente = self.dataMapper.getProfiloUtente(matricola)
         return id, utente
+    
+    def updateRuolo(self, id_utente, ruolo):
+        ack_ruolo = self.dataMapper.updateRuolo(id_utente, ruolo)
+        return ack_ruolo
         
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper
