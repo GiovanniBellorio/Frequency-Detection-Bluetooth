@@ -105,6 +105,30 @@ def registro():
         flash('wrong password!')
         return redirect(url_for('home'))
     
+@app.route("/registro_supervisori", methods=['POST'])
+def registro_supervisori():
+    if session.get('logged_in'):
+        username  = session.get('username')
+        id_utente = session.get('id_utente')
+        ruolo = app.model.getRuoloUsername(id_utente)
+        supervisori_punteggi = app.model.getSupervisoriPunteggi()
+        return render_template('registro.html', username=username, ruolo=ruolo, supervisori_punteggi=supervisori_punteggi)
+    else:
+        flash('wrong password!')
+        return redirect(url_for('home'))
+    
+@app.route("/registro_utenti", methods=['POST'])
+def registro_utenti():
+    if session.get('logged_in'):
+        username  = session.get('username')
+        id_utente = session.get('id_utente')
+        ruolo = app.model.getRuoloUsername(id_utente)
+        utenti_punteggi = app.model.getUtentiPunteggi()
+        return render_template('registro.html', username=username, ruolo=ruolo, utenti_punteggi=utenti_punteggi)
+    else:
+        flash('wrong password!')
+        return redirect(url_for('home'))
+    
 @app.route("/profilo", methods=['POST'])
 def profilo():
     if session.get('logged_in'):
@@ -112,12 +136,18 @@ def profilo():
         id_utente = session.get('id_utente')
         matricola = request.form['matricola']
         id, utente = app.model.getProfiloUtente(matricola)
+        ruolo = app.model.getRuoloUsername(id)
+        if ruolo == 0:
+            ruolo = "admin"
+        elif ruolo == 1:
+            ruolo = "supervisore"
+        elif ruolo == 2:
+            ruolo = "utente"
         frequenza = app.model.getFrequenzaUsername(id)
-        return render_template('profilo.html', username=username, id_utente=id_utente, utente=utente, frequenza=frequenza)
+        return render_template('profilo.html', username=username, id_utente=id_utente, utente=utente, frequenza=frequenza, ruolo=ruolo)
     else:
         flash('wrong password!')
         return redirect(url_for('home'))
-        
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
     app.config['SESSION_TYPE'] = 'filesystem'

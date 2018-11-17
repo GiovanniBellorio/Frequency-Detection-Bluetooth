@@ -25,14 +25,10 @@
 						<img src="{{url_for('static', filename='images/avatar-02.jpg')}}" alt="AVATAR">
 					</div>
 
-					<span class="login100-form-title p-t-20 p-b-45">
-						{{ username }}
-					</span>
+					<span class="login100-form-title p-t-20 p-b-45">{{ username.upper()  }}</span>
 
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Logout
-						</button>
+						<button class="login100-form-btn" type="submit">Logout</button>
 					</div>	
 				</form>
 
@@ -40,38 +36,31 @@
 				{%- if ruolo == 2 %}
 				<form class="login100-form validate-form" action="/view_modify_pwd" method="POST">
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Cambia password
-						</button>
+						<button class="login100-form-btn" type="submit">Cambia password</button>
 					</div>	
 				</form>
+				<!-- ADMIN -->
 				{%- elif ruolo == 0 %}
 				<form class="login100-form validate-form" action="/registro">
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Registro
-						</button>
+						<button class="login100-form-btn" type="submit">Registro</button>
 					</div>	
 				</form>
-				<form class="login100-form validate-form" action="" method="POST">
+				<form class="login100-form validate-form" action="/registro_supervisori" method="POST">
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Supervisori
-						</button>
+						<button class="login100-form-btn" type="submit">Supervisori</button>
 					</div>	
 				</form>
-				<form class="login100-form validate-form" action="" method="POST">
+				<form class="login100-form validate-form" action="/registro_utenti" method="POST">
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">
-							Utenti
-						</button>
+						<button class="login100-form-btn" type="submit">Utenti</button>
 					</div>	
 				</form>
 				{%- endif %}
 			</div>
 
-			{%- if ruolo == 0 %} 
 			<!-- ADMIN -->
+			{%- if ruolo == 0 %} 
 			<div class="container-table100">
 				<div class="wrap-table100">
 					<div class="table100 ver1 m-b-110">
@@ -85,7 +74,7 @@
 										<th class="cell100 column4">Ruolo</th>
 										<th class="cell100 column5">Tempo</th>
 										<th class="cell100 column6">Punteggio</th>
-										<th class="cell100 column7"></th>
+										<th class="cell100 column7">Profilo</th>
 									</tr>
 								</thead>
 							</table>
@@ -96,12 +85,12 @@
 								<tbody>
 									{%- for utente in supervisori_punteggi %}
 										<tr class="row100 body">
-											<td class="cell100 column1">{{ utente[0]['matricola'] }}</td>
-											<td class="cell100 column2">{{ utente[0]['nome'] }}</td>
-											<td class="cell100 column3">{{ utente[0]['cognome'] }}</td>
+											<td class="cell100 column1">{{ utente[0]['matricola'].upper() }}</td>
+											<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
+											<td class="cell100 column3">{{ utente[0]['cognome'].capitalize() }}</td>
 											<td class="cell100 column4">Supervisore</td>
-											<td class="cell100 column5">{{ utente[1]}}</td>
-											<td class="cell100 column6">{{ utente[2]}}</td>
+											<td class="cell100 column5">{{ utente[1] }}</td>
+											<td class="cell100 column6">{{ utente[2] }}</td>
 											<td class="cell100 column7">
 												<form action="/profilo" method="POST" >	
 													<input type='hidden' name='matricola' value="{{ utente[0]['matricola'] }}"></input>
@@ -112,12 +101,12 @@
 									{%- endfor %}
 									{%- for utente in utenti_punteggi %}
 										<tr class="row100 body">
-											<td class="cell100 column1">{{ utente[0]['matricola'] }}</td>
-											<td class="cell100 column2">{{ utente[0]['nome'] }}</td>
-											<td class="cell100 column3">{{ utente[0]['cognome'] }}</td>
+											<td class="cell100 column1">{{ utente[0]['matricola'].upper() }}</td>
+											<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
+											<td class="cell100 column3">{{ utente[0]['cognome'].capitalize() }}</td>
 											<td class="cell100 column4">Utente</td>
-											<td class="cell100 column5">{{ utente[1]}}</td>
-											<td class="cell100 column6">{{ utente[2]}}</td>
+											<td class="cell100 column5">{{ utente[1] }}</td>
+											<td class="cell100 column6">{{ utente[2] }}</td>
 											<td class="cell100 column7">
 												<form action="/profilo" method="POST" >	
 													<input type='hidden' name='matricola' value="{{ utente[0]['matricola'] }}"></input>
@@ -141,8 +130,8 @@
 				</div>
 			</div>
 
-			{%- elif ruolo == 2 %}
 			<!-- USER -->
+			{%- elif ruolo == 2 %}
 			<div class="container-table100">
 				<div class="wrap-table100">
 					<div class="table100 ver1 m-b-110">
@@ -166,8 +155,8 @@
 								<tbody>
 									{%- for rilevazione in frequenza %}
 										<tr class="row100 body">
-											    <td class="cell100 column1">{{ matricola }}</td>
-												<td class="cell100 column2">{{ username }}</td>
+											    <td class="cell100 column1">{{ matricola.upper() }}</td>
+												<td class="cell100 column2">{{ username.capitalize() }}</td>
 										{%- for key,value in rilevazione.items() %}
 											{%- if key == "data" %}
 												<td class="cell100 column3">{{ value }}</td>
