@@ -27,6 +27,10 @@ class Model(object):
         ruolo = self.dataMapper.getRuoloUsername(id_utente)
         return ruolo
     
+    def getMatricola(self, id_utente):
+        matricola = self.dataMapper.getMatricola(id_utente)
+        return matricola
+    
     def getFrequenzaUsername(self, id_utente):
         frequenza = self.dataMapper.getFrequenzaUsername(id_utente)
         return frequenza
@@ -35,6 +39,10 @@ class Model(object):
         utenti_punteggi = self.dataMapper.getUtentiPunteggi()
         return utenti_punteggi
     
+    def getSupervisoriPunteggi(self):
+        supervisori_punteggi = self.dataMapper.getSupervisoriPunteggi()
+        return supervisori_punteggi
+    
     def updateUserPwd(self, id_utente, password):
         ack_pwd = self.dataMapper.updateUserPwd(id_utente, password)
         return ack_pwd
@@ -42,6 +50,14 @@ class Model(object):
     def make_md5(self, s):
         encoding = 'utf-8'
         return md5(s.encode(encoding)).hexdigest()
+    
+    def getProfiloUtente(self, matricola):
+        id, utente = self.dataMapper.getProfiloUtente(matricola)
+        return id, utente
+    
+    def updateRuolo(self, id_utente, ruolo):
+        ack_ruolo = self.dataMapper.updateRuolo(id_utente, ruolo)
+        return ack_ruolo
         
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper

@@ -90,7 +90,8 @@ class DM_CDB():
         num_rows = 0
         id_utente = 0
         for item in cur.view('_design/documenti-view/_view/view_usr_pwd'):
-            username_db = item.key
+            key = item.key
+            username_db = key['username']
             password_db = item.value
             if username == username_db and password == password_db:
                 num_rows += 1
@@ -101,17 +102,27 @@ class DM_CDB():
         """ """
         cur = DM_CDB.__cursor()
         ruolo = 0
-        for item in cur.view('_design/documenti-view/_view/view_id_ruolo'):
-            if item.key == id_utente:
-                ruolo = item.value
+        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
+            if item.id == id_utente:
+                ruolo = item.key
         return ruolo 
+    
+    def getMatricola(self, id_utente):
+        """ """
+        cur = DM_CDB.__cursor()
+        ruolo = 0
+        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
+            if item.id == id_utente:
+                value = item.value
+                matricola = value['matricola']
+        return matricola 
        
     def getFrequenzaUsername(self, id_utente):
         """ """
         cur = DM_CDB.__cursor()
         frequenza = []
-        for item in cur.view('_design/documenti-view/_view/view_id_frequenza'):
-            if item.key == id_utente:
+        for item in cur.view('_design/documenti-view/_view/view_id_frequenze'):
+            if item.id == id_utente:
                 frequenza = item.value
         return frequenza
     
@@ -119,8 +130,19 @@ class DM_CDB():
         """ """
         cur = DM_CDB.__cursor()
         utenti_punteggi  = []
-        for item in cur.view('_design/documenti-view/_view/view_utenti_punteggi'):
-            if item.key == "2": # utente normale
+        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
+            ruolo = item.key
+            if ruolo == 2: # utente normale
+                utenti_punteggi.append(item.value)
+        return utenti_punteggi 
+    
+    def getSupervisoriPunteggi(self):
+        """ """
+        cur = DM_CDB.__cursor()
+        utenti_punteggi  = []
+        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
+            ruolo = item.key
+            if ruolo == 1: # utente normale
                 utenti_punteggi.append(item.value)
         return utenti_punteggi 
     
@@ -134,6 +156,38 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_pwd = True
         return ack_pwd
+    
+    def getProfiloUtente(self, matricola):
+        """ """
+        cur = DM_CDB.__cursor()
+        id = 0
+        utente  = []
+        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
+            value = item.value
+            matricola_db = value['matricola']
+            if matricola == matricola_db:
+                id = item.id
+                
+        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
+            if id == item.id:
+                utente.append(item.value)
+        
+        return id, utente
+    
+    def updateRuolo(self, id_utente, ruolo):
+        """ """
+        if ruolo == "Supervisore":
+            ruolo = 1
+        elif ruolo == "Utente":
+            ruolo = 2
+        ack_ruolo = False
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id_utente)]
+        if not ack_ruolo:
+            doc['ruolo'] = ruolo
+            cur[doc.id] = doc
+            ack_ruolo = True
+        return ack_ruolo
         
     def __del__(self):
         DM_CDB.__nIstanze -= 1

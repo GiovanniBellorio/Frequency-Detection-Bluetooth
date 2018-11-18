@@ -20,9 +20,9 @@
 
 Il progetto si basa su una `Web App` e su un applicazione che cattura la presenza nella rete del `Mac adress` del dispositivo. L'admin dopo aver eseguito l'associazione utente:mac fisicamente alla prima connessione, avvia l'applicazione di rilevazione che si interfaccia con il db. Verrà registrato il timestamp di avvio connessione e quello di fine connessione del dispositivo. La presenza sarà registrata in secondi, con un errore acnora da stabilire, e su di essa verrà costruita una funzione monotona che determinerà progressivamente il punteggio accumulato.
 
-- [ ] Analisi dei requisiti
-- [ ] Analisi di fattibilità
-- [ ] Analisi dell'infrastruttura
+- [X] Analisi dei requisiti
+- [X] Analisi di fattibilità
+- [X] Analisi dell'infrastruttura
 
 Riassumiamo e descriviamo i passi principali per la realizzazione del nostro sistema:
 
@@ -53,13 +53,32 @@ Altri moduli da scaricare e importare:
 
 In questo modo possiamo attivare un web-server sul quale fare girare le nostre pagine.
 
-- [ ] Installazione del modulo Flask
-- [ ] Avvio tramite applicazione python sulla porta 5000
-- [ ] Costruire un sistema modulare: controller, model e data-mapper.
+- [X] Installazione del modulo Flask
+- [X] Avvio tramite applicazione python sulla porta 5000
+- [X] Costruire un sistema modulare: controller, model e data-mapper.
 
 ##### Gestione delle Sessioni Cache Cookie (Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
 
-...to do
+Installazione dei moduli utilizzati per la gestione dell'autenticazione:
+
+`$ pip3 install flask-login`
+
+`$ pip3 install flask-sessionstore`
+
+Per problemi di cache e non corretta gestione del ricaricamento delle pagine da parte di Safari, è stato introdotto uno script nelle pagine html per impedire all'utente sloggato di tornare nelle pagine con richiesta di autenticazione esplicita.
+
+```javascript
+<script type="text/javascript">
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload() 
+        }
+    };
+  </script>
+```
+- [X] Installazione dei moduli Flask per l'autenticazione 
+- [X] Gestione caching e history sia lato client che lato server
+- [X] Ottimizzazione della classe Controller 
 
 #### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Bluetooth/tree/dev/dumpedDB) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
@@ -92,8 +111,8 @@ Per eseguire il Restore del database:
 
 Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
 
-- [ ] Installazione di apache-CouchDB in locale
-- [ ] Analisi della struttura dati
+- [X] Installazione di apache-CouchDB in locale
+- [X] Analisi della struttura dati
 - [ ] Costruzione delle view
 - [ ] Interrogazione alla base di dati in python
 
@@ -101,9 +120,9 @@ Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarr
 
 Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, soprattutto responsive.
 
-- [ ] Pagina di login
-- [ ] Pagina privata per l'utente
-- [ ] Pagina privata per l'admin
+- [X] Pagina di login
+- [X] Pagina privata per l'utente
+- [X] Pagina privata per l'admin
 
 #### Deploy Applicazione Python
 
@@ -130,9 +149,9 @@ Nota:
 
 L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `GitHub`.
 
-- [ ] Realizzazione repository
-- [ ] Creazione branch (master e dev) di lavoro
-- [ ] Condivisione della repository
+- [X] Realizzazione repository
+- [X] Creazione branch (master e dev) di lavoro
+- [X] Condivisione della repository
 - [ ] Realizzazione e aggiornamento del file README.MD
 
 ## Autori

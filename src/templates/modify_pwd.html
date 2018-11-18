@@ -13,6 +13,13 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/select2/select2.min.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<script type="text/javascript">
+		window.onpageshow = function(event) {
+		    if (event.persisted) {
+		        window.location.reload() 
+		    }
+		};
+	</script>
 </head>
 <body>
 	<div class="limiter">
@@ -51,7 +58,7 @@
 
 					<!--
 					<div class="text-center w-full p-t-25 p-b-230">
-						<a href="#" class="txt1">
+						<a href="#" class="txt1"> 
 							Forgot Username / Password?
 						</a>
 					</div>
