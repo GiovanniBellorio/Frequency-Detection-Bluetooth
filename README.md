@@ -139,7 +139,7 @@ Applicazione utilizzata dall'utente master per la rilevazione di reti Wireless b
 Questa applicazione, all'avvio, fornisce due modalità di funzionamento mutualmente esclusive:
 
 - [ ] AP-only: L'applicazione apre un access point (WAP) al quale uno o più utenti (slave) possono connettersi e rimanere connessi per tutta la durata della sessione prestabilita. In questa modalità potrebbe non essere consentita la navigazione web ai dispositivi collegati, a causa dei limiti della scheda di rete del dispositivo master o delle configurazioni dell'infrastruttura di rete alla quale si è collegati.
-- [*] Monitor mode: La scheda di rete viene inizialmente settata in modalità monitor. Durante questa modalità vengono rilevati tutti i dispositivi Wireless (MAC Adress e Hostname) in trasmissione nel raggio di 10-20 metri, filtrando solo quelli riconosciuti come appartenenti al corso.
+- [X] Monitor mode: La scheda di rete viene inizialmente settata in modalità monitor. Durante questa modalità vengono rilevati tutti i dispositivi Wireless (MAC Adress e Hostname) in trasmissione nel raggio di 10-20 metri, filtrando solo quelli riconosciuti come appartenenti al corso.
 
 Nota:
 * Per i limiti del segnale fare riferimento alla propria scheda di rete.
