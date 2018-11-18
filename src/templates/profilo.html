@@ -15,6 +15,15 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main_table.css')}}">
+
+	<script type="text/javascript">
+		window.onpageshow = function(event) {
+		    if (event.persisted) {
+		        window.location.reload() 
+		    }
+		};
+	</script>
+	
 </head>
 <body>
 	<div class="limiter">
