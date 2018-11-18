@@ -59,7 +59,26 @@ In questo modo possiamo attivare un web-server sul quale fare girare le nostre p
 
 ##### Gestione delle Sessioni Cache Cookie (Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
 
-...to do
+Installazione dei moduli utilizzati per la gestione dell'autenticazione:
+
+`$ pip3 install flask-login`
+
+`$ pip3 install flask-sessionstore`
+
+Per problemi di cache e non corretta gestione del ricaricamento delle pagine da parte di Safari, è stato introdotto uno script nelle pagine html per impedire all'utente sloggato di tornare nelle pagine con richiesta di autenticazione esplicita.
+
+```javascript
+<script type="text/javascript">
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload() 
+        }
+    };
+  </script>
+```
+- [X] Installazione dei moduli Flask per l'autenticazione 
+- [X] Gestione caching e history sia lato client che lato server
+- [X] Ottimizzazione della classe Controller 
 
 #### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Bluetooth/tree/dev/dumpedDB) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
@@ -101,9 +120,9 @@ Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarr
 
 Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, soprattutto responsive.
 
-- [ ] Pagina di login
-- [ ] Pagina privata per l'utente
-- [ ] Pagina privata per l'admin
+- [X] Pagina di login
+- [X] Pagina privata per l'utente
+- [X] Pagina privata per l'admin
 
 #### Deploy Applicazione Python
 
