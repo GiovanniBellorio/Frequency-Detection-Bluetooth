@@ -7,6 +7,7 @@ Controller dell'applicazione web
 '''
 
 import os
+import logging
 from django.utils.html import strip_tags
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin
 from flask import Flask, request, flash, redirect, session
@@ -40,6 +41,7 @@ class User(UserMixin):
 
 # Applicazione Flask!
 sessione = Session()
+#logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__) 
 app.model = Model()
 
