@@ -12,6 +12,7 @@ import logging
 from scapy.all import *
 from pprint import pprint
 from logging.handlers import RotatingFileHandler
+from Model import Model
 
 NAME = 'AirTack'
 DESCRIPTION = 'a command line tool for logging 802.11 probe request frames'
@@ -132,8 +133,24 @@ def main():
         args.rssi,
         )
 
-    sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
+    #sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
+    
+    # Sinc db
+    username = 'admin'
+    password = 'admin'
+    model = Model()
+    
+    password_codificata = model.make_md5(model.make_md5(password))
+    num_rows, id_utente = model.getCountUsernamePassword(username, password_codificata)
+    ruolo = model.getRuoloUsername(id_utente)
+    
+    if num_rows == 1 and ruolo != 2:
+        # connesso
+        pass
+    else:
+        pass
 
 
+    
 if __name__ == '__main__':
     main()
