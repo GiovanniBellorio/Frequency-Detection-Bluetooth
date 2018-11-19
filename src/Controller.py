@@ -119,8 +119,8 @@ def view_modify_mac():
 @app.route("/modify_mac", methods=['POST'])
 @login_required
 def modify_mac():
-    mac1 = strip_tags(request.form['pass1'])
-    mac2 = strip_tags(request.form['pass2'])
+    mac1 = strip_tags(request.form['mac1'])
+    mac2 = strip_tags(request.form['mac2'])
     if mac1 == mac2:
         user = User.getUser()
         ack_mac = app.model.updateUserMac(user.id, mac)
