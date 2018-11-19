@@ -27,6 +27,10 @@ class Model(object):
         ruolo = self.dataMapper.getRuoloUsername(id_utente)
         return ruolo
     
+    def getIdMac(self, id_utente):
+        mac = self.dataMapper.getIdMac(id_utente)
+        return mac
+    
     def getMatricola(self, id_utente):
         matricola = self.dataMapper.getMatricola(id_utente)
         return matricola

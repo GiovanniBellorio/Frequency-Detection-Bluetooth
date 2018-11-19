@@ -163,10 +163,19 @@ class DM_CDB():
         cur = DM_CDB.__cursor()
         doc = cur[str(id_utente)]
         if not ack_mac:
-            doc['macs'] = mac
+            print(mac)
+            doc['macs'][0] = mac
             cur[doc.id] = doc
             ack_mac = True
         return ack_mac
+    
+    def getIdMac(self, id_utente):
+        """ """
+        cur = DM_CDB.__cursor()
+        for item in cur.view('_design/documenti-view/_view/view_id_mac'):
+            if item.id == id_utente:
+                mac = item.value
+        return mac
     
     def getProfiloUtente(self, matricola):
         """ """

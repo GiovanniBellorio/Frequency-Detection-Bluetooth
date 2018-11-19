@@ -123,7 +123,7 @@ def modify_mac():
     mac2 = strip_tags(request.form['mac2'])
     if mac1 == mac2:
         user = User.getUser()
-        ack_mac = app.model.updateUserMac(user.id, mac)
+        ack_mac = app.model.updateUserMac(user.id, mac1)
         if ack_mac:
             return redirect('/registro')
         else:
@@ -174,8 +174,11 @@ def profilo():
     matricola_profilo = request.form['matricola']
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     ruolo_profilo = app.model.getRuoloUsername(id_profilo)
+    macs = app.model.getIdMac(id_profilo)
+    mac = macs[0]['mac']
     session['id_profilo'] = id_profilo
     session['ruolo_profilo'] = ruolo_profilo
+    session['mac'] = mac
     if ruolo_profilo == 0:
         ruolo_profilo = "admin"
     elif ruolo_profilo == 1:
@@ -183,7 +186,7 @@ def profilo():
     elif ruolo_profilo == 2:
         ruolo_profilo = "utente"
     frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
-    return render_template('profilo.html', username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
+    return render_template('profilo.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
 
 @app.route("/cambio_ruolo", methods=['POST'])
 @login_required
@@ -199,6 +202,7 @@ def cambio_ruolo():
         ack_ruolo = app.model.updateRuolo(id_profilo, option_ruolo)
     session['id_profilo'] = ""
     session['ruolo_profilo'] = ""
+    session['mac'] = ""
     return redirect('/registro')
         
 
