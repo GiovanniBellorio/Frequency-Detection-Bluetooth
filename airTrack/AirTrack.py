@@ -106,14 +106,13 @@ def main():
 
     # set monitor mode
 
-    if platform_OS.system() == "Linux":
-        os.system("ifconfig " + args.interface + " down")
-        os.system("iwconfig " + args.interface + " mode Monitor")
-        os.system("ifconfig " + args.interface + " up")
-
-    if platform_OS.system() == "Darwin":
-        # TODO:
-        pass
+    # if platform_OS.system() == "Linux":
+    #     os.system("ifconfig " + args.interface + " down")
+    #     os.system("iwconfig " + args.interface + " mode Monitor")
+    #     os.system("ifconfig " + args.interface + " up")
+    #
+    # if platform_OS.system() == "Darwin":
+    #     print("Darwin")
 
     DEBUG = args.debug
     # setup our rotating logger
@@ -133,7 +132,7 @@ def main():
         args.rssi,
         )
 
-    sniff(iface=args.interface, prn=built_packet_cb, store=0)
+    sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
 
 
 if __name__ == '__main__':
