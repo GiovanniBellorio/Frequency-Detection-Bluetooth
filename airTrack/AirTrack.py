@@ -146,6 +146,8 @@ def main():
     
     if num_rows == 1 and ruolo != 2:
         # connesso
+        # mac = model.getMac()
+        # mac = packet.addr2
         pass
     else:
         pass
