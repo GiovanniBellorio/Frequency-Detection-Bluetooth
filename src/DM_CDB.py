@@ -163,8 +163,12 @@ class DM_CDB():
         cur = DM_CDB.__cursor()
         doc = cur[str(id_utente)]
         if not ack_mac:
-            print(mac)
-            doc['macs'][0] = mac
+            # construct link object
+            mac_link = {'mac':mac}
+            #mac = macs[0]['mac']
+            doc.setdefault('macs', []).append(mac_link)
+            
+            print(doc['macs'])
             cur[doc.id] = doc
             ack_mac = True
         return ack_mac
