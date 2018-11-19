@@ -157,6 +157,17 @@ class DM_CDB():
             ack_pwd = True
         return ack_pwd
     
+    def updateUserMac(self, id_utente, mac):
+        """ """
+        ack_mac = False
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id_utente)]
+        if not ack_mac:
+            doc['macs'] = mac
+            cur[doc.id] = doc
+            ack_mac = True
+        return ack_mac
+    
     def getProfiloUtente(self, matricola):
         """ """
         cur = DM_CDB.__cursor()

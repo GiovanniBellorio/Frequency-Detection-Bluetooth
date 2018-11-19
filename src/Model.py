@@ -47,6 +47,10 @@ class Model(object):
         ack_pwd = self.dataMapper.updateUserPwd(id_utente, password)
         return ack_pwd
     
+    def updateUserMac(self, id_utente, mac):
+        ack_mac = self.dataMapper.updateUserMac(id_utente, mac)
+        return ack_mac
+    
     def make_md5(self, s):
         encoding = 'utf-8'
         return md5(s.encode(encoding)).hexdigest()

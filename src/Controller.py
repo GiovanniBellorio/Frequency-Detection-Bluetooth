@@ -110,6 +110,26 @@ def modify_pwd():
             return redirect('/view_modify_pwd')
     else:
         return redirect('/view_modify_pwd')
+    
+@app.route("/view_modify_mac", methods=['POST','GET'])
+@login_required
+def view_modify_mac():
+    return render_template('modify_mac.html')
+    
+@app.route("/modify_mac", methods=['POST'])
+@login_required
+def modify_mac():
+    mac1 = strip_tags(request.form['pass1'])
+    mac2 = strip_tags(request.form['pass2'])
+    if mac1 == mac2:
+        user = User.getUser()
+        ack_mac = app.model.updateUserMac(user.id, mac)
+        if ack_mac:
+            return redirect('/registro')
+        else:
+            return redirect('/view_modify_mac')
+    else:
+        return redirect('/view_modify_mac')
         
 # 0 --> admin, 
 # 1 --> supervisore, 
