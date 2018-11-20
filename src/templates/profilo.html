@@ -47,9 +47,21 @@
 					</div>	
 				</form>
 
+				<form class="login100-form validate-form" action="/view_modify_mac" method="POST">
+					<div class="container-login100-form-btn p-t-10">
+						<button class="login100-form-btn" type="submit">Cambia mac-address</button>
+					</div>	
+				</form>
+
 				<form class="login100-form validate-form" action="/registro">
 					<div class="container-login100-form-btn p-t-10">
 						<button class="login100-form-btn" type="submit">Registro</button>
+					</div>	
+				</form>
+
+				<form class="login100-form validate-form" action="/elimina_utente">
+					<div class="container-login100-form-btn p-t-10">
+						<button class="login100-form-btn" type="submit">Elimina Utente</button>
 					</div>	
 				</form>
 				
@@ -66,9 +78,10 @@
 										<th class="cell100 column1">Matricola</th>
 										<th class="cell100 column2">Nome</th>
 										<th class="cell100 column3">Cognome</th>
-										<th class="cell100 column4">Ruolo</th>
-										<th class="cell100 column5">Tempo</th>
-										<th class="cell100 column6">Punteggio</th>
+										<th class="cell100 column4">Mac</th>
+										<th class="cell100 column5">Ruolo</th>
+										<th class="cell100 column6">Tempo</th>
+										<th class="cell100 column7">Punteggio</th>
 									</tr>
 								</thead>
 							</table>
@@ -82,7 +95,8 @@
 											<td class="cell100 column1">{{ utente[0]['matricola'].upper() }}</td>
 											<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
 											<td class="cell100 column3">{{ utente[0]['cognome'].capitalize() }}</td>
-											<td class="cell100 column4">
+											<td class="cell100 column4">{{ mac }}</td>
+											<td class="cell100 column5">
 												<form action="/cambio_ruolo" method="POST">
 													<select name="option_ruolo">
 														<option>{{ ruolo_profilo.capitalize() }}</option>
@@ -96,8 +110,8 @@
 													<button type="submit" value="Cambia">Cambia</button>
 												</form>
 											</td>
-											<td class="cell100 column5">{{ utente[1] }}</td>
-											<td class="cell100 column6">{{ utente[2] }}</td>
+											<td class="cell100 column6">{{ utente[1] }}</td>
+											<td class="cell100 column7">{{ utente[2] }}</td>
 										</tr>
 									{%- endfor %}
 									

@@ -149,6 +149,10 @@ Nota:
 * Per i limiti del segnale fare riferimento alla propria scheda di rete.
 * Per permettere all'applicazione di riconoscere/filtrare correttamente i dispositivi, è necessario che indirizzi MAC e hostname siano già presenti nel database della Web app.
 
+Dipendenze:
+- pip3 install scapy
+- pip3 install netaddr
+
 ### Documentazione
 
 L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `GitHub`.

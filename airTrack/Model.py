@@ -66,14 +66,6 @@ class Model(object):
     def updateRuolo(self, id_utente, ruolo):
         ack_ruolo = self.dataMapper.updateRuolo(id_utente, ruolo)
         return ack_ruolo
-    
-    def addUser(self, username, nome, cognome, matricola, mac, pwd):
-        ack_user = self.dataMapper.addUser(username, nome, cognome, matricola, mac, pwd)
-        return ack_user
-    
-    def deleteUser(self, id):
-        ack_user = self.dataMapper.deleteUser(id)
-        return ack_user
         
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper

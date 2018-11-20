@@ -31,7 +31,7 @@ class DM_CDB():
                 logging.info("Connection to database " + cls.__dbName + " created.")
             except couchdb.ServerError as err:
                 logging.error("Error connecting to CouchDB at %s.\nDetails: %s.", cls.__server, err)
-                cls.__dbCon = cls.__db4LogCon = None
+                cls.__dbCon = cls.__db4LogCon
                 exit()
             else: # Questo else è del TRY
                 try: # read - write
@@ -39,7 +39,7 @@ class DM_CDB():
                     logging.info("Connection to database " + cls.__dbName + " created.")
                 except couchdb.ServerError as err:
                     logging.error("Error connecting to couchdb at %s.\nDetails: %s.", cls.__server, err)
-                    cls.__dbCon = cls.__db4LogCon = None
+                    cls.__dbCon = cls.__db4LogCon
                     exit()
                 return "New connection opened."
         return "Connection already opened."
@@ -47,8 +47,8 @@ class DM_CDB():
     @classmethod
     def __close(cls):
         if cls.__nIstanze == 0 and cls.__dbCon is not None:
-            cls.__dbCon.close()
-            cls.__db4LogCon.close()
+            #cls.__dbCon.close()
+            #cls.__db4LogCon.close()
             logging.info("Connection closed.")
             cls.__dbCon = cls.__db4LogCon = None
     
@@ -79,6 +79,7 @@ class DM_CDB():
         """ Connessione db """
         DM_CDB.__open()
         DM_CDB.__nIstanze += 1
+        
 
     def close(self):
         """ Chiude in modo esplicito la connessione, se non ci sono altre istanze attive """
@@ -163,41 +164,11 @@ class DM_CDB():
         cur = DM_CDB.__cursor()
         doc = cur[str(id_utente)]
         if not ack_mac:
-            doc['macs'][0]['mac'] = mac
-            #doc['macs'].append({'mac':mac})
+            print(mac)
+            doc['macs'][0] = mac
             cur[doc.id] = doc
             ack_mac = True
         return ack_mac
-    
-    def addUser(self, username, nome, cognome, matricola, mac, pwd):
-        """ """
-        cur = DM_CDB.__cursor()
-        id_doc = 0
-        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
-            if int(item.id) > id_doc:
-                id_doc = int(item.id)
-        id_doc = int(id_doc)
-        id_doc += 1
-        utente    = {'username':username, 'nome':nome, 'cognome':cognome, 'matricola':matricola}
-        macs      = [{'mac':mac}]
-        incontri  = [{'id': '', 'descrizione': '', 'data': '', 'ora_inizio': '', 'ora_fine': '', 'stato': ''}]
-        frequenze = [{'data': '', 'ora_inizio': '', 'ora_fine': '', 'intervallo': '', 'incontro': ''}]
-        entry     = {'_id':str(id_doc), 'utente':utente, 'pwd':pwd, 'ruolo':2, 'macs':macs, 'incontri':incontri, 'frequenze':frequenze, 'tempo_totale': '0', 'punteggio':0}
-        ack_user = False
-        if not ack_user:
-            cur.save(entry)
-            ack_user = True
-        return ack_user
-    
-    def deleteUser(self, id):
-        """ """
-        ack_user = False
-        cur = DM_CDB.__cursor()
-        doc = cur[str(id)]
-        if not ack_user:
-            cur.delete(doc)
-            ack_user = True
-        return ack_user
     
     def getIdMac(self, id_utente):
         """ """

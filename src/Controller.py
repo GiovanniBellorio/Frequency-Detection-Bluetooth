@@ -98,8 +98,8 @@ def view_modify_pwd():
 @app.route("/modify_pwd", methods=['POST'])
 @login_required
 def modify_pwd():
-    password1 = strip_tags(request.form['pass1'])
-    password2 = strip_tags(request.form['pass2'])
+    password1 = strip_tags(request.form['pass1']).strip()
+    password2 = strip_tags(request.form['pass2']).strip()
     if password1 == password2:
         user = User.getUser()
         password_codificata = app.model.make_md5(app.model.make_md5(password2))
@@ -110,6 +110,27 @@ def modify_pwd():
             return redirect('/view_modify_pwd')
     else:
         return redirect('/view_modify_pwd')
+    
+@app.route("/view_modify_mac", methods=['POST','GET'])
+@login_required
+def view_modify_mac():
+    return render_template('modify_mac.html')
+    
+@app.route("/modify_mac", methods=['POST'])
+@login_required
+def modify_mac():
+    mac1 = strip_tags(request.form['mac1']).strip()
+    mac2 = strip_tags(request.form['mac2']).strip()
+    id_profilo    = session.get('id_profilo')
+    if mac1 == mac2:
+        user = User.getUser()
+        ack_mac = app.model.updateUserMac(id_profilo, mac1)
+        if ack_mac:
+            return redirect('/registro')
+        else:
+            return redirect('/view_modify_mac')
+    else:
+        return redirect('/view_modify_mac')
         
 # 0 --> admin, 
 # 1 --> supervisore, 
@@ -154,8 +175,11 @@ def profilo():
     matricola_profilo = request.form['matricola']
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     ruolo_profilo = app.model.getRuoloUsername(id_profilo)
+    macs = app.model.getIdMac(id_profilo)
+    mac = macs[0]['mac']
     session['id_profilo'] = id_profilo
     session['ruolo_profilo'] = ruolo_profilo
+    session['mac'] = mac
     if ruolo_profilo == 0:
         ruolo_profilo = "admin"
     elif ruolo_profilo == 1:
@@ -163,7 +187,35 @@ def profilo():
     elif ruolo_profilo == 2:
         ruolo_profilo = "utente"
     frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
-    return render_template('profilo.html', username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
+    return render_template('profilo.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
+
+@app.route("/view_aggiungi_utente", methods=['POST'])
+@login_required
+def view_aggiungi_utente():
+    user = User.getUser()
+    return render_template('aggiungiUtente.html')
+
+@app.route("/aggiungi_utente", methods=['POST'])
+@login_required
+def aggiungi_utente():
+    user = User.getUser()
+    username = strip_tags(request.form['username']).strip()
+    nome = strip_tags(request.form['nome']).strip()
+    cognome = strip_tags(request.form['cognome']).strip()
+    matricola = strip_tags(request.form['matricola']).strip()
+    mac = strip_tags(request.form['mac']).strip()
+    pwd = strip_tags(request.form['password']).strip()
+    password_codificata = str(app.model.make_md5(app.model.make_md5(pwd)))
+    ack_user = app.model.addUser(username, nome, cognome, matricola, mac, password_codificata)
+    return redirect('/registro')
+
+@app.route("/elimina_utente")
+@login_required
+def elimina_utente():
+    user = User.getUser()
+    id_profilo = session.get('id_profilo')
+    ack_user   = app.model.deleteUser(id_profilo)
+    return redirect('/registro')
 
 @app.route("/cambio_ruolo", methods=['POST'])
 @login_required
@@ -179,6 +231,7 @@ def cambio_ruolo():
         ack_ruolo = app.model.updateRuolo(id_profilo, option_ruolo)
     session['id_profilo'] = ""
     session['ruolo_profilo'] = ""
+    session['mac'] = ""
     return redirect('/registro')
         
 
