@@ -79,6 +79,10 @@ Per problemi di cache e non corretta gestione del ricaricamento delle pagine da 
 - [X] Installazione dei moduli Flask per l'autenticazione 
 - [X] Gestione caching e history sia lato client che lato server
 - [X] Ottimizzazione della classe Controller 
+- [ ] Gestione dei ruoli mediante la classe flask_login 
+- [ ] Cambio protocollo di crittografia (per ora è md5) 
+- [ ] Eliminazione dell'oggetto session per gestire il profilo dell'utente selezionato
+- [ ] Oscurazione dell codice javascript 
 
 #### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Bluetooth/tree/dev/dumpedDB) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
