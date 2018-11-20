@@ -193,14 +193,13 @@ def profilo():
 @login_required
 def view_aggiungi_utente():
     user = User.getUser()
-    prova = app.model.addUser("username", "nome", "cognome", "matricola", "mac", "pwd")
     return render_template('aggiungiUtente.html')
 
 @app.route("/aggiungi_utente", methods=['POST'])
 @login_required
 def aggiungi_utente():
     user = User.getUser()
-    
+    #prova = app.model.addUser("username", "nome", "cognome", "matricola", "mac", "pwd")
     return redirect('/registro')
 
 

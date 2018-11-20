@@ -177,18 +177,15 @@ class DM_CDB():
             break
         id_doc = int(id_doc)
         id_doc += 1
-        utente = {'username':username, 'nome':nome, 'cognome':cognome, 'matricola':matricola}
-        macs   = [{'mac':mac}]
+        utente    = {'username':username, 'nome':nome, 'cognome':cognome, 'matricola':matricola}
+        macs      = [{'mac':mac}]
         incontri  = [{'id': '', 'descrizione': '', 'data': '', 'ora_inizio': '', 'ora_fine': '', 'stato': ''}]
         frequenze = [{'data': '', 'ora_inizio': '', 'ora_fine': '', 'intervallo': '', 'incontro': ''}]
-        entry = {'_id':str(id_doc), 'utente':utente, 'pwd':pwd, 'ruolo':2, 'macs':macs, 'incontri':incontri, 'frequenze':frequenze, 'tempo_totale': '0', 'punteggio':0}
-        
+        entry     = {'_id':str(id_doc), 'utente':utente, 'pwd':pwd, 'ruolo':2, 'macs':macs, 'incontri':incontri, 'frequenze':frequenze, 'tempo_totale': '0', 'punteggio':0}
         ack_user = False
-        #cur = DM_CDB.__cursor()
         doc = cur
         if not ack_user:
             cur.save(entry)
-            #cur[doc.id] = doc
             ack_user = True
         return ack_user
     
