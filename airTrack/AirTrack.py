@@ -105,16 +105,6 @@ def main():
 
     """
 
-    # set monitor mode
-
-    # if platform_OS.system() == "Linux":
-    #     os.system("ifconfig " + args.interface + " down")
-    #     os.system("iwconfig " + args.interface + " mode Monitor")
-    #     os.system("ifconfig " + args.interface + " up")
-    #
-    # if platform_OS.system() == "Darwin":
-    #     print("Darwin")
-
     DEBUG = args.debug
     # setup our rotating logger
 
@@ -133,26 +123,35 @@ def main():
         args.rssi,
         )
 
-    #sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
-    
-    # Sinc db
-    username = 'admin'
-    password = 'admin'
-    model = Model()
-    
-    password_codificata = model.make_md5(model.make_md5(password))
-    num_rows, id_utente = model.getCountUsernamePassword(username, password_codificata)
-    ruolo = model.getRuoloUsername(id_utente)
-    
-    if num_rows == 1 and ruolo != 2:
-        # connesso
-        # mac = model.getMac()
-        # mac = packet.addr2
-        pass
-    else:
-        pass
+    # set monitor mode for Linux (at the end user must set managed mode manually)
+
+    if platform_OS.system() == "Linux":
+        os.system("ifconfig " + args.interface + " down")
+        os.system("iwconfig " + args.interface + " mode Monitor")
+        os.system("ifconfig " + args.interface + " up")
+        sniff(iface=args.interface, prn=built_packet_cb, store=0)
+    elif platform_OS.system() == "Darwin":
+        sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
 
 
-    
+    # database synchronization
+    # username = 'admin'
+    # password = 'admin'
+    # model = Model()
+    #
+    # password_codificata = model.make_md5(model.make_md5(password))
+    # num_rows, id_utente = model.getCountUsernamePassword(username, password_codificata)
+    # ruolo = model.getRuoloUsername(id_utente)
+    #
+    # if num_rows == 1 and ruolo != 2:
+    #     # connesso
+    #     # mac = model.getMac()
+    #     # mac = packet.addr2
+    #     pass
+    # else:
+    #     pass
+
+
+
 if __name__ == '__main__':
     main()
