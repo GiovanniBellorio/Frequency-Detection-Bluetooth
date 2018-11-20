@@ -163,15 +163,34 @@ class DM_CDB():
         cur = DM_CDB.__cursor()
         doc = cur[str(id_utente)]
         if not ack_mac:
-            # construct link object
-            mac_link = {'mac':mac}
-            #mac = macs[0]['mac']
-            doc.setdefault('macs', []).append(mac_link)
-            
-            print(doc['macs'])
+            doc['macs'][0]['mac'] = mac
+            #doc['macs'].append({'mac':mac})
             cur[doc.id] = doc
             ack_mac = True
         return ack_mac
+    
+    def addUser(self, username, nome, cognome, matricola, mac, pwd):
+        """ """
+        cur = DM_CDB.__cursor()
+        for item in cur.view('_design/documenti-view/_view/view_id_utente', descending=True):
+            id_doc = item.id
+            break
+        id_doc = int(id_doc)
+        id_doc += 1
+        utente = {'username':username, 'nome':nome, 'cognome':cognome, 'matricola':matricola}
+        macs   = [{'mac':mac}]
+        incontri  = [{'id': '', 'descrizione': '', 'data': '', 'ora_inizio': '', 'ora_fine': '', 'stato': ''}]
+        frequenze = [{'data': '', 'ora_inizio': '', 'ora_fine': '', 'intervallo': '', 'incontro': ''}]
+        entry = {'_id':str(id_doc), 'utente':utente, 'pwd':pwd, 'ruolo':2, 'macs':macs, 'incontri':incontri, 'frequenze':frequenze, 'tempo_totale': '0', 'punteggio':0}
+        
+        ack_user = False
+        #cur = DM_CDB.__cursor()
+        doc = cur
+        if not ack_user:
+            cur.save(entry)
+            #cur[doc.id] = doc
+            ack_user = True
+        return ack_user
     
     def getIdMac(self, id_utente):
         """ """

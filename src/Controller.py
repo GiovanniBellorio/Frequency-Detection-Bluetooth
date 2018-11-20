@@ -121,9 +121,10 @@ def view_modify_mac():
 def modify_mac():
     mac1 = strip_tags(request.form['mac1'])
     mac2 = strip_tags(request.form['mac2'])
+    id_profilo    = session.get('id_profilo')
     if mac1 == mac2:
         user = User.getUser()
-        ack_mac = app.model.updateUserMac(user.id, mac1)
+        ack_mac = app.model.updateUserMac(id_profilo, mac1)
         if ack_mac:
             return redirect('/registro')
         else:
@@ -187,6 +188,21 @@ def profilo():
         ruolo_profilo = "utente"
     frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
     return render_template('profilo.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
+
+@app.route("/view_aggiungi_utente", methods=['POST'])
+@login_required
+def view_aggiungi_utente():
+    user = User.getUser()
+    prova = app.model.addUser("username", "nome", "cognome", "matricola", "mac", "pwd")
+    return render_template('aggiungiUtente.html')
+
+@app.route("/aggiungi_utente", methods=['POST'])
+@login_required
+def aggiungi_utente():
+    user = User.getUser()
+    
+    return redirect('/registro')
+
 
 @app.route("/cambio_ruolo", methods=['POST'])
 @login_required
