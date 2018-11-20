@@ -98,8 +98,8 @@ def view_modify_pwd():
 @app.route("/modify_pwd", methods=['POST'])
 @login_required
 def modify_pwd():
-    password1 = strip_tags(request.form['pass1'])
-    password2 = strip_tags(request.form['pass2'])
+    password1 = strip_tags(request.form['pass1']).strip()
+    password2 = strip_tags(request.form['pass2']).strip()
     if password1 == password2:
         user = User.getUser()
         password_codificata = app.model.make_md5(app.model.make_md5(password2))
@@ -119,8 +119,8 @@ def view_modify_mac():
 @app.route("/modify_mac", methods=['POST'])
 @login_required
 def modify_mac():
-    mac1 = strip_tags(request.form['mac1'])
-    mac2 = strip_tags(request.form['mac2'])
+    mac1 = strip_tags(request.form['mac1']).strip()
+    mac2 = strip_tags(request.form['mac2']).strip()
     id_profilo    = session.get('id_profilo')
     if mac1 == mac2:
         user = User.getUser()
@@ -199,7 +199,29 @@ def view_aggiungi_utente():
 @login_required
 def aggiungi_utente():
     user = User.getUser()
-    #prova = app.model.addUser("username", "nome", "cognome", "matricola", "mac", "pwd")
+    username = strip_tags(request.form['username']).strip()
+    nome = strip_tags(request.form['nome']).strip()
+    cognome = strip_tags(request.form['cognome']).strip()
+    matricola = strip_tags(request.form['matricola']).strip()
+    mac = strip_tags(request.form['mac']).strip()
+    pwd = strip_tags(request.form['password']).strip()
+    ack_user = app.model.addUser(username, nome, cognome, matricola, mac, pwd)
+    return redirect('/registro')
+
+@app.route("/elimina_utente")
+@login_required
+def elimina_utente():
+    user = User.getUser()
+    id_profilo    = session.get('id_profilo')
+    '''
+    username = strip_tags(request.form['username']).strip()
+    nome = strip_tags(request.form['nome']).strip()
+    cognome = strip_tags(request.form['cognome']).strip()
+    matricola = strip_tags(request.form['matricola']).strip()
+    mac = strip_tags(request.form['mac']).strip()
+    pwd = strip_tags(request.form['password']).strip()
+    ack_user = app.model.addUser(username, nome, cognome, matricola, mac, pwd)
+    '''
     return redirect('/registro')
 
 
