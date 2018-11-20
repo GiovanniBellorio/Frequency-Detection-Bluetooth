@@ -172,9 +172,10 @@ class DM_CDB():
     def addUser(self, username, nome, cognome, matricola, mac, pwd):
         """ """
         cur = DM_CDB.__cursor()
-        for item in cur.view('_design/documenti-view/_view/view_id_utente', descending=True):
-            id_doc = item.id
-            break
+        id_doc = 0
+        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
+            if int(item.id) > id_doc:
+                id_doc = int(item.id)
         id_doc = int(id_doc)
         id_doc += 1
         utente    = {'username':username, 'nome':nome, 'cognome':cognome, 'matricola':matricola}
@@ -183,9 +184,18 @@ class DM_CDB():
         frequenze = [{'data': '', 'ora_inizio': '', 'ora_fine': '', 'intervallo': '', 'incontro': ''}]
         entry     = {'_id':str(id_doc), 'utente':utente, 'pwd':pwd, 'ruolo':2, 'macs':macs, 'incontri':incontri, 'frequenze':frequenze, 'tempo_totale': '0', 'punteggio':0}
         ack_user = False
-        doc = cur
         if not ack_user:
             cur.save(entry)
+            ack_user = True
+        return ack_user
+    
+    def deleteUser(self, id):
+        """ """
+        ack_user = False
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id)]
+        if not ack_user:
+            cur.delete(doc)
             ack_user = True
         return ack_user
     

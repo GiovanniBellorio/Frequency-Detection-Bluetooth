@@ -205,25 +205,17 @@ def aggiungi_utente():
     matricola = strip_tags(request.form['matricola']).strip()
     mac = strip_tags(request.form['mac']).strip()
     pwd = strip_tags(request.form['password']).strip()
-    ack_user = app.model.addUser(username, nome, cognome, matricola, mac, pwd)
+    password_codificata = str(app.model.make_md5(app.model.make_md5(pwd)))
+    ack_user = app.model.addUser(username, nome, cognome, matricola, mac, password_codificata)
     return redirect('/registro')
 
 @app.route("/elimina_utente")
 @login_required
 def elimina_utente():
     user = User.getUser()
-    id_profilo    = session.get('id_profilo')
-    '''
-    username = strip_tags(request.form['username']).strip()
-    nome = strip_tags(request.form['nome']).strip()
-    cognome = strip_tags(request.form['cognome']).strip()
-    matricola = strip_tags(request.form['matricola']).strip()
-    mac = strip_tags(request.form['mac']).strip()
-    pwd = strip_tags(request.form['password']).strip()
-    ack_user = app.model.addUser(username, nome, cognome, matricola, mac, pwd)
-    '''
+    id_profilo = session.get('id_profilo')
+    ack_user   = app.model.deleteUser(id_profilo)
     return redirect('/registro')
-
 
 @app.route("/cambio_ruolo", methods=['POST'])
 @login_required
