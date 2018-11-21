@@ -135,6 +135,7 @@ def main():
         sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
 
     restore_network(args)
+    #time.sleep(1)
     upload()
 
 def restore_network(args):
@@ -153,14 +154,26 @@ def upload():
     num_rows, id_utente = model.getCountUsernamePassword(username, password_codificata)
     ruolo = model.getRuoloUsername(id_utente)
 
+    mac_count_dict = []
+
     if num_rows == 1 and ruolo != 2:
         # connesso
         mac_list_from_db = model.getAllMac()
         for mac in mac_list_from_db:
-            print(mac[0]['mac'])
+            mac_count_dict.append({'mac': mac[0]['mac'], 'counter': 0})
 
-        #for mac
-        pass
+
+            with open('log') as f:
+                content = f.readlines()
+                content = [x.split('\t') for x in content]
+                for element in content:
+                    if mac[0]['mac'] == element[1].strip():
+                         for item in mac_count_dict:
+                             if item['mac'] == mac[0]['mac']:
+                                 item['counter'] += 1
+
+        for value in mac_count_dict:
+            print(value)
     else:
         pass
 
