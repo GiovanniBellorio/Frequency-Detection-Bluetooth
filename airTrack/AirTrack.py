@@ -140,8 +140,6 @@ def main():
 def restore_network(args):
     os.system("ifconfig " + args.interface + " down")
     os.system("iwconfig " + args.interface + " mode Managed")
-    os.system("rfkill wifi block")
-    os.system("rfkill wifi unblock")
     os.system("ifconfig " + args.interface + " up")
     os.system("service network-manager start")
 
@@ -157,7 +155,10 @@ def upload():
 
     if num_rows == 1 and ruolo != 2:
         # connesso
-        # mac_list_from_db = Query per elenco mac
+        mac_list_from_db = model.getAllMac()
+        for mac in mac_list_from_db:
+            print(mac[0]['mac'])
+
         #for mac
         pass
     else:
