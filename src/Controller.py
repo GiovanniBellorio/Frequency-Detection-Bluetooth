@@ -180,7 +180,7 @@ def aggiungi_utente():
     username = strip_tags(request.form['username']).strip()
     nome = strip_tags(request.form['nome']).strip()
     cognome = strip_tags(request.form['cognome']).strip()
-    matricola = strip_tags(request.form['matricola']).strip()
+    matricola = str(strip_tags(request.form['matricola']).strip()).upper()
     mac = strip_tags(request.form['mac']).strip()
     pwd = strip_tags(request.form['password']).strip()
     password_codificata = str(app.model.make_md5(app.model.make_md5(pwd)))
