@@ -22,7 +22,7 @@ class DM_CDB():
     __dbCon = None # La connessione è condivisa !
     __db4LogCon = None # La connessione è condivisa !
     __nIstanze = 0
-    
+
     @classmethod
     def __open(cls):
         if cls.__dbCon is None:
@@ -43,7 +43,7 @@ class DM_CDB():
                     exit()
                 return "New connection opened."
         return "Connection already opened."
-    
+
     @classmethod
     def __close(cls):
         if cls.__nIstanze == 0 and cls.__dbCon is not None:
@@ -51,7 +51,7 @@ class DM_CDB():
             #cls.__db4LogCon.close()
             logging.info("Connection closed.")
             cls.__dbCon = cls.__db4LogCon = None
-    
+
     @classmethod
     def __cursor(cls):
         """ Ritorna un cursore che restituisce dict invece di tuple per ciascuna riga di una select."""
@@ -75,16 +75,16 @@ class DM_CDB():
         DM_CDB.__db4Log = self.db_connect.get__db4Log()
         DM_CDB.__user   = self.db_connect.get__user()
         DM_CDB.__pw     = self.db_connect.get__pw()
-        
+
         """ Connessione db """
         DM_CDB.__open()
         DM_CDB.__nIstanze += 1
-        
+
 
     def close(self):
         """ Chiude in modo esplicito la connessione, se non ci sono altre istanze attive """
         self.__del__()
-    
+
     def getCountUsernamePassword(self, username, password):
         """ """
         cur = DM_CDB.__cursor()
@@ -98,7 +98,7 @@ class DM_CDB():
                 num_rows += 1
                 id_utente = item.id
         return num_rows, id_utente
-    
+
     def getRuoloUsername(self, id_utente):
         """ """
         cur = DM_CDB.__cursor()
@@ -106,8 +106,8 @@ class DM_CDB():
         for item in cur.view('_design/documenti-view/_view/view_id_utente'):
             if item.id == id_utente:
                 ruolo = item.key
-        return ruolo 
-    
+        return ruolo
+
     def getMatricola(self, id_utente):
         """ """
         cur = DM_CDB.__cursor()
@@ -116,8 +116,8 @@ class DM_CDB():
             if item.id == id_utente:
                 value = item.value
                 matricola = value['matricola']
-        return matricola 
-       
+        return matricola
+
     def getFrequenzaUsername(self, id_utente):
         """ """
         cur = DM_CDB.__cursor()
@@ -126,7 +126,7 @@ class DM_CDB():
             if item.id == id_utente:
                 frequenza = item.value
         return frequenza
-    
+
     def getUtentiPunteggi(self):
         """ """
         cur = DM_CDB.__cursor()
@@ -135,8 +135,8 @@ class DM_CDB():
             ruolo = item.key
             if ruolo == 2: # utente normale
                 utenti_punteggi.append(item.value)
-        return utenti_punteggi 
-    
+        return utenti_punteggi
+
     def getSupervisoriPunteggi(self):
         """ """
         cur = DM_CDB.__cursor()
@@ -145,8 +145,8 @@ class DM_CDB():
             ruolo = item.key
             if ruolo == 1: # utente normale
                 utenti_punteggi.append(item.value)
-        return utenti_punteggi 
-    
+        return utenti_punteggi
+
     def updateUserPwd(self, id_utente, password):
         """ """
         ack_pwd = False
@@ -157,7 +157,7 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_pwd = True
         return ack_pwd
-    
+
     def updateUserMac(self, id_utente, mac):
         """ """
         ack_mac = False
@@ -169,7 +169,7 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_mac = True
         return ack_mac
-    
+
     def getIdMac(self, id_utente):
         """ """
         cur = DM_CDB.__cursor()
@@ -177,7 +177,15 @@ class DM_CDB():
             if item.id == id_utente:
                 mac = item.value
         return mac
-    
+
+    def getAllMac(self):
+        """ """
+        cur = DM_CDB.__cursor()
+        mac = []
+        for item in cur.view('_design/documenti-view/_view/view_id_mac'):
+            mac.append(item.value)
+        return mac
+
     def getProfiloUtente(self, matricola):
         """ """
         cur = DM_CDB.__cursor()
@@ -188,13 +196,13 @@ class DM_CDB():
             matricola_db = value['matricola']
             if matricola == matricola_db:
                 id = item.id
-                
+
         for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
             if id == item.id:
                 utente.append(item.value)
-        
+
         return id, utente
-    
+
     def updateRuolo(self, id_utente, ruolo):
         """ """
         if ruolo == "Supervisore":
@@ -209,7 +217,7 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_ruolo = True
         return ack_ruolo
-        
+
     def __del__(self):
         DM_CDB.__nIstanze -= 1
         DM_CDB.__close()
