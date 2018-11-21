@@ -9,6 +9,7 @@ import argparse
 import netaddr
 import sys
 import logging
+import signal
 from scapy.all import *
 from pprint import pprint
 from logging.handlers import RotatingFileHandler
@@ -105,16 +106,6 @@ def main():
 
     """
 
-    # set monitor mode
-
-    # if platform_OS.system() == "Linux":
-    #     os.system("ifconfig " + args.interface + " down")
-    #     os.system("iwconfig " + args.interface + " mode Monitor")
-    #     os.system("ifconfig " + args.interface + " up")
-    #
-    # if platform_OS.system() == "Darwin":
-    #     print("Darwin")
-
     DEBUG = args.debug
     # setup our rotating logger
 
@@ -133,24 +124,44 @@ def main():
         args.rssi,
         )
 
-    #sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
-    
+    os.system("service network-manager stop")
+    # set monitor mode
+    if platform_OS.system() == "Linux":
+        os.system("ifconfig " + args.interface + " down")
+        os.system("iwconfig " + args.interface + " mode Monitor")
+        os.system("ifconfig " + args.interface + " up")
+        sniff(iface=args.interface, prn=built_packet_cb, store=0)
+    elif platform_OS.system() == "Darwin":
+        sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
+
+    restore_network(args)
+    upload()
+
+def restore_network(args):
+    os.system("ifconfig " + args.interface + " down")
+    os.system("iwconfig " + args.interface + " mode Managed")
+    os.system("rfkill wifi block")
+    os.system("rfkill wifi unblock")
+    os.system("ifconfig " + args.interface + " up")
+    os.system("service network-manager start")
+
+def upload():
     # Sinc db
     username = 'admin'
     password = 'admin'
     model = Model()
-    
+
     password_codificata = model.make_md5(model.make_md5(password))
     num_rows, id_utente = model.getCountUsernamePassword(username, password_codificata)
     ruolo = model.getRuoloUsername(id_utente)
-    
+
     if num_rows == 1 and ruolo != 2:
         # connesso
+        # mac_list_from_db = Query per elenco mac
+        #for mac
         pass
     else:
         pass
 
-
-    
 if __name__ == '__main__':
     main()
