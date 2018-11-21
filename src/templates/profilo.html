@@ -26,10 +26,14 @@
 	
 </head>
 <body>
+
+<form class="login100-form validate-form" method="POST">
+
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('{{url_for('static', filename='images/img-01.jpg')}}');">
 			<div class="wrap-login100 p-t-190" style="padding-top:90px">
-				<form class="login100-form validate-form" action="/logout" method="POST">
+				
+
 					<div class="login100-form-avatar">
 						<img src="{{url_for('static', filename='images/avatar-02.jpg')}}" alt="AVATAR">
 					</div>
@@ -37,33 +41,33 @@
 					<span class="login100-form-title p-t-20 p-b-45">{{ username.upper()  }}</span>
 
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">Logout</button>
+						<button class="login100-form-btn" type="submit" formaction="/logout">Logout</button>
 					</div>	
-				</form>
+				
 
-				<form class="login100-form validate-form" action="/view_modify_pwd" method="POST">
+				
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">Cambia password</button>
+						<button class="login100-form-btn" type="submit" formaction="/view_modify_pwd">Cambia password</button>
 					</div>	
-				</form>
+				
 
-				<form class="login100-form validate-form" action="/view_modify_mac" method="POST">
+				
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">Cambia mac-address</button>
+						<button class="login100-form-btn" type="submit" formaction="/view_modify_mac">Cambia mac-address</button>
 					</div>	
-				</form>
+				
 
-				<form class="login100-form validate-form" action="/registro">
+				
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">Registro</button>
+						<button class="login100-form-btn" type="submit" formaction="/registro">Registro</button>
 					</div>	
-				</form>
+				
 
-				<form class="login100-form validate-form" action="/elimina_utente">
+				
 					<div class="container-login100-form-btn p-t-10">
-						<button class="login100-form-btn" type="submit">Elimina Utente</button>
+						<button class="login100-form-btn" type="submit" formaction="/elimina_utente">Elimina Utente</button>
 					</div>	
-				</form>
+				
 				
 			</div>
 
@@ -92,12 +96,11 @@
 								<tbody>
 									{%- for utente in utente_profilo %}
 										<tr class="row100 body">
-											<td class="cell100 column1">{{ utente[0]['matricola'].upper() }}</td>
+											<td class="cell100 column1"><input type="hidden" name="matricola_profilo" value="{{ utente[0]['matricola'].upper() }}">{{ utente[0]['matricola'].upper() }}</td>
 											<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
 											<td class="cell100 column3">{{ utente[0]['cognome'].capitalize() }}</td>
 											<td class="cell100 column4">{{ mac }}</td>
 											<td class="cell100 column5">
-												<form action="/cambio_ruolo" method="POST">
 													<select name="option_ruolo">
 														<option>{{ ruolo_profilo.capitalize() }}</option>
 														<option>{%- if ruolo_profilo.capitalize() == "Supervisore":  %}
@@ -107,8 +110,7 @@
 																{%- endif %}
 														</option>
 													</select>
-													<button type="submit" value="Cambia">Cambia</button>
-												</form>
+													<button type="submit" value="Cambia" formaction="/cambio_ruolo">Cambia</button>
 											</td>
 											<td class="cell100 column6">{{ utente[1] }}</td>
 											<td class="cell100 column7">{{ utente[2] }}</td>
@@ -166,6 +168,7 @@
 		
 		</div>
 	</div>
+</form>
 	
 	<script src="{{url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
 	<script src="{{url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>

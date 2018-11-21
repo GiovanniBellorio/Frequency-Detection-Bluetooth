@@ -114,14 +114,16 @@ def modify_pwd():
 @app.route("/view_modify_mac", methods=['POST','GET'])
 @login_required
 def view_modify_mac():
-    return render_template('modify_mac.html')
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    return render_template('modify_mac.html', matricola_profilo=matricola_profilo)
     
 @app.route("/modify_mac", methods=['POST'])
 @login_required
 def modify_mac():
     mac1 = strip_tags(request.form['mac1']).strip()
     mac2 = strip_tags(request.form['mac2']).strip()
-    id_profilo    = session.get('id_profilo')
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     if mac1 == mac2:
         user = User.getUser()
         ack_mac = app.model.updateUserMac(id_profilo, mac1)
@@ -177,9 +179,6 @@ def profilo():
     ruolo_profilo = app.model.getRuoloUsername(id_profilo)
     macs = app.model.getIdMac(id_profilo)
     mac = macs[0]['mac']
-    session['id_profilo'] = id_profilo
-    session['ruolo_profilo'] = ruolo_profilo
-    session['mac'] = mac
     if ruolo_profilo == 0:
         ruolo_profilo = "admin"
     elif ruolo_profilo == 1:
@@ -209,19 +208,21 @@ def aggiungi_utente():
     ack_user = app.model.addUser(username, nome, cognome, matricola, mac, password_codificata)
     return redirect('/registro')
 
-@app.route("/elimina_utente")
+@app.route("/elimina_utente", methods=['POST'])
 @login_required
 def elimina_utente():
     user = User.getUser()
-    id_profilo = session.get('id_profilo')
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     ack_user   = app.model.deleteUser(id_profilo)
     return redirect('/registro')
 
 @app.route("/cambio_ruolo", methods=['POST'])
 @login_required
 def cambio_ruolo():
-    id_profilo    = session.get('id_profilo')
-    ruolo_profilo = session.get('ruolo_profilo')
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
+    ruolo_profilo = app.model.getRuoloUsername(id_profilo)
     option_ruolo  = request.form['option_ruolo']
     if ruolo_profilo == 1 and option_ruolo == "Supervisore":
         pass
@@ -229,9 +230,6 @@ def cambio_ruolo():
         pass
     else:
         ack_ruolo = app.model.updateRuolo(id_profilo, option_ruolo)
-    session['id_profilo'] = ""
-    session['ruolo_profilo'] = ""
-    session['mac'] = ""
     return redirect('/registro')
         
 
