@@ -105,7 +105,18 @@ class DM_CDB():
         for item in cur.view('_design/documenti-view/_view/view_id_utente'):
             if item.id == id_utente:
                 ruolo = item.key
-        return ruolo 
+        return ruolo
+    
+    def getUsername(self, id_utente):
+        """ """
+        cur = DM_CDB.__cursor()
+        username = None
+        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
+            if item.id == id_utente:
+                tmp = item.value
+                
+        username = tmp['username']
+        return username
     
     def getMatricola(self, id_utente):
         """ """
