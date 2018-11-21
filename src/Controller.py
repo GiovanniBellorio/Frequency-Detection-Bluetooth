@@ -8,9 +8,10 @@ Controller dell'applicazione web
 
 import os
 from django.utils.html import strip_tags
+from functools import wraps
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 #from flask_user import roles_required
-from flask import Flask, request, flash, redirect
+from flask import Flask, request, flash, redirect, url_for
 from flask.templating import render_template
 from Model import Model
 
@@ -30,6 +31,18 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = '/'
 login_manager.session_protection = 'strong'
+
+# Decorator for roles
+
+def check_roles(roles = None, page = 'home'):
+    def decorator(f):
+        @wraps(f)
+        def func_wrapper(*args, **kwargs):
+            if current_user.ruolo in roles:
+                return f(*args, **kwargs)
+            return redirect(url_for(page, next=request.url)) 
+        return func_wrapper
+    return decorator
 
 # Per impedire all'utente di tornare indietro dopo aver fatto il logout
 @app.after_request
@@ -72,6 +85,7 @@ def logout():
 
 @app.route("/view_modify_pwd", methods=['POST','GET'])
 @login_required
+@check_roles([0,1],'registro')
 def view_modify_pwd():
     return render_template('modify_pwd.html')
 
