@@ -9,6 +9,7 @@ Controller dell'applicazione web
 import os
 from django.utils.html import strip_tags
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
+#from flask_user import roles_required
 from flask import Flask, request, flash, redirect
 from flask.templating import render_template
 from Model import Model
@@ -192,7 +193,7 @@ def elimina_utente():
     user = current_user
     matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
-    ack_user   = app.model.deleteUser(id_profilo)
+    ack_user  = app.model.deleteUser(id_profilo)
     return redirect('/registro')
 
 @app.route("/cambio_ruolo", methods=['POST'])

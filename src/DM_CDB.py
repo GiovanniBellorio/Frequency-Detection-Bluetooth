@@ -205,6 +205,7 @@ class DM_CDB():
         ack_user = False
         cur = DM_CDB.__cursor()
         doc = cur[str(id)]
+        
         if not ack_user:
             cur.delete(doc)
             ack_user = True
