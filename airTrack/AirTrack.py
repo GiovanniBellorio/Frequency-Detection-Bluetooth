@@ -76,15 +76,13 @@ def build_packet_callback(
         # ----------------------------------------------------------------
         # check for a valid mac address
 
-        #print(mac_list_from_db)
         if packet.addr2 in mac_list_from_db:
-            print("++++" + packet.addr2)
             for record in records_from_sniffing:
                 if record.mac_addr == packet.addr2:
-                    print("updating" + str(record.mac_addr) + "last_time: " + str(record.last_time))
+                    print("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time), end="")
                     now = int(time.time())
                     record.update(now, False)
-                    print("new_last_time: " + str(record.last_time))
+                    print(" --> " + str(record.last_time))
 
         # ----------------------------------------------------------------
 
@@ -176,10 +174,11 @@ def main():
         print("start sniffing...")
         sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
 
-    #time.sleep(1)
 
     # update database with the new records
+
     print("updating database...")
+    time.sleep(5)
     for record in records_from_sniffing:
         if record.last_time - record.first_time > 0:
             model.update_Records(record)
@@ -213,11 +212,11 @@ def connect_to_db():
     # 1. mi connetto al db --> OK
     # 2. leggo la lista dei mac address iscritti al corso --> OK
     # 3. salvo tale lista in una tabella hash o in una lista --> OK
-    # 4. chiudo il db [opzionale]
-    # 5. inizio lo sniffing e confronto ogni pacchetto sniffato con quelli nella lista letta precedentemente
-    # 6. se necessario resetto il contatore relativo al mac appena riscontrato valido entro la treshold
-    # 7. altrimenti alzo un flag indicante il superamento della treshold
-    # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac
+    # 4. chiudo il db [opzionale] --> OK
+    # 5. inizio lo sniffing e confronto ogni pacchetto sniffato con quelli nella lista letta precedentemente --> OK
+    # 6. se necessario resetto il contatore relativo al mac appena riscontrato valido entro la treshold --> OK
+    # 7. altrimenti alzo un flag indicante il superamento della treshold --> OK
+    # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac --> OK
 
 
 
