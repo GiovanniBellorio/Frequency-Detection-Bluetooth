@@ -79,7 +79,7 @@ def build_packet_callback(
         if packet.addr2 in mac_list_from_db:
             for record in records_from_sniffing:
                 if record.mac_addr == packet.addr2:
-                    print("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time), end="")
+                    print("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time))
                     now = int(time.time())
                     record.update(now, False)
                     print(" --> " + str(record.last_time))
