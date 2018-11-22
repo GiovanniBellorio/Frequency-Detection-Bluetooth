@@ -6,6 +6,7 @@ Controller dell'applicazione web
 @author: Giovanni, Davide
 '''
 
+#import logging
 import os
 from django.utils.html import strip_tags
 from functools import wraps
@@ -23,6 +24,7 @@ class User(UserMixin):
         self.ruolo = ruolo
 
 # Applicazione Flask!
+#logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__) 
 app.model = Model()
 
@@ -228,4 +230,4 @@ def cambio_ruolo():
 
 if __name__ == '__main__': # Questo if deve essere ultima istruzione.
     app.secret_key = os.urandom(12)
-    app.run(debug=True, use_reloader=True)  # Debug permette anche di ricaricare i file modificati senza rinizializzare il web server.
+    app.run(host="0.0.0.0", port="5000", debug=True, use_reloader=True)  # Debug permette anche di ricaricare i file modificati senza rinizializzare il web server.
