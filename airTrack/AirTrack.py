@@ -15,10 +15,27 @@ from pprint import pprint
 from logging.handlers import RotatingFileHandler
 from Model import Model
 
+class RecordFormSniffing:
+
+    def __init__(self, mac_addr, first_time, last_time, overTreshold):
+        self.mac_addr = mac_addr
+        self.first_time = first_time
+        self.last_time = last_time
+        self.overTreshold = overTreshold
+
+    def update(self, new_last_time, overTreshold):
+        self.last_time = new_last_time
+        if overTreshold:
+            self.overTreshold = overTreshold
+
+
 NAME = 'AirTack'
 DESCRIPTION = 'a command line tool for logging 802.11 probe request frames'
-
 DEBUG = False
+
+mac_list_from_db = []           # list of valid mac address
+records_from_sniffing = []      # list of record to write on database
+model = Model()                 # model for database
 
 def build_packet_callback(
     time_fmt,
@@ -55,6 +72,21 @@ def build_packet_callback(
         # append the mac address itself
 
         fields.append(packet.addr2)
+
+        # ----------------------------------------------------------------
+        # check for a valid mac address
+
+        #print(mac_list_from_db)
+        if packet.addr2 in mac_list_from_db:
+            print("++++" + packet.addr2)
+            for record in records_from_sniffing:
+                if record.mac_addr == packet.addr2:
+                    print("updating" + str(record.mac_addr) + "last_time: " + str(record.last_time))
+                    now = int(time.time())
+                    record.update(now, False)
+                    print("new_last_time: " + str(record.last_time))
+
+        # ----------------------------------------------------------------
 
         # parse mac address and look up the organization from the vendor octets
 
@@ -106,6 +138,10 @@ def main():
 
     """
 
+    # database connection
+    print("connecting to database...")
+    connect_to_db()
+
     DEBUG = args.debug
     # setup our rotating logger
 
@@ -124,19 +160,32 @@ def main():
         args.rssi,
         )
 
-    os.system("service network-manager stop")
     # set monitor mode
+    print("setting monitor mode...")
     if platform_OS.system() == "Linux":
+        os.system("service network-manager stop")
         os.system("ifconfig " + args.interface + " down")
         os.system("iwconfig " + args.interface + " mode Monitor")
         os.system("ifconfig " + args.interface + " up")
+
+        print("start sniffing...")
         sniff(iface=args.interface, prn=built_packet_cb, store=0)
+
+        restore_network(args)
     elif platform_OS.system() == "Darwin":
+        print("start sniffing...")
         sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
 
-    restore_network(args)
     #time.sleep(1)
-    upload()
+
+    # update database with the new records
+    print("updating database...")
+    for record in records_from_sniffing:
+        if record.last_time - record.first_time > 0:
+            model.update_Records(record)
+
+    print("end.")
+
 
 def restore_network(args):
     os.system("ifconfig " + args.interface + " down")
@@ -144,38 +193,33 @@ def restore_network(args):
     os.system("ifconfig " + args.interface + " up")
     os.system("service network-manager start")
 
-def upload():
+def connect_to_db():
     # Sinc db
     username = 'admin'
     password = 'admin'
-    model = Model()
 
-    password_codificata = model.make_md5(model.make_md5(password))
-    num_rows, id_utente = model.getCountUsernamePassword(username, password_codificata)
+    encoded_passwd = model.make_md5(model.make_md5(password))
+    num_rows, id_utente = model.getCountUsernamePassword(username, encoded_passwd)
     ruolo = model.getRuoloUsername(id_utente)
 
-    mac_count_dict = []
-
     if num_rows == 1 and ruolo != 2:
-        # connesso
+        global mac_list_from_db
         mac_list_from_db = model.getAllMac()
+
         for mac in mac_list_from_db:
-            mac_count_dict.append({'mac': mac[0]['mac'], 'counter': 0})
+            records_from_sniffing.append(RecordFormSniffing(mac, int(time.time()), int(time.time()), False))
 
 
-            with open('log') as f:
-                content = f.readlines()
-                content = [x.split('\t') for x in content]
-                for element in content:
-                    if mac[0]['mac'] == element[1].strip():
-                         for item in mac_count_dict:
-                             if item['mac'] == mac[0]['mac']:
-                                 item['counter'] += 1
+    # 1. mi connetto al db --> OK
+    # 2. leggo la lista dei mac address iscritti al corso --> OK
+    # 3. salvo tale lista in una tabella hash o in una lista --> OK
+    # 4. chiudo il db [opzionale]
+    # 5. inizio lo sniffing e confronto ogni pacchetto sniffato con quelli nella lista letta precedentemente
+    # 6. se necessario resetto il contatore relativo al mac appena riscontrato valido entro la treshold
+    # 7. altrimenti alzo un flag indicante il superamento della treshold
+    # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac
 
-        for value in mac_count_dict:
-            print(value)
-    else:
-        pass
+
 
 if __name__ == '__main__':
     main()

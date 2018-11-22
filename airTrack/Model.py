@@ -73,3 +73,6 @@ class Model(object):
 
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper
+
+    def update_Records(self, new_record):
+        self.dataMapper.update_Records(new_record)

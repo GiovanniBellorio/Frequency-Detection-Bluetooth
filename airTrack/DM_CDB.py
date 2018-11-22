@@ -183,7 +183,7 @@ class DM_CDB():
         cur = DM_CDB.__cursor()
         mac = []
         for item in cur.view('_design/documenti-view/_view/view_id_mac'):
-            mac.append(item.value)
+            mac.append(item.value[0]['mac'])
         return mac
 
     def getProfiloUtente(self, matricola):
@@ -217,6 +217,22 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_ruolo = True
         return ack_ruolo
+
+    def update_Records(self, new_record):
+        cur = DM_CDB.__cursor()
+        for item in cur.view("_design/documenti-view/_view/view_id_mac"):
+            mac = item.value[0]['mac']
+            if mac == new_record.mac_addr:
+                id = item.id
+                continue
+
+        doc = cur[str(id)]
+        doc['frequenze'].append({"data": "22/11/2018",
+                                 "ora_inizio": str(new_record.first_time),
+                                 "ora_fine": str(new_record.last_time),
+                                 "intervallo": str(new_record.last_time - new_record.first_time),
+                                 "incontro": ""})
+        cur[doc.id] = doc
 
     def __del__(self):
         DM_CDB.__nIstanze -= 1

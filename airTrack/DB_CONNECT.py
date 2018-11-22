@@ -8,6 +8,7 @@ DataMapper
 
 class DB_CONNECT():
     __server = "localhost"
+    #__server = "157.27.134.188"
     __dbName = 'db_detection'
     __db4Log = 'admin'
     __user   = 'admin'
