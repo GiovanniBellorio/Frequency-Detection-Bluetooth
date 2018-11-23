@@ -106,3 +106,5 @@ venv.bak/
 .project
 .pydevproject
 /src/flask_sessionstore
+.settings
+.DS_Store

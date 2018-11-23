@@ -1,0 +1,11 @@
+# This script contains all required packages to run airtrack
+
+# How to run:
+# pip3 install -r requirements.txt --record files.txt
+
+scapy
+netaddr
+
+
+# How to remove all installed packages
+# cat files.txt | xargs sudo rm -rf
