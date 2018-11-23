@@ -6,22 +6,22 @@ DataMapper
 @author: Giovanni, ...
 '''
 
-#from datetime import datetime
 import logging
 import couchdb
+from datetime import datetime
 from DB_CONNECT import DB_CONNECT
 
 class DM_CDB():
     """ Data mapper verso CouchDB. """
-    __server = None
-    __dbName = None
-    __db4Log = None
-    __user = None
-    __pw = None
-    __db = None
-    __dbCon = None # La connessione è condivisa !
+    __server    = None
+    __dbName    = None
+    __db4Log    = None
+    __user      = None
+    __pw        = None
+    __db        = None
+    __dbCon     = None # La connessione è condivisa !
     __db4LogCon = None # La connessione è condivisa !
-    __nIstanze = 0
+    __nIstanze  = 0
     
     @classmethod
     def __open(cls):
@@ -47,10 +47,8 @@ class DM_CDB():
     @classmethod
     def __close(cls):
         if cls.__nIstanze == 0 and cls.__dbCon is not None:
-            cls.__dbCon.close()
-            cls.__db4LogCon.close()
-            logging.info("Connection closed.")
             cls.__dbCon = cls.__db4LogCon = None
+            logging.info("Connection closed.")
     
     @classmethod
     def __cursor(cls):
@@ -83,6 +81,10 @@ class DM_CDB():
     def close(self):
         """ Chiude in modo esplicito la connessione, se non ci sono altre istanze attive """
         self.__del__()
+        
+    def __del__(self):
+        self.__nIstanze -= 1
+        self.__close()
     
     def getCountUsernamePassword(self, username, password):
         """ """
@@ -250,7 +252,3 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_ruolo = True
         return ack_ruolo
-        
-    def __del__(self):
-        DM_CDB.__nIstanze -= 1
-        DM_CDB.__close()

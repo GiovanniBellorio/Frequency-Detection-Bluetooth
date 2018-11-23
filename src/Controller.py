@@ -35,7 +35,6 @@ login_manager.login_view = '/'
 login_manager.session_protection = 'strong'
 
 # Decorator for roles
-
 def check_roles(roles = None, page = 'home'):
     def decorator(f):
         @wraps(f)
