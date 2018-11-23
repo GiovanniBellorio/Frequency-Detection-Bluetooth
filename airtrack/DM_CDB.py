@@ -9,6 +9,8 @@ DataMapper
 #from datetime import datetime
 import logging
 import couchdb
+import datetime
+import time
 from DB_CONNECT import DB_CONNECT
 
 class DM_CDB():
@@ -224,13 +226,15 @@ class DM_CDB():
             mac = item.value[0]['mac']
             if mac == new_record.mac_addr:
                 id = item.id
-                continue
+                break
 
+        current_date = datetime.date.today()
+        current_date = current_date.strftime("%d-%m-%Y")
         doc = cur[str(id)]
-        doc['frequenze'].append({"data": "22/11/2018",
-                                 "ora_inizio": str(new_record.first_time),
-                                 "ora_fine": str(new_record.last_time),
-                                 "intervallo": str(new_record.last_time - new_record.first_time),
+        doc['frequenze'].append({"data": current_date,
+                                 "ora_inizio": str(datetime.datetime.fromtimestamp(new_record.first_time).strftime('%H:%M:%S')),
+                                 "ora_fine": str(datetime.datetime.fromtimestamp(new_record.last_time).strftime('%H:%M:%S')),
+                                 "intervallo": str(datetime.timedelta(seconds=(new_record.last_time - new_record.first_time))),
                                  "incontro": ""})
         cur[doc.id] = doc
 
