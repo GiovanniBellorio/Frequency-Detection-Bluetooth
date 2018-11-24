@@ -15,14 +15,6 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main_table.css')}}">
-
-	<script type="text/javascript">
-		window.onpageshow = function(event) {
-		    if (event.persisted) {
-		        window.location.reload() 
-		    }
-		};
-	</script>
 	
 </head>
 <body>
@@ -176,13 +168,6 @@
 	<script src="{{url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
 	<script src="{{url_for('static', filename='js/main.js')}}"></script>
 	<script src="{{url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-	<script>
-		$('.js-pscroll').each(function(){
-			var ps = new PerfectScrollbar(this);
-			$(window).on('resize', function(){
-				ps.update();
-			})
-		});
-	</script>
+	<script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
 </html>
