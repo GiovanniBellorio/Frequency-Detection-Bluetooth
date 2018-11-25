@@ -5,16 +5,15 @@ Controller dell'applicazione web
 
 @author: Giovanni, Davide
 '''
+import setup
 
-#import logging
-import os
+from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 from django.utils.html import strip_tags
 from functools import wraps
-from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
-#from flask_user import roles_required
 from flask import Flask, request, flash, redirect, url_for
 from flask.templating import render_template
 from Model import Model
+import os
 
 # Classe di appoggio per i dati che arrivano dal DB
 class User(UserMixin):
