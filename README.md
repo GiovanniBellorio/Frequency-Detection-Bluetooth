@@ -12,6 +12,7 @@
     * [Template Grafico](#Template-Grafico)
     * [Deploy Applicazione Python](#Deploy-Applicazione-Python)
   * [Wireless Detection App](#Wireless-Detection-App)
+    * [Cython](#Cython)
   * [Documentazione](#Documentazione)
 * [Autori](#Autori)
 * [Licenza](#Licenza)
@@ -83,7 +84,7 @@ Per problemi di cache e non corretta gestione del ricaricamento delle pagine da 
 - [ ] Cambio protocollo di crittografia (per ora è md5) 
 - [ ] Modifica degli utenti che hanno la password codificata con ancora il protocollo md5
 - [X] Eliminazione dell'oggetto session per gestire il profilo dell'utente selezionato
-- [ ] Oscurazione dell codice javascript 
+- [ ] Offuscamento del codice Javascript 
 
 #### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
@@ -94,7 +95,6 @@ Installazione del modulo attraverso:
 e utilizzo del medesimo nel programma python:
 
 ```python
-import logging
 import couchdb
 
 def __open(cls)
@@ -104,17 +104,16 @@ def __open(cls)
 
 Per installare il servizio abbiamo utilizzato [Apache CouchDB](http://couchdb.apache.org/), mentre per effettuare il dump:
 
-`$ brew install gnu-sed`
+`$ brew install gnu-sed` (per utenti Ios)
 
-Le informazioni dettagliate riguardanti l'installazione del servizio CouchDB, lo schema del databse dell'applicazione, i comandi di restore e backup dello stesso si trovano nella cartella [dumpedDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb).
-
+Le informazioni dettagliate riguardanti l'installazione del servizio CouchDB, lo schema del database dell'applicazione, i comandi di restore e backup dello stesso si trovano nella cartella [dumpedDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb).
 
 Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
 
 - [X] Installazione di apache-CouchDB in locale
 - [X] Analisi della struttura dati
-- [ ] Costruzione delle view
-- [ ] Interrogazione alla base di dati in python
+- [X] Costruzione delle View
+- [X] Interrogazione alla base di dati in Python (con script automatici)
 
 #### Template Grafico
 
@@ -128,9 +127,9 @@ Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, 
 
 L'idea è di esportare questa applicazione per farla girare per esempio su un webserver `Apache`.
 
-- [ ] Creare un webserver con apache
+- [ ] Creare un webserver con Apache
 - [ ] Installare database CouchDB
-- [ ] Aggiornamento del database
+- [X] Aggiornamento del database (couchdb2.ini)
 - [ ] Porting della web-app
 
 ### Wireless Detection App
@@ -149,6 +148,12 @@ Dipendenze:
 - pip3 install scapy
 - pip3 install netaddr
 
+#### [Cython](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/airtrack/render)
+
+Offuscamento del codice python attraverso il modulo Cython.
+
+Le informazioni dettagliate riguardanti l'installazione del servizio e i vari comand si trovano nella cartella [Cython.](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/airtrack/render).
+
 ### Documentazione
 
 L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `GitHub`.
@@ -156,7 +161,7 @@ L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `
 - [X] Realizzazione repository
 - [X] Creazione branch (master e dev) di lavoro
 - [X] Condivisione della repository
-- [ ] Realizzazione e aggiornamento del file README.MD
+- [ ] Realizzazione e aggiornamento del file README.MD di ogni sottoprogetto
 
 ## Autori
 
