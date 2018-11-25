@@ -174,5 +174,7 @@ Per critiche o nuove idee contattare liberamente:
 * giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO)
 * simone.girardi@studenti.univr.it (SIMONE GIRARDI)
 
+con Davide Molinari, Alessandro Cosma, Enrico Carlo Agrillo e Francesco Lumpp.
+
 ## Licenza
 [GNU](https://www.gnu.org/licenses/gpl-3.0.html)
