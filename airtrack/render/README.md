@@ -4,7 +4,9 @@ Cython è un sistema di oofuscamento del codice python. Genera un file `.c` che 
 
 ## Installazione
 
-Per trasformare un codice python con cython bisogna seguire i seguenti passi:. Installare [Pyenv](https://github.com/pyenv/pyenv#installation)
+Per trasformare un codice python con cython bisogna seguire i seguenti passi. 
+
+Installare [Pyenv](https://github.com/pyenv/pyenv#installation)
 
 `$ git clone https://github.com/pyenv/pyenv.git ~/.pyenv`
 
