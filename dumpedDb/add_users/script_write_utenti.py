@@ -7,8 +7,8 @@ import couchdb
 from hashlib import md5
 
 #__server = "192.168.43.120"
-#__server = "localhost"
-__server = "157.27.134.188"
+__server = "localhost"
+#__server = "157.27.134.188"
 __dbName    = 'db_detection'
 __db4Log    = 'admin'
 __user      = 'admin'
@@ -60,7 +60,7 @@ def main():
 	__db4LogCon = couchdb.Server("http://%s:%s@%s:5984/" % (__user, __pw, __server))
 	for item in entry:
 		doc = item.split()
-		username  = doc[0].lower() # in minuscolo
+		username  = doc[0].lower() + "_" + doc[1].lower() # nome_cognome in minuscolo
 		nome      = doc[0][0].upper() + doc[0][1:] # prima lettera maiuscola
 		cognome   = doc[1][0].upper() + doc[1][1:] # prima lettera maiuscola
 		matricola = doc[2].upper() # in maiuscolo
