@@ -58,7 +58,9 @@ In questo modo possiamo attivare un web-server sul quale fare girare le nostre p
 - [X] Avvio tramite applicazione python sulla porta 5000
 - [X] Costruire un sistema modulare: controller, model e data-mapper.
 
-##### Gestione delle Sessioni Cache Cookie (Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
+##### Gestione delle Sessioni Cache Cookie
+
+(Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
 
 Installazione dei moduli utilizzati per la gestione dell'autenticazione:
 
@@ -86,7 +88,9 @@ Per problemi di cache e non corretta gestione del ricaricamento delle pagine da 
 - [X] Eliminazione dell'oggetto session per gestire il profilo dell'utente selezionato
 - [ ] Offuscamento del codice Javascript 
 
-#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
+#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb) 
+
+(Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
 Installazione del modulo attraverso:
 
@@ -152,7 +156,7 @@ Dipendenze:
 
 Offuscamento del codice python attraverso il modulo Cython.
 
-Le informazioni dettagliate riguardanti l'installazione del servizio e i vari comand si trovano nella cartella [Cython.](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/airtrack/render).
+Le informazioni dettagliate riguardanti l'installazione del servizio e i vari comand si trovano nella cartella [Cython](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/airtrack/render).
 
 ### Documentazione
 
