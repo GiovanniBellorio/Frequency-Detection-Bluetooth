@@ -12,6 +12,7 @@
     * [Template Grafico](#Template-Grafico)
     * [Deploy Applicazione Python](#Deploy-Applicazione-Python)
   * [Wireless Detection App](#Wireless-Detection-App)
+    * [Cython](#Cython)
   * [Documentazione](#Documentazione)
 * [Autori](#Autori)
 * [Licenza](#Licenza)
@@ -57,7 +58,9 @@ In questo modo possiamo attivare un web-server sul quale fare girare le nostre p
 - [X] Avvio tramite applicazione python sulla porta 5000
 - [X] Costruire un sistema modulare: controller, model e data-mapper.
 
-##### Gestione delle Sessioni Cache Cookie (Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
+##### Gestione delle Sessioni Cache Cookie
+
+(Sottoprogetto assegnato a [Davide Molinari](https://github.com/DaveMol96))
 
 Installazione dei moduli utilizzati per la gestione dell'autenticazione:
 
@@ -83,9 +86,11 @@ Per problemi di cache e non corretta gestione del ricaricamento delle pagine da 
 - [ ] Cambio protocollo di crittografia (per ora è md5) 
 - [ ] Modifica degli utenti che hanno la password codificata con ancora il protocollo md5
 - [X] Eliminazione dell'oggetto session per gestire il profilo dell'utente selezionato
-- [ ] Oscurazione dell codice javascript 
+- [ ] Offuscamento del codice Javascript 
 
-#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Bluetooth/tree/dev/dumpedDB) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
+#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb) 
+
+(Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
 Installazione del modulo attraverso:
 
@@ -94,7 +99,6 @@ Installazione del modulo attraverso:
 e utilizzo del medesimo nel programma python:
 
 ```python
-import logging
 import couchdb
 
 def __open(cls)
@@ -104,22 +108,16 @@ def __open(cls)
 
 Per installare il servizio abbiamo utilizzato [Apache CouchDB](http://couchdb.apache.org/), mentre per effettuare il dump:
 
-`$ brew install gnu-sed`
+`$ brew install gnu-sed` (per utenti Ios)
 
-Per eseguire il Backup del database:
-
-`$ bash couchdb-backup.sh -b -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
-
-Per eseguire il Restore del database:
-
-`$ bash couchdb-backup.sh -r -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
+Le informazioni dettagliate riguardanti l'installazione del servizio CouchDB, lo schema del database dell'applicazione, i comandi di restore e backup dello stesso si trovano nella cartella [dumpedDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb).
 
 Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
 
 - [X] Installazione di apache-CouchDB in locale
 - [X] Analisi della struttura dati
-- [ ] Costruzione delle view
-- [ ] Interrogazione alla base di dati in python
+- [X] Costruzione delle View
+- [X] Interrogazione alla base di dati in Python (con script automatici)
 
 #### Template Grafico
 
@@ -133,9 +131,9 @@ Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, 
 
 L'idea è di esportare questa applicazione per farla girare per esempio su un webserver `Apache`.
 
-- [ ] Creare un webserver con apache
+- [ ] Creare un webserver con Apache
 - [ ] Installare database CouchDB
-- [ ] Aggiornamento del database
+- [X] Aggiornamento del database (couchdb2.ini)
 - [ ] Porting della web-app
 
 ### Wireless Detection App
@@ -154,6 +152,12 @@ Dipendenze:
 - pip3 install scapy
 - pip3 install netaddr
 
+#### [Cython](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/airtrack/render)
+
+Offuscamento del codice python attraverso il modulo Cython.
+
+Le informazioni dettagliate riguardanti l'installazione del servizio e i vari comand si trovano nella cartella [Cython](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/airtrack/render).
+
 ### Documentazione
 
 L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `GitHub`.
@@ -161,7 +165,7 @@ L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `
 - [X] Realizzazione repository
 - [X] Creazione branch (master e dev) di lavoro
 - [X] Condivisione della repository
-- [ ] Realizzazione e aggiornamento del file README.MD
+- [ ] Realizzazione e aggiornamento del file README.MD di ogni sottoprogetto
 
 ## Autori
 
@@ -169,6 +173,8 @@ Per critiche o nuove idee contattare liberamente:
 
 * giovanni.bellorio@studenti.univr.it (GIOVANNI BELLORIO)
 * simone.girardi@studenti.univr.it (SIMONE GIRARDI)
+
+con Davide Molinari, Alessandro Cosma, Enrico Carlo Agrillo e Francesco Lumpp.
 
 ## Licenza
 [GNU](https://www.gnu.org/licenses/gpl-3.0.html)

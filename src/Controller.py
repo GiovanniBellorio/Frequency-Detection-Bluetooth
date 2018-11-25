@@ -83,28 +83,40 @@ def logout():
     logout_user()
     return redirect('/')
 
-@app.route("/view_modify_pwd", methods=['POST','GET'])
+@app.route("/view_modify_pwd", methods=['POST'])
 @login_required
-@check_roles([0,1],'registro')
+@check_roles([0,1,2],'registro')
 def view_modify_pwd():
-    return render_template('modify_pwd.html')
+    return render_template('modify_pwd.html', matricola_profilo='admin')
+
+@app.route("/view_modify_pwd_profilo", methods=['POST'])
+@login_required
+@check_roles([0],'registro')
+def view_modify_pwd_profilo():
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    return render_template('modify_pwd.html', matricola_profilo=matricola_profilo)
 
 @app.route("/modify_pwd", methods=['POST'])
 @login_required
 def modify_pwd():
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
     password1 = strip_tags(request.form['pass1']).strip()
     password2 = strip_tags(request.form['pass2']).strip()
     if password1 == password2:
         user = current_user
         password_codificata = app.model.make_md5(app.model.make_md5(password2))
-        ack_pwd = app.model.updateUserPwd(user.id, password_codificata)
+        if matricola_profilo == 'admin':
+            ack_pwd = app.model.updateUserPwd(user.id, password_codificata)
+        else:
+            id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
+            ack_pwd = app.model.updateUserPwd(id_profilo, password_codificata)
         if ack_pwd:
             return redirect('/registro')
         else:
             return redirect('/view_modify_pwd')
     else:
         return redirect('/view_modify_pwd')
-    
+
 @app.route("/view_modify_mac", methods=['POST','GET'])
 @login_required
 def view_modify_mac():
@@ -119,7 +131,6 @@ def modify_mac():
     matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     if mac1 == mac2:
-        user = current_user
         ack_mac = app.model.updateUserMac(id_profilo, mac1)
         if ack_mac:
             return redirect('/registro')

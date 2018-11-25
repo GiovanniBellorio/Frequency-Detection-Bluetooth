@@ -67,6 +67,18 @@ Per eseguire il Backup del database:
 
 dove `<nome_utente>` è "admin" e `<password>` è la password scelta in fase di installazione nel Setup Wizard.
 
+# Backup e Restore automatici
+
+Per facilitare le operazioni di backup e restore del database, è stato creato lo script python **[script_backup_restore.py](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/blob/dev/dumpedDb/script_backup_restore.py)**
+
+Si  possono utilizzare quindi i seguenti comandi:
+
+```python3 script_backup_restore.py r``` per eseguire il restore del databse.
+
+```python3 script_backup_restore.py b``` per eseguire il backup del databse.
+
+
+
 
 # Organizzazione della struttura del database
 
