@@ -85,7 +85,7 @@ Per problemi di cache e non corretta gestione del ricaricamento delle pagine da 
 - [X] Eliminazione dell'oggetto session per gestire il profilo dell'utente selezionato
 - [ ] Oscurazione dell codice javascript 
 
-#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Bluetooth/tree/dev/dumpedDB) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
+#### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb) (Sottoprogetto assegnato a [Alessandro Cosma](https://github.com/AlessandroCosma))
 
 Installazione del modulo attraverso:
 
