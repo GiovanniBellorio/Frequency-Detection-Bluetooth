@@ -106,13 +106,8 @@ Per installare il servizio abbiamo utilizzato [Apache CouchDB](http://couchdb.ap
 
 `$ brew install gnu-sed`
 
-Per eseguire il Backup del database:
+Le informazioni dettagliate riguardanti l'installazione del servizio CouchDB, lo schema del databse dell'applicazione, i comandi di restore e backup dello stesso si trovano nella cartella [dumpedDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb).
 
-`$ bash couchdb-backup.sh -b -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
-
-Per eseguire il Restore del database:
-
-`$ bash couchdb-backup.sh -r -H 127.0.0.1 -d db_detection -f dumpedDB.json -u admin -p admin`
 
 Essendo un database NoSQL creiamo N documenti per N utenti dove possiamo estrarre informazioni e memorizzare i tempi di entrata e uscita.
 
