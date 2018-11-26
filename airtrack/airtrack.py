@@ -28,6 +28,9 @@ class RecordFormSniffing:
         if overTreshold:
             self.overTreshold = overTreshold
 
+    # Metodo per aggiornare la data di inizio in caso di lettura da Log
+    def debug_update_first(self, new_first_time):
+        self.first_time = new_first_time
 
 NAME = 'AirTrack'
 DESCRIPTION = 'a command line tool for logging 802.11 probe request frames'
@@ -104,6 +107,8 @@ def build_packet_callback(
             rssi_val = -(256 - ord(packet.notdecoded[-0x04:-3]))
             fields.append(str(rssi_val))
 
+        logger.info(delimiter.join(fields))
+
     return packet_callback
 
 
@@ -120,6 +125,7 @@ def main():
     parser.add_argument('-r', '--rssi', action='store_true', help='include rssi in output')
     parser.add_argument('-D', '--debug', action='store_true', help='enable debug output')
     parser.add_argument('-l', '--log', action='store_true', help='enable scrolling live view of the logfile')
+    parser.add_argument('-j', '--input', help='read from log file')
     args = parser.parse_args()
 
     if not args.interface:
@@ -142,9 +148,14 @@ def main():
     # setup our rotating logger
 
     logger = logging.getLogger(NAME)
-    logger.setLevel(logging.INFO)
-    handler = RotatingFileHandler(args.output, maxBytes=args.max_bytes, backupCount=args.max_backups)
-    logger.addHandler(handler)
+    if not logger.handlers:
+        logger.setLevel(logging.INFO)
+        handler = RotatingFileHandler(args.output, maxBytes=args.max_bytes, backupCount=args.max_backups)
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.propagate = False
+
     if args.log:
         logger.addHandler(logging.StreamHandler(sys.stdout))
     built_packet_cb = build_packet_callback(
@@ -164,13 +175,21 @@ def main():
         os.system("iwconfig " + args.interface + " mode Monitor")
         os.system("ifconfig " + args.interface + " up")
 
-        print("start sniffing...")
-        sniff(iface=args.interface, prn=built_packet_cb, store=0)
+        if args.input:
+            print("start sniffing from file "+args.input)
+            sniff_from_file(args.input) # Sniff from log file
+        else:
+            print("start sniffing...")
+            sniff(iface=args.interface, prn=built_packet_cb, store=0) # Wi-Fi sniff
 
         restore_network(args)
     elif platform_OS.system() == "Darwin":
-        print("start sniffing...")
-        sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
+        if args.input:
+            print("start sniffing from file "+args.input)
+            sniff_from_file(args.input) # Sniff from log file
+        else:
+            print("start sniffing...")
+            sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True) # Wi-Fi sniff
 
 
     # update database with the new records
@@ -216,7 +235,27 @@ def connect_to_db():
     # 7. altrimenti alzo un flag indicante il superamento della treshold --> OK
     # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac --> OK
 
+def sniff_from_file(file):
+    with open(file) as log:
+        records_from_log = log.readlines()
+        records_from_log = [item.split("\t") for item in records_from_log]
 
+        # Modifica di tutti i tempi di inizio con il tempo di inizio del file di Log
+        for record in records_from_sniffing:
+            record.debug_update_first(int(records_from_log[0][0]))
+
+        # Rimozione di simboli superflui a seguito della lettura del file
+        for item in records_from_log:
+            item[1] = item[1].strip()
+
+        for mac_from_log in records_from_log: # Scorre tutte le righe del file di Log
+            if mac_from_log[1] in mac_list_from_db:
+                for record in records_from_sniffing:
+                    if record.mac_addr == mac_from_log[1]:
+                        print(("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time)), end="")
+                        record.update(int(mac_from_log[0]), False) # Aggiorna con il timestamp presente nel file di log
+                        print(" --> " + str(record.last_time))
+                        break
 
 if __name__ == '__main__':
     main()
