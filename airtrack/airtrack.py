@@ -29,7 +29,7 @@ class RecordFormSniffing:
             self.overTreshold = overTreshold
 
 
-NAME = 'AirTack'
+NAME = 'AirTrack'
 DESCRIPTION = 'a command line tool for logging 802.11 probe request frames'
 DEBUG = False
 
@@ -103,8 +103,6 @@ def build_packet_callback(
         if rssi:
             rssi_val = -(256 - ord(packet.notdecoded[-0x04:-3]))
             fields.append(str(rssi_val))
-
-        logger.info(delimiter.join(fields))
 
     return packet_callback
 
