@@ -5,10 +5,14 @@
 from tkinter import *
 from tkinter import scrolledtext
 from tkinter.ttk import Frame, Button, Style, Label, OptionMenu
+import subprocess
+import time
+import signal
+import os
 
 counter = 0
 
-class Example(Frame):
+class Interface(Frame):
 
 	def __init__(self):
 		super().__init__()
@@ -38,16 +42,20 @@ class Example(Frame):
 	def initUI(self):
 
 		def stop():
-			exit(0) #sostituire exit(0) con ctrl+c
+			os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+
 
 		def start():
-			self.updateScrolltext(scrollbarLog, "Inizio rilevazione:\n")
-			def count():
-				global counter
-				counter += 1 #sostituire counter con una stringa che venga aggiornata con l'output del terminale in questa riga
-				self.updateScrolltext(scrollbarLog, str(counter) + "\n")
-				self.after(1000, count)
-			count()
+			cmd = 'sudo python3 airtrack.py -i wlp3s0 -t LINUX'
+			global proc
+			proc = subprocess.Popen(cmd, shell=True)
+			# self.updateScrolltext(scrollbarLog, "Inizio rilevazione:\n")
+			# def count():
+			# 	global counter
+			# 	counter += 1 #sostituire counter con una stringa che venga aggiornata con l'output del terminale in questa riga
+			# 	self.updateScrolltext(scrollbarLog, str(counter) + "\n")
+			# 	self.after(1000, count)
+			# count()
 
 		self.master.title("AirTrack")
 		#self.style = Style()
@@ -82,7 +90,7 @@ def main():
 
 	root = Tk()
 	root.geometry("800x500")
-	app = Example()
+	app = Interface()
 	root.mainloop()
 
 
