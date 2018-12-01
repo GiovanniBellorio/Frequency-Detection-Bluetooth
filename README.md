@@ -148,10 +148,6 @@ Nota:
 * Per i limiti del segnale fare riferimento alla propria scheda di rete.
 * Per permettere all'applicazione di riconoscere/filtrare correttamente i dispositivi, è necessario che indirizzi MAC e hostname siano già presenti nel database della Web app.
 
-Dipendenze:
-- pip3 install scapy
-- pip3 install netaddr
-
 #### [Cython](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/airtrack/render)
 
 Offuscamento del codice python attraverso il modulo Cython.
