@@ -10,10 +10,11 @@ import setup
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 from django.utils.html import strip_tags
 from functools import wraps
-from flask import Flask, request, flash, redirect, url_for
+from flask import Flask, request, flash, redirect, url_for, send_file
 from flask.templating import render_template
 from Model import Model
 import os
+import csv
 
 # Classe di appoggio per i dati che arrivano dal DB
 class User(UserMixin):
@@ -144,13 +145,13 @@ def modify_mac():
 # 2 --> utente normale
 @app.route("/registro", methods=['POST','GET'])
 @login_required
+@check_roles([0,1,2],'registro')
 def registro():
     user = current_user
     matricola = app.model.getMatricola(user.id)
-    if user.ruolo == 2:
+    if user.ruolo == 1 or user.ruolo == 2:
         frequenza = app.model.getFrequenzaUsername(user.id)
         return render_template('registro.html', username=user.username, matricola=matricola, id_utente=user.id, ruolo=user.ruolo, frequenza=frequenza)
-    #elif ruolo == 1:
     elif user.ruolo == 0:
         utenti_punteggi = app.model.getUtentiPunteggi()
         supervisori_punteggi = app.model.getSupervisoriPunteggi()
@@ -234,6 +235,38 @@ def cambio_ruolo():
         pass
     else:
         ack_ruolo = app.model.updateRuolo(id_profilo, option_ruolo)
+    return redirect('/registro')
+
+@app.route("/export_punteggi", methods=['POST'])
+@login_required
+def export_punteggi():
+    utenti_punteggi      = app.model.getUtentiPunteggi() # [utente][tempo][punteggio]
+    supervisori_punteggi = app.model.getSupervisoriPunteggi()
+    
+    dati = list()
+    for utente in utenti_punteggi:
+        matricola = utente[0]['matricola']
+        nome = utente[0]['nome']
+        cognome = utente[0]['cognome']
+        tempo = utente[1]
+        punteggio = utente[2]
+        #print(matricola + " " + nome + " " + cognome + " " + str(tempo) + " " + str(punteggio))
+        dati.append({'matricola':matricola,'nome':nome,'cognome':cognome,'tempo':tempo,'punteggio':punteggio})
+        
+    nomeFile = 'voti.csv'
+    with open(nomeFile, mode='w', encoding='utf-8') as csvFile:
+        nomiCampi = ['matricola','nome','cognome','tempo','punteggio']
+        writer = csv.DictWriter(csvFile,fieldnames=nomiCampi)
+        writer.writeheader()
+        for riga in dati:
+            writer.writerow(riga)
+        
+    try:
+        return send_file("voti.csv", as_attachment=True)
+    except Exception as e:
+        self.log.exception(e)
+        self.Error(400)
+    # aggiungere scrittura nel db di tempo e punteggio come backup
     return redirect('/registro')
         
 
