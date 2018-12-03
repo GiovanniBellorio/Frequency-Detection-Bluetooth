@@ -251,3 +251,14 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_ruolo = True
         return ack_ruolo
+    
+    def updateUtentiPunteggi(self, id_utente, tempo_totale, punteggio):
+        ack_updateUtentiPunteggi = False
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id_utente)]
+        if not ack_updateUtentiPunteggi:
+            doc['tempo_totale'] = str(tempo_totale)
+            doc['punteggio'] = punteggio
+            cur[doc.id] = doc
+            ack_updateUtentiPunteggi = True
+        return ack_updateUtentiPunteggi

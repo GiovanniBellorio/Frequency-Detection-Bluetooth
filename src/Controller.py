@@ -250,7 +250,6 @@ def export_punteggi():
         cognome = utente[0]['cognome']
         tempo = utente[1]
         punteggio = utente[2]
-        #print(matricola + " " + nome + " " + cognome + " " + str(tempo) + " " + str(punteggio))
         dati.append({'matricola':matricola,'nome':nome,'cognome':cognome,'tempo':tempo,'punteggio':punteggio})
         
     nomeFile = 'voti.csv'
@@ -260,13 +259,22 @@ def export_punteggi():
         writer.writeheader()
         for riga in dati:
             writer.writerow(riga)
+    
+    # scrittura nel db di tempo e punteggio come backup
+    for riga in dati:
+        matricola_profilo = riga['matricola']
+        tempo_profilo = riga['tempo']
+        punteggio_profilo = riga['punteggio']
+        id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
+        ack_updateUtentiPunteggi = app.model.updateUtentiPunteggi(id_profilo, tempo_profilo, punteggio_profilo)
         
+    # download file
     try:
         return send_file("voti.csv", as_attachment=True)
     except Exception as e:
         self.log.exception(e)
         self.Error(400)
-    # aggiungere scrittura nel db di tempo e punteggio come backup
+    
     return redirect('/registro')
         
 
