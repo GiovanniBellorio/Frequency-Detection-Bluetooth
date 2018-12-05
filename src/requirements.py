@@ -1,4 +1,4 @@
-if __name__ == 'setup':
+if __name__ == 'requirements':
     import sys
     #from importlib import import_module
     from pip._internal import main as pipmain

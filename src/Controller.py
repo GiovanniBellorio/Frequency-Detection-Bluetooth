@@ -5,7 +5,7 @@ Controller dell'applicazione web
 
 @author: Giovanni, Davide
 '''
-import setup
+import requirements
 
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 from django.utils.html import strip_tags
