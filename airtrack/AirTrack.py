@@ -38,7 +38,7 @@ DEBUG = False
 
 mac_list_from_db = []           # list of valid mac address
 records_from_sniffing = []      # list of record to write on database
-model = Model()                 # model for database
+#model = Model()                 # model for database
 
 def build_packet_callback(
     time_fmt,
@@ -167,30 +167,23 @@ def main():
         args.rssi,
         )
 
-    # set monitor mode
-    print("setting monitor mode...")
-    if platform_OS.system() == "Linux":
-        os.system("service network-manager stop")
-        os.system("ifconfig " + args.interface + " down")
-        os.system("iwconfig " + args.interface + " mode Monitor")
-        os.system("ifconfig " + args.interface + " up")
+    if args.input:
+        print("start sniffing from file... " + args.input)
+        sniff_from_file(args.input) # Sniff from log file
+    else:
+        print("start sniffing...")
 
-        if args.input:
-            print("start sniffing from file "+args.input)
-            sniff_from_file(args.input) # Sniff from log file
-        else:
-            print("start sniffing...")
+        # set monitor mode
+
+        if platform_OS.system() == "Linux":
+            os.system("service network-manager stop")
+            os.system("ifconfig " + args.interface + " down")
+            os.system("iwconfig " + args.interface + " mode Monitor")
+            os.system("ifconfig " + args.interface + " up")
             sniff(iface=args.interface, prn=built_packet_cb, store=0) # Wi-Fi sniff
-
-        restore_network(args)
-    elif platform_OS.system() == "Darwin":
-        if args.input:
-            print("start sniffing from file "+args.input)
-            sniff_from_file(args.input) # Sniff from log file
-        else:
-            print("start sniffing...")
+            restore_network(args)
+        elif platform_OS.system() == "Darwin":
             sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True) # Wi-Fi sniff
-
 
     # update database with the new records
 
@@ -198,9 +191,9 @@ def main():
     time.sleep(5)
     for record in records_from_sniffing:
         if record.last_time - record.first_time > 0:
-            model.update_Records(record)
+            Model().update_Records(record)
 
-    print("end.")
+    print("done.")
 
 
 def restore_network(args):
@@ -214,13 +207,13 @@ def connect_to_db():
     username = 'admin'
     password = 'admin'
 
-    encoded_passwd = model.make_md5(model.make_md5(password))
-    num_rows, id_utente = model.getCountUsernamePassword(username, encoded_passwd)
-    ruolo = model.getRuoloUsername(id_utente)
+    encoded_passwd = Model().make_md5(Model().make_md5(password))
+    num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
+    ruolo = Model().getRuoloUsername(id_utente)
 
     if num_rows == 1 and ruolo != 2:
         global mac_list_from_db
-        mac_list_from_db = model.getAllMac()
+        mac_list_from_db = Model().getAllMac()
 
         for mac in mac_list_from_db:
             records_from_sniffing.append(RecordFormSniffing(mac, int(time.time()), int(time.time()), False))
