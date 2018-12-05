@@ -5,9 +5,8 @@ import os
 import sys
 import couchdb
 
-#__server = "192.168.43.120"
-#__server = "localhost"
-__server = "157.27.156.164"
+__server = "localhost"
+#__server = "157.27.154.163"
 __dbName = 'db_detection'
 __db4Log = 'admin'
 __user   = 'admin'
