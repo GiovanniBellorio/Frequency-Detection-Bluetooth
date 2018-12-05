@@ -37,4 +37,18 @@ if __name__ == 'setup':
         pipmain(['install', 'flask_login'])
         print('flask_login was installed\n')
         
+    try:
+        import couchdb 
+    except ImportError:
+        print('couchdb was no module installed\n')
+        pipmain(['install', 'couchdb'])
+        print('couchdb was installed\n')
+    
+    try:
+        import werkzeug 
+    except ImportError:
+        print('werkzeug was no module installed\n')
+        pipmain(['install', 'werkzeug'])
+        print('werkzeug was installed\n')
+        
     print('Great, all it was installed!\n')
