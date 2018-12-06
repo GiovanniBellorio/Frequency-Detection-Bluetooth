@@ -15,14 +15,6 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main_table.css')}}">
-	
-	<script type="text/javascript">
-		window.onpageshow = function(event) {
-		    if (event.persisted) {
-		        window.location.reload() 
-		    }
-		};
-	</script>
 </head>
 <body>
 	<div class="limiter">
@@ -64,9 +56,14 @@
 						<button class="login100-form-btn" type="submit">Utenti</button>
 					</div>	
 				</form>
-				<form class="login100-form validate-form" action="" method="POST">
+				<form class="login100-form validate-form" action="/export_punteggi" method="POST">
 					<div class="container-login100-form-btn p-t-10">
 						<button class="login100-form-btn" type="submit">Export Punteggi</button>
+					</div>	
+				</form>
+				<form class="login100-form validate-form" action="/view_modify_pwd" method="POST">
+					<div class="container-login100-form-btn p-t-10">
+						<button class="login100-form-btn" type="submit">Cambia password</button>
 					</div>	
 				</form>
 				<form class="login100-form validate-form" action="/view_aggiungi_utente" method="POST">
@@ -205,13 +202,6 @@
 	<script src="{{url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
 	<script src="{{url_for('static', filename='js/main.js')}}"></script>
 	<script src="{{url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-	<script>
-		$('.js-pscroll').each(function(){
-			var ps = new PerfectScrollbar(this);
-			$(window).on('resize', function(){
-				ps.update();
-			})
-		});
-	</script>
+	<script src="{{url_for('static', filename='js/script.js')}}"></script>
 </body>
 </html>

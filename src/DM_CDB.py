@@ -193,8 +193,8 @@ class DM_CDB():
         id_doc += 1
         utente    = {'username':username, 'nome':nome, 'cognome':cognome, 'matricola':matricola}
         macs      = [{'mac':mac}]
-        incontri  = [{'id': '', 'descrizione': '', 'data': '', 'ora_inizio': '', 'ora_fine': '', 'stato': ''}]
-        frequenze = [{'data': '', 'ora_inizio': '', 'ora_fine': '', 'intervallo': '', 'incontro': ''}]
+        incontri  = []
+        frequenze = []
         entry     = {'_id':str(id_doc), 'utente':utente, 'pwd':pwd, 'ruolo':2, 'macs':macs, 'incontri':incontri, 'frequenze':frequenze, 'tempo_totale': '0', 'punteggio':0}
         ack_user = False
         if not ack_user:
@@ -207,7 +207,6 @@ class DM_CDB():
         ack_user = False
         cur = DM_CDB.__cursor()
         doc = cur[str(id)]
-        
         if not ack_user:
             cur.delete(doc)
             ack_user = True
@@ -252,3 +251,14 @@ class DM_CDB():
             cur[doc.id] = doc
             ack_ruolo = True
         return ack_ruolo
+    
+    def updateUtentiPunteggi(self, id_utente, tempo_totale, punteggio):
+        ack_updateUtentiPunteggi = False
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id_utente)]
+        if not ack_updateUtentiPunteggi:
+            doc['tempo_totale'] = str(tempo_totale)
+            doc['punteggio'] = punteggio
+            cur[doc.id] = doc
+            ack_updateUtentiPunteggi = True
+        return ack_updateUtentiPunteggi

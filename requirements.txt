@@ -5,7 +5,15 @@
 
 scapy
 netaddr
+psutil
+
+
 
 
 # How to remove all installed packages
 # cat files.txt | xargs sudo rm -rf
+
+
+# apt requirements for ubuntu
+  # Installs tkinter for Python3.x.x
+      # sudo apt-get install python3-tk 
