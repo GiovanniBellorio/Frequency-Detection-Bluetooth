@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 if __name__ == 'requirements':
     import sys
     #from importlib import import_module
