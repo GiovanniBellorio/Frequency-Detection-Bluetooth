@@ -194,8 +194,9 @@ def main():
 
     # update database with the new records
 
+    # waiting network availability
     print("updating database...")
-    time.sleep(5)
+    time.sleep(10)
     for record in records_from_sniffing:
         if record.last_time - record.first_time > 0:
             model.update_Records(record)
