@@ -13,8 +13,7 @@ import time
 
 class DM_CDB():
     """ Data mapper verso CouchDB. """
-    __server    = "192.168.43.120"
-    #__server = "localhost"
+    __server = "localhost"
     #__server = "157.27.134.188"
     __dbName    = 'db_detection'
     __db4Log    = 'admin'
@@ -166,11 +165,11 @@ class Model(object):
     
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper
-    
+
 
 '''
 
-+++++++++++++++++++++++++++++++++++++++++++ main() +++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++ AirTrack() +++++++++++++++++++++++++++++++++++++++++++
 
 '''
 import platform as platform_OS
@@ -182,6 +181,8 @@ import netaddr
 import sys
 import logging
 import signal
+import shlex
+from configparser import ConfigParser
 from scapy.all import *
 from pprint import pprint
 from logging.handlers import RotatingFileHandler
@@ -189,9 +190,9 @@ from logging.handlers import RotatingFileHandler
 class RecordFormSniffing:
 
     def __init__(self, mac_addr, first_time, last_time, overTreshold):
-        self.mac_addr     = mac_addr
-        self.first_time   = first_time
-        self.last_time    = last_time
+        self.mac_addr = mac_addr
+        self.first_time = first_time
+        self.last_time = last_time
         self.overTreshold = overTreshold
 
     def update(self, new_last_time, overTreshold):
@@ -199,14 +200,17 @@ class RecordFormSniffing:
         if overTreshold:
             self.overTreshold = overTreshold
 
+    # Metodo per aggiornare la data di inizio in caso di lettura da Log
+    def debug_update_first(self, new_first_time):
+        self.first_time = new_first_time
 
-NAME = 'AirTack'
+NAME = 'AirTrack'
 DESCRIPTION = 'a command line tool for logging 802.11 probe request frames'
 DEBUG = False
 
 mac_list_from_db = []           # list of valid mac address
 records_from_sniffing = []      # list of record to write on database
-model = Model()                 # model for database
+#model = Model()                 # model for database
 
 def build_packet_callback(
     time_fmt,
@@ -250,10 +254,10 @@ def build_packet_callback(
         if packet.addr2 in mac_list_from_db:
             for record in records_from_sniffing:
                 if record.mac_addr == packet.addr2:
-                    print("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time))
-                    now = int(time.time())
-                    record.update(now, False)
+                    print(("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time)))
+                    record.update(int(time.time()), False)
                     print(" --> " + str(record.last_time))
+                    break
 
         # ----------------------------------------------------------------
 
@@ -280,8 +284,10 @@ def build_packet_callback(
     return packet_callback
 
 
-def main():
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
+def start_session(args_string):
+    print(args_string)
+
+    parser = argparse.ArgumentParser(description=DESCRIPTION, )
     parser.add_argument('-i', '--interface', help='capture interface')
     parser.add_argument('-t', '--time', default='iso', help='output time format (unix, iso)')
     parser.add_argument('-o', '--output', default='airtrack.log', help='logging output location')
@@ -293,11 +299,16 @@ def main():
     parser.add_argument('-r', '--rssi', action='store_true', help='include rssi in output')
     parser.add_argument('-D', '--debug', action='store_true', help='enable debug output')
     parser.add_argument('-l', '--log', action='store_true', help='enable scrolling live view of the logfile')
-    args = parser.parse_args()
+    parser.add_argument('-j', '--input', help='read from log file')
+
+    args = parser.parse_args([args_string])
+    args.interface = args.interface.strip()
 
     if not args.interface:
         print('error: capture interface not given, try --help')
         sys.exit(-1)
+
+    print('---'+args.interface+"---")
 
     """
     TODO: choose in which mode you want to start Monitor/AP-only
@@ -315,9 +326,14 @@ def main():
     # setup our rotating logger
 
     logger = logging.getLogger(NAME)
-    logger.setLevel(logging.INFO)
-    handler = RotatingFileHandler(args.output, maxBytes=args.max_bytes, backupCount=args.max_backups)
-    logger.addHandler(handler)
+    if not logger.handlers:
+        logger.setLevel(logging.INFO)
+        handler = RotatingFileHandler(args.output, maxBytes=args.max_bytes, backupCount=args.max_backups)
+        formatter = logging.Formatter('%(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.propagate = False
+
     if args.log:
         logger.addHandler(logging.StreamHandler(sys.stdout))
     built_packet_cb = build_packet_callback(
@@ -329,31 +345,33 @@ def main():
         args.rssi,
         )
 
-    # set monitor mode
-    print("setting monitor mode...")
-    if platform_OS.system() == "Linux":
-        os.system("service network-manager stop")
-        os.system("ifconfig " + args.interface + " down")
-        os.system("iwconfig " + args.interface + " mode Monitor")
-        os.system("ifconfig " + args.interface + " up")
-
+    if args.input:
+        print("start sniffing from file... " + args.input)
+        sniff_from_file(args.input) # Sniff from log file
+    else:
         print("start sniffing...")
-        sniff(iface=args.interface, prn=built_packet_cb, store=0)
 
-        restore_network(args)
-    elif platform_OS.system() == "Darwin":
-        print("start sniffing...")
-        sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True)
+        # set monitor mode
 
+        if platform_OS.system() == "Linux":
+            os.system("service network-manager stop")
+            os.system("ifconfig " + args.interface + " down")
+            os.system("iwconfig " + args.interface + " mode Monitor")
+            os.system("ifconfig " + args.interface + " up")
+            sniff(iface=args.interface, prn=built_packet_cb, store=0) # Wi-Fi sniff
+            restore_network(args)
+        elif platform_OS.system() == "Darwin":
+            sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True) # Wi-Fi sniff
 
     # update database with the new records
+
     print("updating database...")
     time.sleep(5)
     for record in records_from_sniffing:
         if record.last_time - record.first_time > 0:
-            model.update_Records(record)
+            Model().update_Records(record)
 
-    print("end.")
+    print("done.")
 
 
 def restore_network(args):
@@ -362,19 +380,18 @@ def restore_network(args):
     os.system("ifconfig " + args.interface + " up")
     os.system("service network-manager start")
 
-
 def connect_to_db():
     # Sinc db
     username = 'admin'
     password = 'admin'
 
-    encoded_passwd = model.make_md5(model.make_md5(password))
-    num_rows, id_utente = model.getCountUsernamePassword(username, encoded_passwd)
-    ruolo = model.getRuoloUsername(id_utente)
+    encoded_passwd = Model().make_md5(Model().make_md5(password))
+    num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
+    ruolo = Model().getRuoloUsername(id_utente)
 
     if num_rows == 1 and ruolo != 2:
         global mac_list_from_db
-        mac_list_from_db = model.getAllMac()
+        mac_list_from_db = Model().getAllMac()
 
         for mac in mac_list_from_db:
             records_from_sniffing.append(RecordFormSniffing(mac, int(time.time()), int(time.time()), False))
@@ -388,6 +405,122 @@ def connect_to_db():
     # 6. se necessario resetto il contatore relativo al mac appena riscontrato valido entro la treshold --> OK
     # 7. altrimenti alzo un flag indicante il superamento della treshold --> OK
     # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac --> OK
+
+# Il log deve essere nel formato '(<UNIX_TIMESTAMP>\t<MAC>\n){1,}'
+def sniff_from_file(file):
+    with open(file) as log:
+        records_from_log = log.readlines()
+        records_from_log = [item.split("\t") for item in records_from_log]
+
+        # Modifica di tutti i tempi di inizio con il tempo di inizio del file di Log
+        for record in records_from_sniffing:
+            record.debug_update_first(int(records_from_log[0][0]))
+
+        # Rimozione di simboli superflui a seguito della lettura del file
+        for item in records_from_log:
+            item[1] = item[1].strip()
+
+        for mac_from_log in records_from_log: # Scorre tutte le righe del file di Log
+            if mac_from_log[1] in mac_list_from_db:
+                for record in records_from_sniffing:
+                    if record.mac_addr == mac_from_log[1]:
+                        print(("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time)))
+                        record.update(int(mac_from_log[0]), False) # Aggiorna con il timestamp presente nel file di log
+                        print(" --> " + str(record.last_time))
+                        break
+
+
+'''
+
++++++++++++++++++++++++++++++++++++++++++++ view() +++++++++++++++++++++++++++++++++++++++++++
+
+'''
+#from tkinter import Tk, RIGHT, LEFT, TOP, BOTH, RAISED, scrolledtext, StringVar
+from tkinter import *
+from tkinter import scrolledtext
+from tkinter.ttk import Frame, Button, Style, Label, OptionMenu
+import subprocess
+import time
+import signal
+import os
+import psutil
+
+counter = 0
+
+class AirTrackView(Frame):
+	
+    def __init__(self):
+        super().__init__()
+		
+        self.INTERFACES = []
+        self.iface = StringVar(self)
+        self.scrollbarLog = None
+		
+        self.setup()
+        self.initUI()
+
+    def setup(self):
+        # get interfaces lits
+        self.INTERFACES = psutil.net_if_addrs()
+
+    def updateScrolltext(self, txt):
+        # http://effbot.org/tkinterbook/text.htm  <-- qui spiega xk bisogna usare questa funzione!
+        print("updateScrolltext called..." + txt)
+        self.scrollbarLog.config(state = NORMAL)
+        self.scrollbarLog.insert(END, txt)
+        self.scrollbarLog.see("end")
+        self.scrollbarLog.config(state = DISABLED)
+
+    def initUI(self):
+
+        def stop():
+            #os.killpg(os.getpgid(self.pid), signal.SIGINT)
+            pass
+
+        def start():
+            AirTrack.start_session('-i '+self.iface.get())
+			# self.updateScrolltext("Inizio rilevazione:\n")
+			# def count():
+			# 	global counter
+			# 	counter += 1 #sostituire counter con una stringa che venga aggiornata con l'output del terminale in questa riga
+			# 	self.updateScrolltext(str(counter) + "\n")
+			# 	self.after(1000, count)
+			# count()
+
+        self.master.title("AirTrack")
+		#self.style = Style()
+		#self.style.theme_use("default")
+
+        top_label = Label(self, text = "Welcome to AirTrack:")
+        top_label.pack(side = TOP, padx = 5, pady = 5, anchor = 'w')
+
+        scrollbarLogFrame = Frame(self, relief = RAISED, borderwidth = 1)
+        scrollbarLogFrame.pack(fill = BOTH, expand = True)
+
+        self.pack(fill = BOTH, expand = True)
+
+        self.scrollbarLog = scrolledtext.ScrolledText(scrollbarLogFrame, background = "black", foreground = "green")#, state=DISABLED)
+        self.scrollbarLog.pack(fill = BOTH, expand = True, padx = 5, pady = 5)
+
+        startButton = Button(self, text = "Start", command = start) #inserire command
+        startButton.pack(side = RIGHT, padx = 5, pady = 5)
+        stopButton = Button(self, state=DISABLED, text = "Stop", command = stop) #inserire command
+        stopButton.pack(side = RIGHT)
+
+        interface_label = Label(self, text = "Interface:")
+        interface_label.pack(side = LEFT, padx = 5, pady = 5)
+
+        interfaces_list = OptionMenu(self, self.iface, next(iter(self.INTERFACES)), *self.INTERFACES)
+        interfaces_list.pack(side = LEFT)
+
+        self.updateScrolltext("Select network interface and press Start.\n")
+
+
+def main():
+    root = Tk()
+    root.geometry("800x500")
+    app = AirTrackView()
+    root.mainloop()
 
 if __name__ == '__main__':
     main()

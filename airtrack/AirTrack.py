@@ -10,6 +10,8 @@ import netaddr
 import sys
 import logging
 import signal
+import shlex
+from configparser import ConfigParser
 from scapy.all import *
 from pprint import pprint
 from logging.handlers import RotatingFileHandler
@@ -112,8 +114,10 @@ def build_packet_callback(
     return packet_callback
 
 
-def main():
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
+def start_session(args_string):
+    print(args_string)
+
+    parser = argparse.ArgumentParser(description=DESCRIPTION, )
     parser.add_argument('-i', '--interface', help='capture interface')
     parser.add_argument('-t', '--time', default='iso', help='output time format (unix, iso)')
     parser.add_argument('-o', '--output', default='airtrack.log', help='logging output location')
@@ -126,11 +130,15 @@ def main():
     parser.add_argument('-D', '--debug', action='store_true', help='enable debug output')
     parser.add_argument('-l', '--log', action='store_true', help='enable scrolling live view of the logfile')
     parser.add_argument('-j', '--input', help='read from log file')
-    args = parser.parse_args()
+
+    args = parser.parse_args([args_string])
+    args.interface = args.interface.strip()
 
     if not args.interface:
         print('error: capture interface not given, try --help')
         sys.exit(-1)
+
+    print('---'+args.interface+"---")
 
     """
     TODO: choose in which mode you want to start Monitor/AP-only
@@ -228,6 +236,7 @@ def connect_to_db():
     # 7. altrimenti alzo un flag indicante il superamento della treshold --> OK
     # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac --> OK
 
+# Il log deve essere nel formato '(<UNIX_TIMESTAMP>\t<MAC>\n){1,}'
 def sniff_from_file(file):
     with open(file) as log:
         records_from_log = log.readlines()
@@ -250,5 +259,5 @@ def sniff_from_file(file):
                         print(" --> " + str(record.last_time))
                         break
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

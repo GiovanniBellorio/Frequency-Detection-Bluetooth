@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 '''
 Created on 26 ott 2018
 
@@ -86,6 +89,10 @@ class Model(object):
     def deleteUser(self, id):
         ack_user = self.dataMapper.deleteUser(id)
         return ack_user
-        
+    
+    def aggiungi_presenza(self, id):
+        ack_aggiungi_presenza = self.dataMapper.aggiungi_presenza(id)
+        return ack_aggiungi_presenza
+    
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper

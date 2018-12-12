@@ -10,6 +10,7 @@ import time
 import signal
 import os
 import psutil
+import AirTrack
 
 counter = 0
 
@@ -42,14 +43,12 @@ class AirTrackView(Frame):
 	def initUI(self):
 
 		def stop():
-			os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+			#os.killpg(os.getpgid(self.pid), signal.SIGINT)
+			pass
 
 
 		def start():
-			self.updateScrolltext("Interface selected is: " +  self.iface.get() + "\n")
-			cmd = 'sudo python3 AirTrack.py -i ' + self.iface.get() + ' -t LINUX'
-			#global proc
-			proc = subprocess.Popen(cmd, shell=True)
+			AirTrack.start_session('-i '+self.iface.get())
 			# self.updateScrolltext("Inizio rilevazione:\n")
 			# def count():
 			# 	global counter
@@ -75,7 +74,7 @@ class AirTrackView(Frame):
 
 		startButton = Button(self, text = "Start", command = start) #inserire command
 		startButton.pack(side = RIGHT, padx = 5, pady = 5)
-		stopButton = Button(self, text = "Stop", command = stop) #inserire command
+		stopButton = Button(self, state=DISABLED, text = "Stop", command = stop) #inserire command
 		stopButton.pack(side = RIGHT)
 
 		interface_label = Label(self, text = "Interface:")

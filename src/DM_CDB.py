@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 '''
 Created on 26 ott 2018
 
@@ -8,7 +11,8 @@ DataMapper
 
 import logging
 import couchdb
-from datetime import datetime
+import datetime
+import time
 from DB_CONNECT import DB_CONNECT
 
 class DM_CDB():
@@ -211,6 +215,26 @@ class DM_CDB():
             cur.delete(doc)
             ack_user = True
         return ack_user
+    
+    def aggiungi_presenza(self, id):
+        """ """
+        ack_aggiungi_presenza = False
+        
+        current_date = datetime.date.today()
+        current_date = current_date.strftime("%d-%m-%Y")
+        
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id)]
+        
+        if not ack_aggiungi_presenza:
+            doc['frequenze'].append({"data": current_date,
+                                 "ora_inizio": "-",
+                                 "ora_fine": "-",
+                                 "intervallo": "2:00:00",
+                                 "incontro": ""})
+            cur[doc.id] = doc
+            ack_aggiungi_presenza = True
+        return ack_aggiungi_presenza
     
     def getIdMac(self, id_utente):
         """ """
