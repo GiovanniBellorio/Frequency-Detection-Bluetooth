@@ -10,6 +10,8 @@ import netaddr
 import sys
 import logging
 import signal
+import shlex
+from configparser import ConfigParser
 from scapy.all import *
 from pprint import pprint
 from logging.handlers import RotatingFileHandler
@@ -38,7 +40,7 @@ DEBUG = False
 
 mac_list_from_db = []           # list of valid mac address
 records_from_sniffing = []      # list of record to write on database
-model = Model()                 # model for database
+#model = Model()                 # model for database
 
 def build_packet_callback(
     time_fmt,
@@ -112,8 +114,10 @@ def build_packet_callback(
     return packet_callback
 
 
-def main():
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
+def start_session(args_string):
+    print(args_string)
+
+    parser = argparse.ArgumentParser(description=DESCRIPTION, )
     parser.add_argument('-i', '--interface', help='capture interface')
     parser.add_argument('-t', '--time', default='iso', help='output time format (unix, iso)')
     parser.add_argument('-o', '--output', default='airtrack.log', help='logging output location')
@@ -126,11 +130,15 @@ def main():
     parser.add_argument('-D', '--debug', action='store_true', help='enable debug output')
     parser.add_argument('-l', '--log', action='store_true', help='enable scrolling live view of the logfile')
     parser.add_argument('-j', '--input', help='read from log file')
-    args = parser.parse_args()
+
+    args = parser.parse_args([args_string])
+    args.interface = args.interface.strip()
 
     if not args.interface:
         print('error: capture interface not given, try --help')
         sys.exit(-1)
+
+    print('---'+args.interface+"---")
 
     """
     TODO: choose in which mode you want to start Monitor/AP-only
@@ -167,30 +175,23 @@ def main():
         args.rssi,
         )
 
-    # set monitor mode
-    print("setting monitor mode...")
-    if platform_OS.system() == "Linux":
-        os.system("service network-manager stop")
-        os.system("ifconfig " + args.interface + " down")
-        os.system("iwconfig " + args.interface + " mode Monitor")
-        os.system("ifconfig " + args.interface + " up")
+    if args.input:
+        print("start sniffing from file... " + args.input)
+        sniff_from_file(args.input) # Sniff from log file
+    else:
+        print("start sniffing...")
 
-        if args.input:
-            print("start sniffing from file "+args.input)
-            sniff_from_file(args.input) # Sniff from log file
-        else:
-            print("start sniffing...")
+        # set monitor mode
+
+        if platform_OS.system() == "Linux":
+            os.system("service network-manager stop")
+            os.system("ifconfig " + args.interface + " down")
+            os.system("iwconfig " + args.interface + " mode Monitor")
+            os.system("ifconfig " + args.interface + " up")
             sniff(iface=args.interface, prn=built_packet_cb, store=0) # Wi-Fi sniff
-
-        restore_network(args)
-    elif platform_OS.system() == "Darwin":
-        if args.input:
-            print("start sniffing from file "+args.input)
-            sniff_from_file(args.input) # Sniff from log file
-        else:
-            print("start sniffing...")
+            restore_network(args)
+        elif platform_OS.system() == "Darwin":
             sniff(iface=args.interface, prn=built_packet_cb, store=0, monitor=True) # Wi-Fi sniff
-
 
     # update database with the new records
 
@@ -199,9 +200,9 @@ def main():
     time.sleep(10)
     for record in records_from_sniffing:
         if record.last_time - record.first_time > 0:
-            model.update_Records(record)
+            Model().update_Records(record)
 
-    print("end.")
+    print("done.")
 
 
 def restore_network(args):
@@ -215,13 +216,13 @@ def connect_to_db():
     username = 'admin'
     password = 'admin'
 
-    encoded_passwd = model.make_md5(model.make_md5(password))
-    num_rows, id_utente = model.getCountUsernamePassword(username, encoded_passwd)
-    ruolo = model.getRuoloUsername(id_utente)
+    encoded_passwd = Model().make_md5(Model().make_md5(password))
+    num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
+    ruolo = Model().getRuoloUsername(id_utente)
 
     if num_rows == 1 and ruolo != 2:
         global mac_list_from_db
-        mac_list_from_db = model.getAllMac()
+        mac_list_from_db = Model().getAllMac()
 
         for mac in mac_list_from_db:
             records_from_sniffing.append(RecordFormSniffing(mac, int(time.time()), int(time.time()), False))
@@ -236,6 +237,7 @@ def connect_to_db():
     # 7. altrimenti alzo un flag indicante il superamento della treshold --> OK
     # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac --> OK
 
+# Il log deve essere nel formato '(<UNIX_TIMESTAMP>\t<MAC>\n){1,}'
 def sniff_from_file(file):
     with open(file) as log:
         records_from_log = log.readlines()
@@ -258,5 +260,5 @@ def sniff_from_file(file):
                         print(" --> " + str(record.last_time))
                         break
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

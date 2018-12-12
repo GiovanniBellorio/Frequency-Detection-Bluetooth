@@ -1,4 +1,7 @@
-if __name__ == 'setup':
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+if __name__ == 'requirements':
     import sys
     #from importlib import import_module
     from pip._internal import main as pipmain
@@ -36,5 +39,19 @@ if __name__ == 'setup':
         print('flask_login was no module installed\n')
         pipmain(['install', 'flask_login'])
         print('flask_login was installed\n')
+        
+    try:
+        import couchdb 
+    except ImportError:
+        print('couchdb was no module installed\n')
+        pipmain(['install', 'couchdb'])
+        print('couchdb was installed\n')
+    
+    try:
+        import werkzeug 
+    except ImportError:
+        print('werkzeug was no module installed\n')
+        pipmain(['install', 'werkzeug'])
+        print('werkzeug was installed\n')
         
     print('Great, all it was installed!\n')

@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 '''
 Created on 26 0tt 2018
 
@@ -5,7 +8,7 @@ Controller dell'applicazione web
 
 @author: Giovanni, Davide
 '''
-import setup
+import requirements
 
 from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin, current_user
 from django.utils.html import strip_tags
@@ -220,6 +223,15 @@ def elimina_utente():
     matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     ack_user  = app.model.deleteUser(id_profilo)
+    return redirect('/registro')
+
+@app.route("/aggiungi_presenza", methods=['POST'])
+@login_required
+def aggiungi_presenza():
+    user = current_user
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
+    ack_aggiungi_presenza = app.model.aggiungi_presenza(id_profilo)
     return redirect('/registro')
 
 @app.route("/cambio_ruolo", methods=['POST'])

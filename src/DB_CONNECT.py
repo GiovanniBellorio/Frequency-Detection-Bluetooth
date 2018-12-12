@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 '''
 Created on 26 ott 2018
 
@@ -8,7 +11,7 @@ DataMapper
 
 class DB_CONNECT():
     __server = "localhost"
-    #__server = "157.27.134.188"
+    #__server = "157.27.154.163"
     __dbName = 'db_detection'
     __db4Log = 'admin'
     __user   = 'admin'
