@@ -35,7 +35,7 @@ class RecordFormSniffing:
         self.first_time = new_first_time
 
 NAME = 'AirTrack'
-DESCRIPTION = 'a command line tool for logging 802.11 probe request frames'
+DESCRIPTION = 'a command line tool for logging 802.11 probe request and QoS data frames'
 DEBUG = False
 
 mac_list_from_db = []           # list of valid mac address
@@ -56,10 +56,12 @@ def build_packet_callback(
         if not packet.haslayer(Dot11):
             return
 
+        print(packet.type)
+
         # we are looking for management frames with a probe subtype
         # if neither match we are done here
 
-        if packet.type != 0 or packet.subtype != 0x04:
+        if packet.type != 0 or packet.subtype != 0x04 or packet.type != 0x02:
             return
 
         # list of output fields
@@ -79,7 +81,7 @@ def build_packet_callback(
         fields.append(packet.addr2)
 
         # ----------------------------------------------------------------
-        # check for a valid mac address
+        # check for a valid mac address for the course
 
         if packet.addr2 in mac_list_from_db:
             for record in records_from_sniffing:
