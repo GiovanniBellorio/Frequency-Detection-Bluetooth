@@ -56,13 +56,14 @@ def build_packet_callback(
         if not packet.haslayer(Dot11):
             return
 
-        print(packet.type)
+        # print(packet.type)
 
-        # we are looking for management frames with a probe subtype
+        # we are looking for management frames with a probe subtype or for QOS
         # if neither match we are done here
 
-        if packet.type != 0 or packet.subtype != 0x04 or packet.type != 0x02:
-            return
+        if packet.type != 0 or packet.subtype != 0x04:
+            if packet.type != 0x02:
+                return
 
         # list of output fields
 
