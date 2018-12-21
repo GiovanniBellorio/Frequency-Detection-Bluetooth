@@ -6,12 +6,11 @@ import re
 import couchdb
 from hashlib import md5
 
-__server = "localhost"
-#__server = "157.27.154.163"
+__server    = "157.27.26.206"
 __dbName    = 'db_detection'
 __db4Log    = 'admin'
 __user      = 'admin'
-__pw        = 'admin'
+__pw        = 'Frequency-Detection-Wireless'
 __db4LogCon = None
 
 
@@ -56,7 +55,7 @@ def main():
 	    	entry.append(row[1])
 
 	global __db4LogCon
-	__db4LogCon = couchdb.Server("http://%s:%s@%s:5984/" % (__user, __pw, __server))
+	__db4LogCon = couchdb.Server("http://%s:%s@%s:3306/" % (__user, __pw, __server))
 	for item in entry:
 		doc = item.split()
 		username  = doc[0].lower() + "_" + doc[1].lower() # nome_cognome in minuscolo

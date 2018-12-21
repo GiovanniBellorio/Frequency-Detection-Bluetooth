@@ -33,7 +33,7 @@ usage(){
     echo -e "\t-H   CouchDB Hostname or IP. Can be provided with or without 'http(s)://'"
     echo -e "\t-d   CouchDB Database name to backup/restore."
     echo -e "\t-f   File to Backup-to/Restore-from."
-    echo -e "\t-P   Provide a port number for CouchDB [Default: 5984]"
+    echo -e "\t-P   Provide a port number for CouchDB [Default: 3306]"
     echo -e "\t-u   Provide a username for auth against CouchDB [Default: blank]"
     echo -e "\t       -- can also set with 'COUCHDB_USER' environment var"
     echo -e "\t-p   Provide a password for auth against CouchDB [Default: blank]"
@@ -106,7 +106,7 @@ username=""
 password=""
 backup=false
 restore=false
-port=5984
+port=3306
 OPTIND=1
 lines=5000
 attempts=3
