@@ -217,7 +217,8 @@ def restore_network(args):
 def connect_to_db():
     # Sinc db
     username = 'admin'
-    password = 'admin'
+    #password = 'admin'
+    password = 'Frequency-Detection-Wireless'
 
     encoded_passwd = Model().make_md5(Model().make_md5(password))
     num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
