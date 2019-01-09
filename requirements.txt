@@ -6,6 +6,7 @@
 scapy
 netaddr
 psutil
+couchdb
 
 
 
@@ -17,3 +18,10 @@ psutil
 # apt requirements for ubuntu
   # Installs tkinter for Python3.x.x
       # sudo apt-get install python3-tk 
+
+################################
+# FOR WINDOWS USERS
+################################
+# Python: Python 2.7.X or 3.4+. After installation, add the Python installation directory and its Scripts subdirectory to your PATH. Depending on your Python version, the defaults would be C:\Python27 and C:\Python27\Scripts.
+# Npcap: the latest version. Default values are recommended. Scapy will also work with Winpcap.
+# Scapy: latest development version from the Git repository. Unzip the archive, open a command prompt in that directory and run “python setup.py install”.
