@@ -8,12 +8,13 @@ DataMapper
 
 class DB_CONNECT():
 
-    __server = "localhost"
-    #__server = "157.27.154.163"
+    #__server = "localhost"
+    __server = "157.27.26.206"
     __dbName = 'db_detection'
     __db4Log = 'admin'
     __user   = 'admin'
-    __pw     = 'admin'
+    #__pw     = 'admin'
+    __pw     = 'Frequency-Detection-Wireless'
 
     @classmethod
     def get__server(cls):

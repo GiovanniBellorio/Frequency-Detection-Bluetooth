@@ -29,7 +29,7 @@ class DM_CDB():
     def __open(cls):
         if cls.__dbCon is None:
             try: # readonly
-                cls.__dbCon = couchdb.Server("http://%s:5984/" % (cls.__server))
+                cls.__dbCon = couchdb.Server("http://%s:3306/" % (cls.__server))
                 logging.info("Connection to database " + cls.__dbName + " created.")
             except couchdb.ServerError as err:
                 logging.error("Error connecting to CouchDB at %s.\nDetails: %s.", cls.__server, err)
@@ -37,7 +37,7 @@ class DM_CDB():
                 exit()
             else: # Questo else è del TRY
                 try: # read - write
-                    cls.__db4LogCon = couchdb.Server("http://%s:%s@%s:5984/" % (cls.__user, cls.__pw, cls.__server))
+                    cls.__db4LogCon = couchdb.Server("http://%s:%s@%s:3306/" % (cls.__user, cls.__pw, cls.__server))
                     logging.info("Connection to database " + cls.__dbName + " created.")
                 except couchdb.ServerError as err:
                     logging.error("Error connecting to couchdb at %s.\nDetails: %s.", cls.__server, err)
