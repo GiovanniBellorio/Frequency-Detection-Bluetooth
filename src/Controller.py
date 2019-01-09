@@ -158,6 +158,10 @@ def registro():
     elif user.ruolo == 0:
         utenti_punteggi = app.model.getUtentiPunteggi()
         supervisori_punteggi = app.model.getSupervisoriPunteggi()
+        
+        utenti_punteggi = sorted(utenti_punteggi, key=lambda utenti: utenti[0]['cognome'])
+        supervisori_punteggi = sorted(supervisori_punteggi, key=lambda utenti: utenti[0]['cognome'])
+        
         return render_template('registro.html', username=user.username, ruolo=user.ruolo, supervisori_punteggi=supervisori_punteggi, utenti_punteggi=utenti_punteggi)
     else:
         flash('wrong password!')
