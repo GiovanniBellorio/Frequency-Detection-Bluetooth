@@ -11,6 +11,7 @@ import signal
 import os
 import psutil
 import AirTrack
+from time import sleep
 
 counter = 0
 
@@ -22,6 +23,7 @@ class AirTrackView(Frame):
 		self.INTERFACES = []
 		self.iface = StringVar(self)
 		self.scrollbarLog = None
+		self.sniffer = None
 
 		self.setup()
 		self.initUI()
@@ -44,12 +46,21 @@ class AirTrackView(Frame):
 
 		def stop():
 			#os.killpg(os.getpgid(self.pid), signal.SIGINT)
-			pass
+			print("[*] Stop sniffing")
+			self.sniffer.join(2.0)
+
+			if self.sniffer.isAlive():
+				self.sniffer.socket.close()
+
+			# update database with the new records
+			AirTrack.update_db()
 
 
 		def start():
-			AirTrack.start_session('-i '+self.iface.get())
-			# self.updateScrolltext("Inizio rilevazione:\n")
+			self.sniffer = AirTrack.Sniffer('-i '+self.iface.get())
+			self.sniffer.start()
+			#AirTrack.start_session('-i '+self.iface.get())
+			self.updateScrolltext("Inizio rilevazione:\n")
 			# def count():
 			# 	global counter
 			# 	counter += 1 #sostituire counter con una stringa che venga aggiornata con l'output del terminale in questa riga
@@ -74,7 +85,7 @@ class AirTrackView(Frame):
 
 		startButton = Button(self, text = "Start", command = start) #inserire command
 		startButton.pack(side = RIGHT, padx = 5, pady = 5)
-		stopButton = Button(self, state=DISABLED, text = "Stop", command = stop) #inserire command
+		stopButton = Button(self, text = "Stop", command = stop) #inserire command
 		stopButton.pack(side = RIGHT)
 
 		interface_label = Label(self, text = "Interface:")
@@ -86,12 +97,42 @@ class AirTrackView(Frame):
 		self.updateScrolltext("Select network interface and press Start.\n")
 
 
+
 def main():
 
-	root = Tk()
-	root.geometry("800x500")
-	app = AirTrackView()
-	root.mainloop()
+	# database connection
+	# TODO qui ci va la schermata di login nel caso della GUI,
+	# altrimnti vengono chieste in input solo usrname e passw.
+
+
+	# TODO: il parser andrebbe messo qua!
+
+	if len(sys.argv) > 1:
+		print("gui mode off")
+		AirTrack.connect_to_db()
+
+		sniffer = AirTrack.Sniffer(sys.argv[1] + " " + sys.argv[2])
+		sniffer.start()
+		try:
+			while True:
+				sleep(100)
+		except KeyboardInterrupt:
+			print("[*] Stop sniffing")
+			sniffer.join(2.0)
+
+			if sniffer.isAlive():
+				sniffer.socket.close()
+
+		# update database with the new records
+		AirTrack.update_db()
+
+	else:
+		AirTrack.connect_to_db()
+		print("gui mode on")
+		root = Tk()
+		root.geometry("800x500")
+		app = AirTrackView()
+		root.mainloop()
 
 
 if __name__ == '__main__':
