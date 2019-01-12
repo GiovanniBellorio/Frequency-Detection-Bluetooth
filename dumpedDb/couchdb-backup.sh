@@ -107,6 +107,7 @@ password=""
 backup=false
 restore=false
 port=3306
+#port=5984
 OPTIND=1
 lines=5000
 attempts=3

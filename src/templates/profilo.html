@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="it">
+<head>
+	<title>Registro</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="{{url_for('static', filename='images/icons/favicon.ico')}}"/>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='fonts/Linearicons-Free-v1.0.0/icon-font.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/animate/animate.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/select2/select2.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main_table.css')}}">
+	
+</head>
+<body>
+	<form class="login100-form validate-form" method="POST">
+		<div class="limiter">
+			<div class="container-login100" style="background-image: url('{{url_for('static', filename='images/img-01.jpg')}}');">
+				<div class="wrap-login100 p-t-190" style="padding-top:90px;width:100%">
+					<div class="login100-form-avatar">
+						<img src="{{url_for('static', filename='images/avatar-02.jpg')}}" alt="AVATAR">
+					</div>
+					<span class="login100-form-title p-t-20 p-b-45">{{ username.upper()  }}</span>
+					
+					<div class="container-table100">
+						<div class="container-login100-form-btn p-t-10" style="width:10%">
+							<button class="login100-form-btn" type="submit" formaction="/registro">Registro</button>
+						</div>
+						<div class="container-login100-form-btn p-t-10" style="width:10%">
+							<button class="login100-form-btn" type="submit" formaction="/view_modify_pwd_profilo">Cambia password</button>
+						</div>	
+						<div class="container-login100-form-btn p-t-10" style="width:13%">
+							<button class="login100-form-btn" type="submit" formaction="/view_modify_mac">Cambia mac-address</button>
+						</div>
+						<div class="container-login100-form-btn p-t-10" style="width:10%">
+							<button class="login100-form-btn" type="submit" formaction="/elimina_utente">Elimina Utente</button>
+						</div>
+						<div class="container-login100-form-btn p-t-10" style="width:10%">
+							<button class="login100-form-btn" type="submit" formaction="/aggiungi_presenza">Aggiungi Presenza</button>
+						</div>
+						<div class="container-login100-form-btn p-t-10" style="width:10%">
+							<button class="login100-form-btn" type="submit" formaction="/logout">Logout</button>
+						</div>	
+					</div>
+				</div>
+
+				<!-- RIASSUNTO -->
+				<div class="container-table100">
+					<div class="wrap-table100">
+						<div class="table100 ver1 m-b-110">
+							<div class="table100-head">
+								<table>
+									<thead>
+										<tr class="row100 head">
+											<th class="cell100 column1">Cognome</th>
+											<th class="cell100 column2">Nome</th>
+											<th class="cell100 column3">Matricola</th>
+											<th class="cell100 column4">Mac</th>
+											<th class="cell100 column5">Ruolo</th>
+											<th class="cell100 column6">Tempo</th>
+											<th class="cell100 column7">Punteggio</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+
+							<div class="table100-body js-pscroll">
+								<table>
+									<tbody>
+										{%- for utente in utente_profilo %}
+											<tr class="row100 body">
+												<td class="cell100 column1">{{ utente[0]['cognome'].capitalize() }}</td>
+												<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
+												<td class="cell100 column3"><input type="hidden" name="matricola_profilo" value="{{ utente[0]['matricola'].upper() }}">{{ utente[0]['matricola'].upper() }}</td>
+												<td class="cell100 column4">{{ mac }}</td>
+												<td class="cell100 column5">
+														<select name="option_ruolo">
+															<option>{{ ruolo_profilo.capitalize() }}</option>
+															<option>{%- if ruolo_profilo.capitalize() == "Supervisore":  %}
+																			Utente
+																	{%-	else %} 
+																			Supervisore
+																	{%- endif %}
+															</option>
+														</select>
+														<button type="submit" value="Cambia" formaction="/cambio_ruolo">Cambia</button>
+												</td>
+												<td class="cell100 column6">{{ utente[1] }}</td>
+												<td class="cell100 column7">{{ utente[2] }}</td>
+											</tr>
+										{%- endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- PRESENZE -->
+				<div class="container-table100">
+					<div class="wrap-table100">
+						<div class="table100 ver1 m-b-110">
+							<div class="table100-head">
+								<table>
+									<thead>
+										<tr class="row100 head">
+											<th class="cell100 column1">Data</th>
+											<th class="cell100 column2">Inizio</th>
+											<th class="cell100 column3">Fine</th>
+											<th class="cell100 column4">Durata</th>
+											<th class="cell100 column5"></th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+
+							<div class="table100-body js-pscroll">
+								<table>
+									<tbody>
+										{%- for rilevazione in frequenza_profilo %}
+											<tr class="row100 body">
+											{%- for key,value in rilevazione.items() %}
+												{%- if key == "data" %}
+													<td class="cell100 column1">{{ value }}</td>
+												{%- elif key == "ora_inizio" %}
+													<td class="cell100 column2">{{ value }}</td>
+												{%- elif key == "ora_fine" %}
+													<td class="cell100 column3">{{ value }}</td>
+												{%- elif key == "intervallo" %}
+													<td class="cell100 column4">{{ value }}</td>
+												{%- endif %}
+											{%- endfor %}
+													<td class="cell100 column5"><button type="text" value="Elimina">Elimina</button></td>
+											</tr>
+										{%- endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</form>
+	
+	<script src="{{url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/select2/select2.min.js')}}"></script>
+	<script src="{{url_for('static', filename='js/main.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
+	<script src="{{url_for('static', filename='js/script.js')}}"></script>
+</body>
+</html>

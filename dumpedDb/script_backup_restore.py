@@ -6,6 +6,9 @@ import sys
 import couchdb
 
 __server = "157.27.26.206"
+__port = "3306"
+#__server = "127.0.0.1"
+#__port = '5984'
 __dbName = 'db_detection'
 __db4Log = 'admin'
 __user   = 'admin'
@@ -20,7 +23,7 @@ if __name__ == '__main__':
 		os.system("bash couchdb-backup.sh -b -H "+__server+" -d "+__dbName+" -f dumpedDB.json -u "+__user+" -p "+__pw)
 
 	if str(sys.argv[1]) == "r":
-		__db4LogCon = couchdb.Server("http://%s:%s@%s:3306/" % (__user, __pw, __server))
+		__db4LogCon = couchdb.Server("http://%s:%s@%s:%s/" % (__user, __pw, __server,__port))
 		__db4LogCon.delete(__dbName)
 		__db4LogCon.create(__dbName)
 		__db4LogCon = None
