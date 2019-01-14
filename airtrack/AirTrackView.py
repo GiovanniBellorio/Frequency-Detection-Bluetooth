@@ -181,16 +181,12 @@ def main():
 		AirTrack.update_db()
 
 	else:
-<<<<<<< HEAD
 		# AirTrack.connect_to_db()
 		login_gui()
-=======
->>>>>>> 1bc948e00c2117547dd07c84b8e46f079f0e11d6
 		print("gui mode on")
 		root = Tk()
 		root.geometry("800x500")
 		app = AirTrackView()
-		AirTrack.connect_to_db()
 		print(AirTrack.db_is_connected)
 		if AirTrack.db_is_connected:
 			app.updateScrolltext("\nDatabase connected\n")
