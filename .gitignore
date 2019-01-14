@@ -108,3 +108,4 @@ venv.bak/
 /src/flask_sessionstore
 .settings
 .DS_Store
+DB_CONNECT.py
