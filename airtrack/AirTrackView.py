@@ -13,7 +13,7 @@ import psutil
 import AirTrack
 from time import sleep
 
-counter = 0
+previousNumberOfStudends = 0
 
 class AirTrackView(Frame):
 
@@ -44,7 +44,7 @@ class AirTrackView(Frame):
 
 	def cleanScrollText(self):
 		self.scrollbarLog.config(state = NORMAL)
-		self.scrollbarLog.delete(END)
+		self.scrollbarLog.delete("1.0", END)
 		self.scrollbarLog.config(state = DISABLED)
 
 	def initUI(self):
@@ -67,12 +67,19 @@ class AirTrackView(Frame):
 			#AirTrack.start_session('-i '+self.iface.get())
 			self.cleanScrollText()
 			self.updateScrolltext("Inizio rilevazione:\n")
-			# def count():
-			# 	global counter
-			# 	counter += 1 #sostituire counter con una stringa che venga aggiornata con l'output del terminale in questa riga
-			# 	self.updateScrolltext(str(counter) + "\n")
-			# 	self.after(1000, count)
-			# count()
+			numberOfStudents = set()
+			def count():
+				global previousNumberOfStudends
+				for element in AirTrack.records_from_sniffing:
+					if element.last_time - element.first_time > 0:
+						numberOfStudents.add(element)
+				students = "Studenti presenti: " + str(len(numberOfStudents)) #sostituire counter con una stringa che venga aggiornata con l'output del terminale in questa riga
+				if numberOfStudents is not previousNumberOfStudends:
+					previousNumberOfStudends != numberOfStudents
+					self.cleanScrollText()
+					self.updateScrolltext(str(students) + "\n")
+				self.after(5000, count)
+			count()
 
 		self.master.title("AirTrack")
 		#self.style = Style()
@@ -163,8 +170,10 @@ def main():
 
 	if len(sys.argv) > 1:
 		print("gui mode off")
-		# AirTrack.connect_to_db()
-		login_gui()
+		username = input("Insert username: ")
+		password = input("Insert password: ")
+		AirTrack.connect_to_db(username, password)
+		print("Start sniffing...\n")
 		sniffer = AirTrack.Sniffer(sys.argv[1] + " " + sys.argv[2])
 		sniffer.start()
 		try:

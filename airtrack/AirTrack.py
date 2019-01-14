@@ -203,8 +203,6 @@ class Sniffer(Thread):
 def connect_to_db(username, password):
     print("connecting to database...")
     # Sinc db
-    # username = 'admin'
-    # password = 'Frequency-Detection-Wireless'
 
     encoded_passwd = Model().make_md5(Model().make_md5(password))
     num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
