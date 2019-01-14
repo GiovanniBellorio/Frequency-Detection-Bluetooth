@@ -113,4 +113,5 @@ couchdb-backup.sh
 dumpedDB.json
 dumpedDB_origin.json
 script_backup_restore.py
-/add_users
+/dumpedDb/add_users
+app.py
