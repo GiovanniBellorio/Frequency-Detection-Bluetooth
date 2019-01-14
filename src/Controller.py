@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 '''
 Created on 26 0tt 2018
 
@@ -150,11 +153,20 @@ def registro():
     user = current_user
     matricola = app.model.getMatricola(user.id)
     if user.ruolo == 1 or user.ruolo == 2:
-        frequenza = app.model.getFrequenzaUsername(user.id)
-        return render_template('registro.html', username=user.username, matricola=matricola, id_utente=user.id, ruolo=user.ruolo, frequenza=frequenza)
+        id_profilo, utente_profilo = app.model.getProfiloUtente(matricola)
+        macs = app.model.getIdMac(id_profilo)
+        mac = macs[0]['mac']
+        if user.ruolo == 1:
+            ruolo_profilo = "supervisore"
+        elif user.ruolo == 2:
+            ruolo_profilo = "utente"
+        frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
+        return render_template('registro.html', mac=mac, username=user.username, id_utente=user.id, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo, ruolo=user.ruolo)
     elif user.ruolo == 0:
         utenti_punteggi = app.model.getUtentiPunteggi()
         supervisori_punteggi = app.model.getSupervisoriPunteggi()
+        utenti_punteggi = sorted(utenti_punteggi, key=lambda utenti: utenti[0]['cognome'])
+        supervisori_punteggi = sorted(supervisori_punteggi, key=lambda utenti: utenti[0]['cognome'])
         return render_template('registro.html', username=user.username, ruolo=user.ruolo, supervisori_punteggi=supervisori_punteggi, utenti_punteggi=utenti_punteggi)
     else:
         flash('wrong password!')
@@ -220,6 +232,15 @@ def elimina_utente():
     matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     ack_user  = app.model.deleteUser(id_profilo)
+    return redirect('/registro')
+
+@app.route("/aggiungi_presenza", methods=['POST'])
+@login_required
+def aggiungi_presenza():
+    user = current_user
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
+    ack_aggiungi_presenza = app.model.aggiungi_presenza(id_profilo)
     return redirect('/registro')
 
 @app.route("/cambio_ruolo", methods=['POST'])

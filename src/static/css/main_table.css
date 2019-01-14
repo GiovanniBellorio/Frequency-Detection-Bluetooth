@@ -171,7 +171,7 @@ th, td {
 }
 
 .column1 {
-  width: 33%;
+  width: 20%;
   padding-left: 40px;
 }
 
@@ -180,14 +180,22 @@ th, td {
 }
 
 .column3 {
-  width: 22%;
+  width: 13%;
 }
 
 .column4 {
-  width: 19%;
+  width: 15%;
 }
 
 .column5 {
+  width: 15%;
+}
+
+.column6 {
+  width: 13%;
+}
+
+.column7 {
   width: 13%;
 }
 
@@ -216,7 +224,7 @@ th, td {
 }
 
 .table100-body {
-  max-height: 585px;
+  /*max-height: 585px;*/
   overflow: auto;
 }
 
