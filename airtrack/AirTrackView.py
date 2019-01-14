@@ -42,6 +42,11 @@ class AirTrackView(Frame):
 		self.scrollbarLog.see("end")
 		self.scrollbarLog.config(state = DISABLED)
 
+	def cleanScrollText(self):
+		self.scrollbarLog.config(state = NORMAL)
+		self.scrollbarLog.delete(END)
+		self.scrollbarLog.config(state = DISABLED)
+
 	def initUI(self):
 
 		def stop():
@@ -60,6 +65,7 @@ class AirTrackView(Frame):
 			self.sniffer = AirTrack.Sniffer('-i '+self.iface.get())
 			self.sniffer.start()
 			#AirTrack.start_session('-i '+self.iface.get())
+			self.cleanScrollText()
 			self.updateScrolltext("Inizio rilevazione:\n")
 			# def count():
 			# 	global counter
@@ -127,11 +133,14 @@ def main():
 		AirTrack.update_db()
 
 	else:
-		AirTrack.connect_to_db()
 		print("gui mode on")
 		root = Tk()
 		root.geometry("800x500")
 		app = AirTrackView()
+		AirTrack.connect_to_db()
+		print(AirTrack.db_is_connected)
+		if AirTrack.db_is_connected:
+			app.updateScrolltext("\nDatabase connected\n")
 		root.mainloop()
 
 
