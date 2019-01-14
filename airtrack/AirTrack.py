@@ -24,6 +24,7 @@ DEBUG = False
 
 mac_list_from_db = []           # list of valid mac address
 records_from_sniffing = []      # list of record to write on database
+db_is_connected = False
 #model = Model()                 # model for database
 
 username = ""
@@ -122,10 +123,11 @@ class Sniffer(Thread):
         ip_layer = packet.getlayer(IP)
         print("[!] New Packet: {src} -> {dst}".format(src=ip_layer.src, dst=ip_layer.dst))
 
-    def restore_network(args):
+    def restore_network(self, args):
         os.system("ifconfig " + args.interface + " down")
         os.system("iwconfig " + args.interface + " mode Managed")
         os.system("ifconfig " + args.interface + " up")
+        os.system("service network-manager stop")
         os.system("service network-manager start")
 
 
@@ -207,6 +209,9 @@ def connect_to_db(username, password):
     encoded_passwd = Model().make_md5(Model().make_md5(password))
     num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
     ruolo = Model().getRuoloUsername(id_utente)
+
+    global db_is_connected
+    db_is_connected = True
 
     if num_rows == 1 and ruolo != 2:
         global mac_list_from_db
