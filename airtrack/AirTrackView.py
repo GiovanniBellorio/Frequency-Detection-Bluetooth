@@ -111,11 +111,11 @@ class AirTrackView(Frame):
 
 
 
-def login_gui():
+def login_gui(root):
 	data = []
 
 	login = Tk()
-	login.geometry("300x100")
+	login.geometry("275x100")
 	login.title("Login")
 
 	chkValue = BooleanVar()
@@ -134,6 +134,12 @@ def login_gui():
 				file.write(username_field.get()+"\n"+password_field.get())
 		login.destroy()
 
+	def set_true():
+		if (chkValue.get()):
+			chkValue.set(False)
+		else:
+			chkValue.set(True)
+
 	username_label = Label(login ,text="Username")
 	username_label.grid(row=0,column = 0)
 	username_field = Entry(login)
@@ -142,11 +148,11 @@ def login_gui():
 	password_label.grid(row=1,column=0)
 	password_field = Entry(login, show="*")
 	password_field.grid(row=1,column=1)
-	login_btn = Button(login ,text="Login", command=login_fun)
-	login_btn.grid(row=2,column=0)
-	login.bind('<Return>', login_fun)
-	remember = Checkbutton(login, text="Ricorda?", variable=chkValue)
+	remember = Checkbutton(login, text="Ricordami", command=set_true, variable=chkValue)
 	remember.grid(row=2, column=1)
+	login_btn = Button(login ,text="Login", command=login_fun)
+	login_btn.grid(row=3,column=1)
+	login.bind('<Return>', login_fun)
 
 	if (len(data) == 2):
 		username_field.delete(0,END)
@@ -154,9 +160,7 @@ def login_gui():
 		password_field.delete(0,END)
 		password_field.insert(0, data[1].strip())
 		chkValue.set(True)
-
-
-
+	root.lower(belowThis=login)
 	login.mainloop()
 
 def main():
@@ -191,16 +195,17 @@ def main():
 
 	else:
 		# AirTrack.connect_to_db()
-		login_gui()
+
 		print("gui mode on")
 		root = Tk()
 		root.geometry("800x500")
 		app = AirTrackView()
-		print(AirTrack.db_is_connected)
+
 		if AirTrack.db_is_connected:
 			app.updateScrolltext("\nDatabase connected\n")
-		root.mainloop()
 
+		login_gui(root)
+		root.mainloop()
 
 if __name__ == '__main__':
 	main()
