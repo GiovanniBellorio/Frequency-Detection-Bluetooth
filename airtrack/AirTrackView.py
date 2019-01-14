@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-#from tkinter import Tk, RIGHT, LEFT, TOP, BOTH, RAISED, scrolledtext, StringVar
+# from tkinter import Tk, RIGHT, LEFT, TOP, BOTH, RAISED, scrolledtext, StringVar
 from tkinter import *
 from tkinter import scrolledtext
 from tkinter.ttk import Frame, Button, Style, Label, OptionMenu
@@ -36,7 +36,7 @@ class AirTrackView(Frame):
 
 	def updateScrolltext(self, txt):
 		# http://effbot.org/tkinterbook/text.htm  <-- qui spiega xk bisogna usare questa funzione!
-		print("updateScrolltext called..." + txt)
+		print(txt)
 		self.scrollbarLog.config(state = NORMAL)
 		self.scrollbarLog.insert(END, txt)
 		self.scrollbarLog.see("end")
@@ -98,6 +98,54 @@ class AirTrackView(Frame):
 
 
 
+def login_gui():
+	data = []
+
+	login = Tk()
+	login.geometry("300x100")
+	login.title("Login")
+
+	chkValue = BooleanVar()
+	chkValue.set(False)
+
+	try:
+		with open ("data", "r") as file:
+			data=file.readlines()
+	except:
+		pass
+
+	def login_fun(event=None):
+		AirTrack.connect_to_db(username_field.get(), password_field.get())
+		if (chkValue.get()):
+			with open ("data", "w") as file:
+				file.write(username_field.get()+"\n"+password_field.get())
+		login.destroy()
+
+	username_label = Label(login ,text="Username")
+	username_label.grid(row=0,column = 0)
+	username_field = Entry(login)
+	username_field.grid(row=0,column=1)
+	password_label = Label(login ,text="Password")
+	password_label.grid(row=1,column=0)
+	password_field = Entry(login, show="*")
+	password_field.grid(row=1,column=1)
+	login_btn = Button(login ,text="Login", command=login_fun)
+	login_btn.grid(row=2,column=0)
+	login.bind('<Return>', login_fun)
+	remember = Checkbutton(login, text="Ricorda?", variable=chkValue)
+	remember.grid(row=2, column=1)
+
+	if (len(data) == 2):
+		username_field.delete(0,END)
+		username_field.insert(0, data[0].strip())
+		password_field.delete(0,END)
+		password_field.insert(0, data[1].strip())
+		chkValue.set(True)
+
+
+
+	login.mainloop()
+
 def main():
 
 	# database connection
@@ -109,8 +157,8 @@ def main():
 
 	if len(sys.argv) > 1:
 		print("gui mode off")
-		AirTrack.connect_to_db()
-
+		# AirTrack.connect_to_db()
+		login_gui()
 		sniffer = AirTrack.Sniffer(sys.argv[1] + " " + sys.argv[2])
 		sniffer.start()
 		try:
@@ -127,7 +175,8 @@ def main():
 		AirTrack.update_db()
 
 	else:
-		AirTrack.connect_to_db()
+		# AirTrack.connect_to_db()
+		login_gui()
 		print("gui mode on")
 		root = Tk()
 		root.geometry("800x500")

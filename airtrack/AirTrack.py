@@ -26,6 +26,9 @@ mac_list_from_db = []           # list of valid mac address
 records_from_sniffing = []      # list of record to write on database
 #model = Model()                 # model for database
 
+username = ""
+password = ""
+
 class RecordFormSniffing:
 
     def __init__(self, mac_addr, first_time, last_time, overTreshold):
@@ -195,11 +198,11 @@ class Sniffer(Thread):
 
 
 
-def connect_to_db():
+def connect_to_db(username, password):
     print("connecting to database...")
     # Sinc db
-    username = 'admin'
-    password = 'Frequency-Detection-Wireless'
+    # username = 'admin'
+    # password = 'Frequency-Detection-Wireless'
 
     encoded_passwd = Model().make_md5(Model().make_md5(password))
     num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
