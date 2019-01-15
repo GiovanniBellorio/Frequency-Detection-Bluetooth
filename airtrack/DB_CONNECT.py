@@ -10,12 +10,12 @@ DataMapper
 '''
 
 class DB_CONNECT():
-    __server = "157.27.26.206"
+    __server = ""
     #__server = "127.0.0.1"
     __dbName = 'db_detection'
     __db4Log = 'admin'
     __user   = 'admin'
-    __pw     = 'Frequency-Detection-Wireless'
+    __pw     = ''
     
     @classmethod
     def get__server(cls):
