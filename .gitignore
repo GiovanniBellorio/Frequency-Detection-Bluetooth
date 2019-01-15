@@ -115,3 +115,5 @@ dumpedDB_origin.json
 script_backup_restore.py
 /dumpedDb/add_users
 app.py
+/airtrack/config.out
+/airtrack/data
