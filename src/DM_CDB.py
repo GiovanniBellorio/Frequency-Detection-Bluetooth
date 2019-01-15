@@ -236,6 +236,21 @@ class DM_CDB():
             ack_aggiungi_presenza = True
         return ack_aggiungi_presenza
     
+    def elimina_presenza(self, id, idx_presenza):
+        """ """
+        ack_elimina_presenza = False
+        
+        cur = DM_CDB.__cursor()
+        doc = cur[str(id)]
+        
+        if not ack_elimina_presenza:
+            a = doc['frequenze']
+            a = a[:idx_presenza] + a[idx_presenza+1 :]
+            doc['frequenze'] = a
+            cur[doc.id] = doc
+            ack_elimina_presenza = True
+        return ack_elimina_presenza
+    
     def getIdMac(self, id_utente):
         """ """
         cur = DM_CDB.__cursor()
