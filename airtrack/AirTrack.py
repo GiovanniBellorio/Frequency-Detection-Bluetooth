@@ -54,6 +54,7 @@ class Sniffer(Thread):
         self.daemon = True
         self.socket = None
         self.stop_sniffer = Event()
+        self.presences = set()
 
         parser = argparse.ArgumentParser(description=DESCRIPTION, )
         parser.add_argument('-i', '--interface', help='capture interface')
@@ -130,6 +131,9 @@ class Sniffer(Thread):
         os.system("service network-manager stop")
         os.system("service network-manager start")
 
+    def getCurrentPresences(arg):
+        return self.presences
+
 
     def build_packet_callback(self, time_fmt,logger,delimiter,mac_info,ssid,rssi):
 
@@ -138,9 +142,7 @@ class Sniffer(Thread):
             if not packet.haslayer(Dot11):  # <--- necessaria la versione 2.4.0 di scapy (aggiornare il codice)
                 return
 
-            #print(packet.type)
-
-            # we are looking for management frames with a probe subtype or for QOS
+            # we are looking for management frames with a probe subtype or for QoS
             # if neither match we are done here
 
             if packet.type != 0 or packet.subtype != 0x04:
@@ -157,42 +159,39 @@ class Sniffer(Thread):
             if time_fmt == 'iso':
                 log_time = datetime.now().isoformat()
 
-            fields.append(log_time)
-
-            # append the mac address itself
-
-            fields.append(packet.addr2)
-
             # ----------------------------------------------------------------
             # check for a valid mac address for the course
 
             if packet.addr2 in mac_list_from_db:
+                fields.append(log_time)                                         # append the log time
+                fields.append(packet.addr2)                                     # append the mac address itself
+                self.presences.add(packet.addr2)
                 for record in records_from_sniffing:
                     if record.mac_addr == packet.addr2:
-                        print(("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time)), end="")
+                        #print(("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time)), end="")
                         record.update(int(time.time()), False)
-                        print(" --> " + str(record.last_time))
+                        #print(" --> " + str(record.last_time))
                         break
 
             # ----------------------------------------------------------------
 
             # parse mac address and look up the organization from the vendor octets
 
-            if mac_info:
-                try:
-                    parsed_mac = netaddr.EUI(packet.addr2)
-                    fields.append(parsed_mac.oui.registration().org)
-                except netaddr.core.NotRegisteredError as e:
-                    fields.append('UNKNOWN')
-
-            # include the SSID in the probe frame
-
-            if ssid:
-                fields.append(packet.info)
-
-            if rssi:
-                rssi_val = -(256 - ord(packet.notdecoded[-0x04:-3]))
-                fields.append(str(rssi_val))
+            # if mac_info:
+            #     try:
+            #         parsed_mac = netaddr.EUI(packet.addr2)
+            #         fields.append(parsed_mac.oui.registration().org)
+            #     except netaddr.core.NotRegisteredError as e:
+            #         fields.append('UNKNOWN')
+            #
+            # # include the SSID in the probe frame
+            #
+            # if ssid:
+            #     fields.append(packet.info)
+            #
+            # if rssi:
+            #     rssi_val = -(256 - ord(packet.notdecoded[-0x04:-3]))
+            #     fields.append(str(rssi_val))
 
             logger.info(delimiter.join(fields))
 
@@ -203,6 +202,8 @@ class Sniffer(Thread):
 def connect_to_db(username, password):
     print("connecting to database...")
     # Sinc db
+
+    wait_for_internet_connection()
 
     encoded_passwd = Model().make_md5(Model().make_md5(password))
     num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
@@ -228,9 +229,7 @@ def update_db():
     print("updating database...")
 
     wait_for_internet_connection()
-    # TODO Check for internet connection
 
-    #time.sleep(10)							# waiting network availability
     for record in records_from_sniffing:
         if record.last_time - record.first_time > 0:
             Model().update_Records(record)
@@ -244,7 +243,7 @@ def wait_for_internet_connection():
             response = urllib.request.urlopen('http://www.google.com', timeout=1)
             return
         except urllib.error.URLError:
-            print("waiting for internet connection")
+            print("waiting for internet connection...")
             pass
 
 
