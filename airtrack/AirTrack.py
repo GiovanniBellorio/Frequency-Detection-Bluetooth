@@ -11,6 +11,7 @@ import sys
 import logging
 import signal
 import shlex
+import urllib.request  # for internet connection
 from configparser import ConfigParser
 from scapy.all import *
 from threading import Thread, Event
@@ -25,10 +26,7 @@ DEBUG = False
 mac_list_from_db = []           # list of valid mac address
 records_from_sniffing = []      # list of record to write on database
 db_is_connected = False
-#model = Model()                 # model for database
 
-username = ""
-password = ""
 
 class RecordFormSniffing:
 
@@ -109,7 +107,9 @@ class Sniffer(Thread):
             sniff(iface=self.args.interface, prn=self.built_packet_cb, store=0, stop_filter=self.should_stop_sniffer) # Wi-Fi sniff
             self.restore_network(self.args)
         elif platform_OS.system() == "Darwin":
+            print("sniffing from osx")
             sniff(iface=self.args.interface, prn=self.built_packet_cb, store=0, stop_filter=self.should_stop_sniffer, monitor=True) # Wi-Fi sniff
+            print("after sniffing from osx")
 
 
     def join(self, timeout=None):
@@ -135,10 +135,10 @@ class Sniffer(Thread):
 
         def packet_callback(packet):
 
-            if not packet.haslayer(Dot11):
+            if not packet.haslayer(Dot11):  # <--- necessaria la versione 2.4.0 di scapy (aggiornare il codice)
                 return
 
-            # print(packet.type)
+            #print(packet.type)
 
             # we are looking for management frames with a probe subtype or for QOS
             # if neither match we are done here
@@ -218,18 +218,34 @@ def connect_to_db(username, password):
 
         for mac in mac_list_from_db:
             records_from_sniffing.append(RecordFormSniffing(mac, int(time.time()), int(time.time()), False))
+
     else:
         print('Login error')
         return -1
 
+
 def update_db():
     print("updating database...")
-    time.sleep(10)							# waiting network availability
+
+    wait_for_internet_connection()
+    # TODO Check for internet connection
+
+    #time.sleep(10)							# waiting network availability
     for record in records_from_sniffing:
         if record.last_time - record.first_time > 0:
             Model().update_Records(record)
 
     print("done.")
+
+
+def wait_for_internet_connection():
+    while True:
+        try:
+            response = urllib.request.urlopen('http://www.google.com', timeout=1)
+            return
+        except urllib.error.URLError:
+            print("waiting for internet connection")
+            pass
 
 
 

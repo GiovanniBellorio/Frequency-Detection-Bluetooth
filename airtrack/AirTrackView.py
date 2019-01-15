@@ -51,7 +51,6 @@ class AirTrackView(Frame):
 	def initUI(self):
 
 		def stop():
-
 			#os.killpg(os.getpgid(self.pid), signal.SIGINT)
 			print("[*] Stop sniffing")
 			self.sniffer.join(2.0)
@@ -61,11 +60,15 @@ class AirTrackView(Frame):
 
 			# update database with the new records
 			AirTrack.update_db()
+			startButton.config(state=NORMAL)
+			stopButton.config(state=DISABLED)
 			global printNumberOfStudents
 			printNumberOfStudents = False
 
 
 		def start():
+			startButton.config(state=DISABLED)
+			stopButton.config(state=NORMAL)
 			self.sniffer = AirTrack.Sniffer('-i '+self.iface.get())
 			self.sniffer.start()
 			global printNumberOfStudents
@@ -81,7 +84,7 @@ class AirTrackView(Frame):
 						numberOfStudents.add(element)
 				students = "Studenti presenti: " + str(len(numberOfStudents)) #sostituire counter con una stringa che venga aggiornata con l'output del terminale in questa riga
 				if numberOfStudents is not previousNumberOfStudends:
-					previousNumberOfStudends != numberOfStudents
+					#previousNumberOfStudends != numberOfStudents
 					self.cleanScrollText()
 					self.updateScrolltext(str(students) + "\n")
 				if (printNumberOfStudents):
@@ -101,12 +104,12 @@ class AirTrackView(Frame):
 
 		self.pack(fill = BOTH, expand = True)
 
-		self.scrollbarLog = scrolledtext.ScrolledText(scrollbarLogFrame, background = "black", foreground = "green")#, state=DISABLED)
+		self.scrollbarLog = scrolledtext.ScrolledText(scrollbarLogFrame, background = "black", foreground = "green")
 		self.scrollbarLog.pack(fill = BOTH, expand = True, padx = 5, pady = 5)
 
-		startButton = Button(self, text = "Start", command = start) #inserire command
+		startButton = Button(self, text = "Start", command = start)
 		startButton.pack(side = RIGHT, padx = 5, pady = 5)
-		stopButton = Button(self, text = "Stop", command = stop) #inserire command
+		stopButton = Button(self, text = "Stop", command = stop, state = DISABLED)
 		stopButton.pack(side = RIGHT)
 
 		interface_label = Label(self, text = "Interface:")
@@ -146,21 +149,13 @@ def login_gui(root):
 					file.write(username_field.get()+"\n"+password_field.get())
 			login.destroy()
 
-	# def set_true():
-	# 	if (chkValue.get()):
-	# 		print('FALSE')
-	# 		chkValue.set(False)
-	# 	else:
-	# 		print('TRUE')
-	# 		chkValue.set(True)
-
 	username_label = Label(login ,text="Username")
 	username_label.grid(row=0,column = 0)
 	username_field = Entry(login)
 	username_field.grid(row=0,column=1)
 	password_label = Label(login ,text="Password")
 	password_label.grid(row=1,column=0)
-	password_field = Entry(login, show="*")
+	password_field = Entry(login, show="\u2022")
 	password_field.grid(row=1,column=1)
 	remember = Checkbutton(login, text="Ricordami", variable=chkValue)
 	remember.grid(row=2, column=1)

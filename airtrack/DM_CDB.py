@@ -17,6 +17,7 @@ from DB_CONNECT import DB_CONNECT
 class DM_CDB():
     """ Data mapper verso CouchDB. """
     __server = None
+    __port   = None
     __dbName = None
     __db4Log = None
     __user = None
@@ -30,7 +31,7 @@ class DM_CDB():
     def __open(cls):
         if cls.__dbCon is None:
             try: # readonly
-                cls.__dbCon = couchdb.Server("http://%s:3306/" % (cls.__server))
+                cls.__dbCon = couchdb.Server("http://%s:%s/" % (cls.__server, cls.__port))
                 logging.info("Connection to database " + cls.__dbName + " created.")
             except couchdb.ServerError as err:
                 logging.error("Error connecting to CouchDB at %s.\nDetails: %s.", cls.__server, err)
@@ -78,7 +79,7 @@ class DM_CDB():
         DM_CDB.__db4Log = self.db_connect.get__db4Log()
         DM_CDB.__user   = self.db_connect.get__user()
         DM_CDB.__pw     = self.db_connect.get__pw()
-
+        DM_CDB.__port   = self.db_connect.get__port()
         """ Connessione db """
         DM_CDB.__open()
         DM_CDB.__nIstanze += 1

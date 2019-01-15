@@ -1,0 +1,6 @@
+[topsecret.server.com]
+server = 157.27.26.206
+user = admin
+password = Frequency-Detection-Wireless
+port = 3306
+
