@@ -109,11 +109,12 @@
 								<table>
 									<thead>
 										<tr class="row100 head">
-											<th class="cell100 column1">Data</th>
-											<th class="cell100 column2">Inizio</th>
-											<th class="cell100 column3">Fine</th>
-											<th class="cell100 column4">Durata</th>
-											<th class="cell100 column5"></th>
+											<th class="cell100 column1"></th>
+											<th class="cell100 column2">Data</th>
+											<th class="cell100 column3">Inizio</th>
+											<th class="cell100 column4">Fine</th>
+											<th class="cell100 column5">Durata</th>
+											<th class="cell100 column6"></th>
 										</tr>
 									</thead>
 								</table>
@@ -122,22 +123,27 @@
 							<div class="table100-body js-pscroll">
 								<table>
 									<tbody>
+										{%- set count = [1] -%}
 										{%- for rilevazione in frequenza_profilo %}
 											<tr class="row100 body">
+													<td class="cell100 column1">{{ count[0] }}</td>
 											{%- for key,value in rilevazione.items() %}
 												{%- if key == "data" %}
-													<td class="cell100 column1">{{ value }}</td>
-												{%- elif key == "ora_inizio" %}
 													<td class="cell100 column2">{{ value }}</td>
-												{%- elif key == "ora_fine" %}
+												{%- elif key == "ora_inizio" %}
 													<td class="cell100 column3">{{ value }}</td>
-												{%- elif key == "intervallo" %}
+												{%- elif key == "ora_fine" %}
 													<td class="cell100 column4">{{ value }}</td>
+												{%- elif key == "intervallo" %}
+													<td class="cell100 column5">{{ value }}</td>
 												{%- endif %}
 											{%- endfor %}
-													<td class="cell100 column5"><button type="text" value="Elimina">Elimina</button></td>
+													<td class="cell100 column6"><button type="submit" value="{{ count[0] }}" name="idx_presenza" formaction="/elimina_presenza">Elimina</button></td>
+													{%- set __ = count.append(count.pop()+1) -%}
 											</tr>
 										{%- endfor %}
+
+
 									</tbody>
 								</table>
 							</div>

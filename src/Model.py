@@ -94,5 +94,9 @@ class Model(object):
         ack_aggiungi_presenza = self.dataMapper.aggiungi_presenza(id)
         return ack_aggiungi_presenza
     
+    def elimina_presenza(self, id, idx_presenza):
+        ack_elimina_presenza = self.dataMapper.elimina_presenza(id, idx_presenza)
+        return ack_elimina_presenza
+    
     def __del__(self):
         self.dataMapper.close() # Chiudere sempre il DataMapper

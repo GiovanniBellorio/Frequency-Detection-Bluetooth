@@ -243,6 +243,17 @@ def aggiungi_presenza():
     ack_aggiungi_presenza = app.model.aggiungi_presenza(id_profilo)
     return redirect('/registro')
 
+@app.route("/elimina_presenza", methods=['POST'])
+@login_required
+def elimina_presenza():
+    user = current_user
+    matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
+    
+    idx_presenza = int(request.form['idx_presenza']) - 1
+    ack_elimina_presenza = app.model.elimina_presenza(id_profilo, idx_presenza)
+    return redirect('/registro')
+
 @app.route("/cambio_ruolo", methods=['POST'])
 @login_required
 def cambio_ruolo():
