@@ -139,6 +139,7 @@ L'idea è di esportare questa applicazione per farla girare per esempio su un we
 ### Wireless Detection App
 
 **Requisiti:**
+
 Installare i pacchetti necessari tramite il comando: `pip3 install -r requirements.txt --record files.txt`
 
 Applicazione utilizzata dall'utente master per la rilevazione di reti Wireless basate su tecnologia Wi-Fi.
