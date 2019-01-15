@@ -120,11 +120,15 @@ class AirTrackView(Frame):
 
 
 def login_gui(root):
+	def null_action():
+		root.destroy()
+
 	data = []
 
-	login = Tk()
-	login.geometry("275x100")
+	login = Toplevel()
+	login.geometry("275x125")
 	login.title("Login")
+	login.protocol("WM_DELETE_WINDOW", null_action)
 
 	chkValue = BooleanVar()
 	chkValue.set(False)
@@ -140,13 +144,15 @@ def login_gui(root):
 			if (chkValue.get()):
 				with open ("data", "w") as file:
 					file.write(username_field.get()+"\n"+password_field.get())
-				login.destroy()
+			login.destroy()
 
-	def set_true():
-		if (chkValue.get()):
-			chkValue.set(False)
-		else:
-			chkValue.set(True)
+	# def set_true():
+	# 	if (chkValue.get()):
+	# 		print('FALSE')
+	# 		chkValue.set(False)
+	# 	else:
+	# 		print('TRUE')
+	# 		chkValue.set(True)
 
 	username_label = Label(login ,text="Username")
 	username_label.grid(row=0,column = 0)
@@ -156,7 +162,7 @@ def login_gui(root):
 	password_label.grid(row=1,column=0)
 	password_field = Entry(login, show="*")
 	password_field.grid(row=1,column=1)
-	remember = Checkbutton(login, text="Ricordami", command=set_true, variable=chkValue)
+	remember = Checkbutton(login, text="Ricordami", variable=chkValue)
 	remember.grid(row=2, column=1)
 	login_btn = Button(login ,text="Login", command=login_fun)
 	login_btn.grid(row=3,column=1)
@@ -167,7 +173,6 @@ def login_gui(root):
 		username_field.insert(0, data[0].strip())
 		password_field.delete(0,END)
 		password_field.insert(0, data[1].strip())
-		chkValue.set(True)
 	root.lower(belowThis=login)
 	login.mainloop()
 
