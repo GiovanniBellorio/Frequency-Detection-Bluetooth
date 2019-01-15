@@ -140,6 +140,8 @@ L'idea è di esportare questa applicazione per farla girare per esempio su un we
 
 Installare i **pacchetti necessari** tramite il comando: `pip3 install -r requirements.txt --record files.txt`
 
+**ATTENZIONE**: E' necessario installare la versione 2.4.0 di scapy!
+
 Applicazione utilizzata dall'utente master per la rilevazione di reti Wireless basate su tecnologia Wi-Fi.
 Questa applicazione, all'avvio, fornisce due modalità di funzionamento mutualmente esclusive:
 
