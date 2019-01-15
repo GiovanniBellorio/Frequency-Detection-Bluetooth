@@ -14,6 +14,7 @@ import AirTrack
 from time import sleep
 
 previousNumberOfStudends = 0
+printNumberOfStudents = False
 
 class AirTrackView(Frame):
 
@@ -50,6 +51,7 @@ class AirTrackView(Frame):
 	def initUI(self):
 
 		def stop():
+
 			#os.killpg(os.getpgid(self.pid), signal.SIGINT)
 			print("[*] Stop sniffing")
 			self.sniffer.join(2.0)
@@ -59,11 +61,15 @@ class AirTrackView(Frame):
 
 			# update database with the new records
 			AirTrack.update_db()
+			global printNumberOfStudents
+			printNumberOfStudents = False
 
 
 		def start():
 			self.sniffer = AirTrack.Sniffer('-i '+self.iface.get())
 			self.sniffer.start()
+			global printNumberOfStudents
+			printNumberOfStudents = True
 			#AirTrack.start_session('-i '+self.iface.get())
 			self.cleanScrollText()
 			self.updateScrolltext("Inizio rilevazione:\n")
@@ -78,7 +84,9 @@ class AirTrackView(Frame):
 					previousNumberOfStudends != numberOfStudents
 					self.cleanScrollText()
 					self.updateScrolltext(str(students) + "\n")
-				self.after(5000, count)
+				if (printNumberOfStudents):
+					self.after(5000, count)
+
 			count()
 
 		self.master.title("AirTrack")
@@ -128,11 +136,11 @@ def login_gui(root):
 		pass
 
 	def login_fun(event=None):
-		AirTrack.connect_to_db(username_field.get(), password_field.get())
-		if (chkValue.get()):
-			with open ("data", "w") as file:
-				file.write(username_field.get()+"\n"+password_field.get())
-		login.destroy()
+		if (AirTrack.connect_to_db(username_field.get(), password_field.get()) != -1):
+			if (chkValue.get()):
+				with open ("data", "w") as file:
+					file.write(username_field.get()+"\n"+password_field.get())
+				login.destroy()
 
 	def set_true():
 		if (chkValue.get()):

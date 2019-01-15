@@ -4,6 +4,7 @@ Created on 26 ott 2018
 DataMapper
 
 @author: Giovanni, ...
+
 '''
 
 #from datetime import datetime
@@ -110,76 +111,6 @@ class DM_CDB():
                 ruolo = item.key
         return ruolo
 
-    def getMatricola(self, id_utente):
-        """ """
-        cur = DM_CDB.__cursor()
-        ruolo = 0
-        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
-            if item.id == id_utente:
-                value = item.value
-                matricola = value['matricola']
-        return matricola
-
-    def getFrequenzaUsername(self, id_utente):
-        """ """
-        cur = DM_CDB.__cursor()
-        frequenza = []
-        for item in cur.view('_design/documenti-view/_view/view_id_frequenze'):
-            if item.id == id_utente:
-                frequenza = item.value
-        return frequenza
-
-    def getUtentiPunteggi(self):
-        """ """
-        cur = DM_CDB.__cursor()
-        utenti_punteggi  = []
-        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
-            ruolo = item.key
-            if ruolo == 2: # utente normale
-                utenti_punteggi.append(item.value)
-        return utenti_punteggi
-
-    def getSupervisoriPunteggi(self):
-        """ """
-        cur = DM_CDB.__cursor()
-        utenti_punteggi  = []
-        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
-            ruolo = item.key
-            if ruolo == 1: # utente normale
-                utenti_punteggi.append(item.value)
-        return utenti_punteggi
-
-    def updateUserPwd(self, id_utente, password):
-        """ """
-        ack_pwd = False
-        cur = DM_CDB.__cursor()
-        doc = cur[str(id_utente)]
-        if not ack_pwd:
-            doc['pwd'] = password
-            cur[doc.id] = doc
-            ack_pwd = True
-        return ack_pwd
-
-    def updateUserMac(self, id_utente, mac):
-        """ """
-        ack_mac = False
-        cur = DM_CDB.__cursor()
-        doc = cur[str(id_utente)]
-        if not ack_mac:
-            print(mac)
-            doc['macs'][0] = mac
-            cur[doc.id] = doc
-            ack_mac = True
-        return ack_mac
-
-    def getIdMac(self, id_utente):
-        """ """
-        cur = DM_CDB.__cursor()
-        for item in cur.view('_design/documenti-view/_view/view_id_mac'):
-            if item.id == id_utente:
-                mac = item.value
-        return mac
-
     def getAllMac(self):
         """ """
         cur = DM_CDB.__cursor()
@@ -187,38 +118,6 @@ class DM_CDB():
         for item in cur.view('_design/documenti-view/_view/view_id_mac'):
             mac.append(item.value[0]['mac'])
         return mac
-
-    def getProfiloUtente(self, matricola):
-        """ """
-        cur = DM_CDB.__cursor()
-        id = 0
-        utente  = []
-        for item in cur.view('_design/documenti-view/_view/view_id_utente'):
-            value = item.value
-            matricola_db = value['matricola']
-            if matricola == matricola_db:
-                id = item.id
-
-        for item in cur.view('_design/documenti-view/_view/view_id_punteggio'):
-            if id == item.id:
-                utente.append(item.value)
-
-        return id, utente
-
-    def updateRuolo(self, id_utente, ruolo):
-        """ """
-        if ruolo == "Supervisore":
-            ruolo = 1
-        elif ruolo == "Utente":
-            ruolo = 2
-        ack_ruolo = False
-        cur = DM_CDB.__cursor()
-        doc = cur[str(id_utente)]
-        if not ack_ruolo:
-            doc['ruolo'] = ruolo
-            cur[doc.id] = doc
-            ack_ruolo = True
-        return ack_ruolo
 
     def update_Records(self, new_record):
         cur = DM_CDB.__cursor()

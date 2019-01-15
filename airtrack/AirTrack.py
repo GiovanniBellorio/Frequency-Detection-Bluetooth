@@ -218,6 +218,9 @@ def connect_to_db(username, password):
 
         for mac in mac_list_from_db:
             records_from_sniffing.append(RecordFormSniffing(mac, int(time.time()), int(time.time()), False))
+    else:
+        print('Login error')
+        return -1
 
 def update_db():
     print("updating database...")
