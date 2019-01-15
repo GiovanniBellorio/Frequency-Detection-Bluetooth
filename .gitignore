@@ -108,7 +108,7 @@ venv.bak/
 /src/flask_sessionstore
 .settings
 .DS_Store
-DB_CONNECT.py
+/src/DB_CONNECT.py
 couchdb-backup.sh
 dumpedDB.json
 dumpedDB_origin.json
