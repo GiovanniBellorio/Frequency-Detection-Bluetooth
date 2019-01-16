@@ -194,22 +194,23 @@ def main():
 		username = input("Enter username: ")
 		password = getpass.getpass ("Enter password: ")
 
-		AirTrack.connect_to_db(username, password)
-		print("Start sniffing...\n")
-		sniffer = AirTrack.Sniffer(sys.argv[1] + " " + sys.argv[2])
-		sniffer.start()
-		try:
-			while True:
-				sleep(100)
-		except KeyboardInterrupt:
-			print("[*] Stop sniffing")
-			sniffer.join(2.0)
+		if (AirTrack.connect_to_db(username, password) != -1):
+		#AirTrack.connect_to_db(username, password)
+			print("Start sniffing...\n")
+			sniffer = AirTrack.Sniffer(sys.argv[1] + " " + sys.argv[2])
+			sniffer.start()
+			try:
+				while True:
+					sleep(100)
+			except KeyboardInterrupt:
+				print("[*] Stop sniffing")
+				sniffer.join(2.0)
 
-			if sniffer.isAlive():
-				sniffer.socket.close()
+				if sniffer.isAlive():
+					sniffer.socket.close()
 
-		# update database with the new records
-		AirTrack.update_db()
+			# update database with the new records
+			AirTrack.update_db()
 
 	else:
 		print("gui mode on")
