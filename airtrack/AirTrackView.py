@@ -66,7 +66,7 @@ class AirTrackView(Frame):
 		interfaces_list = OptionMenu(self, self.iface, next(iter(self.INTERFACES)), *self.INTERFACES)
 		interfaces_list.pack(side = LEFT)
 
-		self.updateScrolltext("Select network interface and press Start.")
+		self.updateScrolltext("Seleziona un'interfaccia di rete e premi start.")
 
 
 	def updateScrolltext(self, txt):
@@ -99,6 +99,7 @@ class AirTrackView(Frame):
 		def count():
 			#print("called count")
 			nonlocal numberOfpresences
+			txt = ""
 			if numberOfpresences != len(self.sniffer.presences):
 				numberOfpresences = len(self.sniffer.presences)
 
@@ -106,7 +107,8 @@ class AirTrackView(Frame):
 				self.updateScrolltext("Numero di presenze: " + str(numberOfpresences))
 				self.updateScrolltext("---------------------")
 				for presence in self.sniffer.presences:
-					self.updateScrolltext(presence)
+					txt += str(presence) + "\n"
+				self.updateScrolltext(txt)
 
 			self._job = self.after(5000, count)
 
@@ -121,6 +123,9 @@ class AirTrackView(Frame):
 			self.sniffer.socket.close()
 
 		# update database with the new records
+		self.updateScrolltext("---------------------")
+		self.updateScrolltext("Database aggiornato.")
+		self.updateScrolltext("---------------------")
 		AirTrack.update_db()
 		self.startButton.config(state=NORMAL)
 		self.stopButton.config(state=DISABLED)
@@ -129,6 +134,7 @@ class AirTrackView(Frame):
 			self.after_cancel(self._job)
 			self._job = None
 
+		self.updateScrolltext("Seleziona un'interfaccia di rete e premi start.")
 
 def login_gui(root):
 	def null_action():
