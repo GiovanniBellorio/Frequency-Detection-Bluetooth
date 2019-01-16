@@ -82,11 +82,11 @@ Per problemi di cache e non corretta gestione del ricaricamento delle pagine da 
 - [X] Installazione dei moduli Flask per l'autenticazione 
 - [X] Gestione caching e history sia lato client che lato server
 - [X] Ottimizzazione della classe Controller 
-- [ ] Gestione dei ruoli mediante la classe flask_user 
+- [X] Gestione dei ruoli mediante la classe flask_user 
 - [ ] Cambio protocollo di crittografia (per ora è md5) 
 - [ ] Modifica degli utenti che hanno la password codificata con ancora il protocollo md5
 - [X] Eliminazione dell'oggetto session per gestire il profilo dell'utente selezionato
-- [ ] Offuscamento del codice Javascript 
+- [X] Offuscamento del codice Javascript 
 
 #### [CouchDb](https://github.com/GiovanniBellorio/Frequency-Detection-Wireless/tree/dev/dumpedDb) 
 
@@ -131,10 +131,10 @@ Realizzazione di un template dinamico basato su `html5`, `css3` e `javascript`, 
 
 L'idea è di esportare questa applicazione per farla girare per esempio su un webserver `Apache`.
 
-- [ ] Creare un webserver con Apache
-- [ ] Installare database CouchDB
+- [X] Creare un webserver con Apache
+- [X] Installare database CouchDB
 - [X] Aggiornamento del database (couchdb2.ini)
-- [ ] Porting della web-app
+- [X] Porting della web-app
 
 ### Wireless Detection App
 
@@ -165,7 +165,7 @@ L'idea è di tenere traccia di tutte le nostre azioni attraverso il sistema di `
 - [X] Realizzazione repository
 - [X] Creazione branch (master e dev) di lavoro
 - [X] Condivisione della repository
-- [ ] Realizzazione e aggiornamento del file README.MD di ogni sottoprogetto
+- [X] Realizzazione e aggiornamento del file README.MD di ogni sottoprogetto
 
 ## Autori
 
