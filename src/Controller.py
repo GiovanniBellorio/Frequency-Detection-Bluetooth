@@ -70,7 +70,7 @@ def home():
 def login():
     username = strip_tags(request.form['username'])
     password = strip_tags(request.form['pass'])
-    password_codificata = app.model.make_md5(app.model.make_md5(password))
+    password_codificata = app.model.make_sha256(app.model.make_sha256(password))
     num_rows, id_utente = app.model.getCountUsernamePassword(username, password_codificata)
     ruolo = app.model.getRuoloUsername(id_utente)
     if num_rows == 1:
@@ -108,7 +108,7 @@ def modify_pwd():
     password2 = strip_tags(request.form['pass2']).strip()
     if password1 == password2:
         user = current_user
-        password_codificata = app.model.make_md5(app.model.make_md5(password2))
+        password_codificata = app.model.make_sha256(app.model.make_sha256(password2))
         if matricola_profilo == 'admin':
             ack_pwd = app.model.updateUserPwd(user.id, password_codificata)
         else:
@@ -221,7 +221,7 @@ def aggiungi_utente():
     matricola = str(strip_tags(request.form['matricola']).strip()).upper()
     mac = strip_tags(request.form['mac']).strip()
     pwd = strip_tags(request.form['password']).strip()
-    password_codificata = str(app.model.make_md5(app.model.make_md5(pwd)))
+    password_codificata = str(app.model.make_sha256(app.model.make_sha256(pwd)))
     ack_user = app.model.addUser(username, nome, cognome, matricola, mac, password_codificata)
     return redirect('/registro')
 

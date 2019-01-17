@@ -11,10 +11,9 @@ La separazione con il database è forzata.
 @author: Giovanni, ...
 '''
 
-from hashlib import md5
+from hashlib import md5, sha256
 from datetime import date
 from DM_CDB import DM_CDB
-from werkzeug.security import generate_password_hash, check_password_hash
 
 class Model(object):
     """ Realizza il modello dei dati da pubblicare. """
@@ -71,8 +70,9 @@ class Model(object):
         encoding = 'utf-8'
         return md5(s.encode(encoding)).hexdigest()
     
-    def crypt_psw(self, psw):
-        return generate_password_hash(psw)
+    def make_sha256(self, s):
+        encoding = 'utf-8'
+        return sha256(s.encode(encoding)).hexdigest()
     
     def getProfiloUtente(self, matricola):
         id, utente = self.dataMapper.getProfiloUtente(matricola)
