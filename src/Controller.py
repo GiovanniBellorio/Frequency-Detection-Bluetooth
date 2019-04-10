@@ -228,6 +228,46 @@ def search_data_log():
     utenti_per_data = sorted(utenti_per_data, key=lambda utenti: utenti[0]['cognome'])
     return render_template('datalog.html', username=username, utenti_per_data=utenti_per_data)
 
+@app.route("/download_data_log", methods=['POST'])
+@login_required
+def download_data_log():
+    user = current_user
+    username = user.username
+    try:
+        data = strip_tags(request.form['data_button'])
+    except Exception as e:
+        return render_template('datalog.html', username=username)
+    
+    utenti_per_data = app.model.getUtentiPerData(data)
+    utenti_per_data = sorted(utenti_per_data, key=lambda utenti: utenti[0]['cognome'])
+    
+    dati = list()
+    for utente in utenti_per_data:
+        cognome   = utente[0]['cognome']
+        nome      = utente[0]['nome']
+        matricola = utente[0]['matricola']
+        data      = utente[2][0]['data']
+        inizio    = utente[2][0]['ora_inizio']
+        fine      = utente[2][0]['ora_fine'] 
+        dati.append({'cognome':cognome,'nome':nome,'matricola':matricola,'data':data,'inizio':inizio,'fine':fine})
+    
+    nomeFile = 'log_data.csv'
+    with open(nomeFile, mode='w', encoding='utf-8') as csvFile:
+        nomiCampi = ['cognome','nome','matricola','data','inizio','fine']
+        writer = csv.DictWriter(csvFile,fieldnames=nomiCampi)
+        writer.writeheader()
+        for riga in dati:
+            writer.writerow(riga)
+    
+    # download file
+    try:
+        return send_file("log_data.csv", as_attachment=True)
+    except Exception as e:
+        log.exception(e)
+        Error(400)
+    
+    return render_template('datalog.html', username=username, utenti_per_data=utenti_per_data)
+
 @app.route("/aggiungi_utente", methods=['POST'])
 @login_required
 def aggiungi_utente():
@@ -266,7 +306,6 @@ def elimina_presenza():
     user = current_user
     matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
-    
     idx_presenza = int(request.form['idx_presenza']) - 1
     ack_elimina_presenza = app.model.elimina_presenza(id_profilo, idx_presenza)
     return redirect('/registro')
@@ -292,18 +331,26 @@ def export_punteggi():
     utenti_punteggi      = app.model.getUtentiPunteggi() # [utente][tempo][punteggio]
     supervisori_punteggi = app.model.getSupervisoriPunteggi()
     
+    utenti_punteggi      = sorted(utenti_punteggi, key=lambda utenti: utenti[0]['cognome'])
+    supervisori_punteggi = sorted(supervisori_punteggi, key=lambda utenti: utenti[0]['cognome'])
+    
+    # solo per gli utenti
     dati = list()
     for utente in utenti_punteggi:
+        cognome   = utente[0]['cognome']
+        nome      = utente[0]['nome']
         matricola = utente[0]['matricola']
-        nome = utente[0]['nome']
-        cognome = utente[0]['cognome']
-        tempo = utente[1]
+        tempo     = utente[1]
         punteggio = utente[2]
-        dati.append({'matricola':matricola,'nome':nome,'cognome':cognome,'tempo':tempo,'punteggio':punteggio})
+        data_list = []
+        for d in utente[3]:
+            data = d['data']
+            data_list.append(data)
+        dati.append({'cognome':cognome,'nome':nome,'matricola':matricola,'tempo':tempo,'punteggio':punteggio,'frequenze':data_list})
         
-    nomeFile = 'voti.csv'
+    nomeFile = 'log_punteggi.csv'
     with open(nomeFile, mode='w', encoding='utf-8') as csvFile:
-        nomiCampi = ['matricola','nome','cognome','tempo','punteggio']
+        nomiCampi = ['cognome','nome','matricola','tempo','punteggio','frequenze']
         writer = csv.DictWriter(csvFile,fieldnames=nomiCampi)
         writer.writeheader()
         for riga in dati:
@@ -319,10 +366,10 @@ def export_punteggi():
         
     # download file
     try:
-        return send_file("voti.csv", as_attachment=True)
+        return send_file("log_punteggi.csv", as_attachment=True)
     except Exception as e:
-        self.log.exception(e)
-        self.Error(400)
+        log.exception(e)
+        Error(400)
     
     return redirect('/registro')
         

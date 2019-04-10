@@ -91,6 +91,7 @@
 								<tbody>
 									{%- for utente in utenti_per_data %}
 										<tr class="row100 body table100-body">
+											<input type="hidden" name="data_button" value="{{ utente[2][0]['data'] }}">
 											<td class="cell100 column1">{{ utente[0]['cognome'].capitalize() }}</td>
 											<td class="cell100 column2">{{ utente[0]['nome'].capitalize() }}</td>
 											<td class="cell100 column3">{{ utente[0]['matricola'].upper() }}</td>
@@ -101,8 +102,15 @@
 										</tr>
 									{%- endfor %}
 								</tbody>	
-
 							</table>
+						</div>
+					</div>
+				</div>
+
+				<div class="wrap-login100 p-t-190 p-b-30" style="padding-top:20px">
+					<div class="login100-form validate-form" method="POST">
+						<div class="container-login100-form-btn p-t-10">
+							<button class="login100-form-btn" type="submit" formaction="/download_data_log">Download</button>
 						</div>
 					</div>
 				</div>
