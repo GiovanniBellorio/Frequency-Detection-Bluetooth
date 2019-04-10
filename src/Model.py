@@ -50,6 +50,10 @@ class Model(object):
         utenti_punteggi = self.dataMapper.getUtentiPunteggi()
         return utenti_punteggi
     
+    def getUtentiPerData(self, data):
+        utenti_per_data = self.dataMapper.getUtentiPerData(data)
+        return utenti_per_data
+    
     def updateUtentiPunteggi(self, id_utente, tempo_totale, punteggio):
         ack_updateUtentiPunteggi = self.dataMapper.updateUtentiPunteggi(id_utente, tempo_totale, punteggio)
         return ack_updateUtentiPunteggi

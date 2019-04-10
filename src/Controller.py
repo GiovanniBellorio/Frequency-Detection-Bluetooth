@@ -211,6 +211,23 @@ def profilo():
 def view_aggiungi_utente():
     return render_template('aggiungiUtente.html')
 
+@app.route("/data_log", methods=['POST'])
+@login_required
+def data_log():
+    user = current_user
+    username     = user.username
+    return render_template('datalog.html', username=username)
+
+@app.route("/search_data_log", methods=['POST'])
+@login_required
+def search_data_log():
+    user = current_user
+    username = user.username
+    data = strip_tags(request.form['data'])
+    utenti_per_data = app.model.getUtentiPerData(data)
+    utenti_per_data = sorted(utenti_per_data, key=lambda utenti: utenti[0]['cognome'])
+    return render_template('datalog.html', username=username, utenti_per_data=utenti_per_data)
+
 @app.route("/aggiungi_utente", methods=['POST'])
 @login_required
 def aggiungi_utente():

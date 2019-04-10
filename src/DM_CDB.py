@@ -151,7 +151,20 @@ class DM_CDB():
             ruolo = item.key
             if ruolo == 2: # utente normale
                 utenti_punteggi.append(item.value)
-        return utenti_punteggi 
+        return utenti_punteggi
+    
+    def getUtentiPerData(self, data):
+        """ """
+        cur = DM_CDB.__cursor()
+        utenti_per_data  = []
+        for item in cur.view('_design/documenti-view/_view/view_utente_frequenze'):
+            ruolo = item.key
+            if ruolo == 2: # utente normale
+                frequenze = item.value[2]
+                for d in frequenze:
+                    if data == d['data']:
+                        utenti_per_data.append([item.value[0],item.value[1],[d]])
+        return utenti_per_data
     
     def getSupervisoriPunteggi(self):
         """ """
