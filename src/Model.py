@@ -94,8 +94,8 @@ class Model(object):
         ack_user = self.dataMapper.deleteUser(id)
         return ack_user
     
-    def aggiungi_presenza(self, id):
-        ack_aggiungi_presenza = self.dataMapper.aggiungi_presenza(id)
+    def aggiungi_presenza(self, id, data):
+        ack_aggiungi_presenza = self.dataMapper.aggiungi_presenza(id, data)
         return ack_aggiungi_presenza
     
     def elimina_presenza(self, id, idx_presenza):

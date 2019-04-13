@@ -229,18 +229,18 @@ class DM_CDB():
             ack_user = True
         return ack_user
     
-    def aggiungi_presenza(self, id):
+    def aggiungi_presenza(self, id, data):
         """ """
         ack_aggiungi_presenza = False
         
-        current_date = datetime.date.today()
-        current_date = current_date.strftime("%d-%m-%Y")
+        #current_date = datetime.date.today()
+        #current_date = current_date.strftime("%d-%m-%Y")
         
         cur = DM_CDB.__cursor()
         doc = cur[str(id)]
         
         if not ack_aggiungi_presenza:
-            doc['frequenze'].append({"data": current_date,
+            doc['frequenze'].append({"data": data,
                                  "ora_inizio": "-",
                                  "ora_fine": "-",
                                  "intervallo": "2:00:00",

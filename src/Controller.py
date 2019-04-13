@@ -137,7 +137,7 @@ def modify_mac():
     if mac1 == mac2:
         ack_mac = app.model.updateUserMac(id_profilo, mac1)
         if ack_mac:
-            return redirect('/registro')
+            return profilo()
         else:
             return redirect('/view_modify_mac')
     else:
@@ -177,6 +177,7 @@ def registro():
 def registro_supervisori():
     user = current_user
     supervisori_punteggi = app.model.getSupervisoriPunteggi()
+    supervisori_punteggi = sorted(supervisori_punteggi, key=lambda utenti: utenti[0]['cognome'])
     return render_template('registro.html', username=user.username, ruolo=user.ruolo, supervisori_punteggi=supervisori_punteggi)
 
 @app.route("/registro_utenti", methods=['POST'])
@@ -184,19 +185,20 @@ def registro_supervisori():
 def registro_utenti():
     user = current_user
     utenti_punteggi = app.model.getUtentiPunteggi()
+    utenti_punteggi = sorted(utenti_punteggi, key=lambda utenti: utenti[0]['cognome'])
     return render_template('registro.html', username=user.username, ruolo=user.ruolo, utenti_punteggi=utenti_punteggi)
 
 @app.route("/profilo", methods=['POST'])
 @login_required
 def profilo():
-    user = current_user
-    username     = user.username
-    id_utente    = user.id
-    matricola_profilo = request.form['matricola']
+    user      = current_user
+    username  = user.username
+    id_utente = user.id
+    matricola_profilo = strip_tags(request.form['matricola_profilo']).strip()
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     ruolo_profilo = app.model.getRuoloUsername(id_profilo)
     macs = app.model.getIdMac(id_profilo)
-    mac = macs[0]['mac']
+    mac  = macs[0]['mac']
     if ruolo_profilo == 0:
         ruolo_profilo = "admin"
     elif ruolo_profilo == 1:
@@ -223,7 +225,9 @@ def data_log():
 def search_data_log():
     user = current_user
     username = user.username
-    data = strip_tags(request.form['data'])
+    data = strip_tags(request.form['data']).strip()
+    data = data.replace("/", "-", 2)
+    data = data[8:10] + "-" + data[5:7] + "-" + data[0:4]
     utenti_per_data = app.model.getUtentiPerData(data)
     utenti_per_data = sorted(utenti_per_data, key=lambda utenti: utenti[0]['cognome'])
     return render_template('datalog.html', username=username, utenti_per_data=utenti_per_data)
@@ -291,14 +295,37 @@ def elimina_utente():
     ack_user  = app.model.deleteUser(id_profilo)
     return redirect('/registro')
 
+@app.route("/profilo_aggiungi_presenza", methods=['POST'])
+@login_required
+def profilo_aggiungi_presenza():    
+    user      = current_user
+    username  = user.username
+    id_utente = user.id
+    matricola_profilo = strip_tags(request.form['matricola_profilo']).strip()
+    id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
+    ruolo_profilo = app.model.getRuoloUsername(id_profilo)
+    macs = app.model.getIdMac(id_profilo)
+    mac  = macs[0]['mac']
+    if ruolo_profilo == 0:
+        ruolo_profilo = "admin"
+    elif ruolo_profilo == 1:
+        ruolo_profilo = "supervisore"
+    elif ruolo_profilo == 2:
+        ruolo_profilo = "utente"
+    frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
+    return render_template('aggiungi_presenza.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
+
 @app.route("/aggiungi_presenza", methods=['POST'])
 @login_required
 def aggiungi_presenza():
     user = current_user
     matricola_profilo = strip_tags(request.form["matricola_profilo"]).strip()
+    data = strip_tags(request.form['data']).strip()
+    data = data.replace("/", "-", 2)
+    data = data[8:10] + "-" + data[5:7] + "-" + data[0:4]
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
-    ack_aggiungi_presenza = app.model.aggiungi_presenza(id_profilo)
-    return redirect('/registro')
+    ack_aggiungi_presenza = app.model.aggiungi_presenza(id_profilo, data)
+    return profilo()
 
 @app.route("/elimina_presenza", methods=['POST'])
 @login_required
@@ -308,7 +335,7 @@ def elimina_presenza():
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     idx_presenza = int(request.form['idx_presenza']) - 1
     ack_elimina_presenza = app.model.elimina_presenza(id_profilo, idx_presenza)
-    return redirect('/registro')
+    return profilo()
 
 @app.route("/cambio_ruolo", methods=['POST'])
 @login_required
@@ -323,7 +350,7 @@ def cambio_ruolo():
         pass
     else:
         ack_ruolo = app.model.updateRuolo(id_profilo, option_ruolo)
-    return redirect('/registro')
+    return profilo()
 
 @app.route("/export_punteggi", methods=['POST'])
 @login_required
