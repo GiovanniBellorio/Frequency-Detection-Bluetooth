@@ -28,7 +28,7 @@ records_from_sniffing = []      # list of record to write on database
 db_is_connected = False
 
 
-class RecordFormSniffing:
+class RecordFromSniffing:
 
     def __init__(self, mac_addr, first_time, last_time, overTreshold):
         self.mac_addr = mac_addr
@@ -105,12 +105,12 @@ class Sniffer(Thread):
             os.system("ifconfig " + self.args.interface + " down")
             os.system("iwconfig " + self.args.interface + " mode Monitor")
             os.system("ifconfig " + self.args.interface + " up")
+            print("Start sniffing...")
             sniff(iface=self.args.interface, prn=self.built_packet_cb, store=0, stop_filter=self.should_stop_sniffer) # Wi-Fi sniff
             self.restore_network(self.args)
         elif platform_OS.system() == "Darwin":
-            print("sniffing from osx")
+            print("Start sniffing...")
             sniff(iface=self.args.interface, prn=self.built_packet_cb, store=0, stop_filter=self.should_stop_sniffer, monitor=True) # Wi-Fi sniff
-            print("after sniffing from osx")
 
 
     def join(self, timeout=None):
@@ -204,6 +204,7 @@ def connect_to_db(username, password):
     # Sinc db
 
     wait_for_internet_connection()
+    print("internet connection ...OK")
 
     encoded_passwd = Model().make_md5(Model().make_md5(password))
     num_rows, id_utente = Model().getCountUsernamePassword(username, encoded_passwd)
@@ -218,16 +219,16 @@ def connect_to_db(username, password):
         mac_list_from_db = Model().getAllMac()
 
         for mac in mac_list_from_db:
-            records_from_sniffing.append(RecordFormSniffing(mac, int(time.time()), int(time.time()), False))
+            records_from_sniffing.append(RecordFromSniffing(mac, int(time.time()), int(time.time()), False))
 
     else:
-        print('Login error')
+        print('database login error')
         return -1
 
 
 def update_db():
     print("updating database...")
-
+    
     wait_for_internet_connection()
 
     for record in records_from_sniffing:
@@ -240,72 +241,11 @@ def update_db():
 def wait_for_internet_connection():
     while True:
         try:
-            response = urllib.request.urlopen('http://www.google.com', timeout=1)
+            response = urllib.request.urlopen('http://www.google.com', timeout=2) # wait 2 secs before retry
             return
         except urllib.error.URLError:
             print("waiting for internet connection...")
             pass
-
-
-
-
-
-#
-# print('---'+args.interface+"---")
-#
-# """
-# TODO: choose in which mode you want to start Monitor/AP-only
-# ...
-# ......
-# .................
-#
-# """
-#
-#
-#
-#
-#
-# if args.input:
-#     print("start sniffing from file... " + args.input)
-#     sniff_from_file(args.input) # Sniff from log file
-# else:
-#     print("start sniffing...")
-#
-#     # set monitor mode
-#
-#
-#
-#     # 1. mi connetto al db --> OK
-#     # 2. leggo la lista dei mac address iscritti al corso --> OK
-#     # 3. salvo tale lista in una tabella hash o in una lista --> OK
-#     # 4. chiudo il db [opzionale] --> OK
-#     # 5. inizio lo sniffing e confronto ogni pacchetto sniffato con quelli nella lista letta precedentemente --> OK
-#     # 6. se necessario resetto il contatore relativo al mac appena riscontrato valido entro la treshold --> OK
-#     # 7. altrimenti alzo un flag indicante il superamento della treshold --> OK
-#     # 8. al termine dello sniffing sincronizzo il db con i valori di inizio e fine di ogni mac --> OK
-#
-# # Il log deve essere nel formato '(<UNIX_TIMESTAMP>\t<MAC>\n){1,}'
-# def sniff_from_file(file):
-#     with open(file) as log:
-#         records_from_log = log.readlines()
-#         records_from_log = [item.split("\t") for item in records_from_log]
-#
-#         # Modifica di tutti i tempi di inizio con il tempo di inizio del file di Log
-#         for record in records_from_sniffing:
-#             record.debug_update_first(int(records_from_log[0][0]))
-#
-#         # Rimozione di simboli superflui a seguito della lettura del file
-#         for item in records_from_log:
-#             item[1] = item[1].strip()
-#
-#         for mac_from_log in records_from_log: # Scorre tutte le righe del file di Log
-#             if mac_from_log[1] in mac_list_from_db:
-#                 for record in records_from_sniffing:
-#                     if record.mac_addr == mac_from_log[1]:
-#                         print(("updating mac: " + str(record.mac_addr) + " last_time: " + str(record.last_time)), end="")
-#                         record.update(int(mac_from_log[0]), False) # Aggiorna con il timestamp presente nel file di log
-#                         print(" --> " + str(record.last_time))
-#                         break
-
-# if __name__ == '__main__':
-#     main()
+            
+            
+            

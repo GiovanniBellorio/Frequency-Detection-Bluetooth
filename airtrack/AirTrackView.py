@@ -14,7 +14,6 @@ import AirTrack
 import getpass
 from time import sleep
 
-previousNumberOfStudends = 0
 
 class AirTrackView(Frame):
 
@@ -39,7 +38,7 @@ class AirTrackView(Frame):
 		self.INTERFACES = psutil.net_if_addrs()
 
 	def initUI(self):
-
+		print("initUI...")
 		self.master.title("AirTrack")
 		#self.style = Style()
 		#self.style.theme_use("default")
@@ -90,7 +89,6 @@ class AirTrackView(Frame):
 		self.sniffer = AirTrack.Sniffer('-i '+self.iface.get())
 		self.sniffer.start()
 
-		#AirTrack.start_session('-i '+self.iface.get())
 		self.cleanScrollText()
 		self.updateScrolltext("Inizio rilevazione:")
 
@@ -115,7 +113,6 @@ class AirTrackView(Frame):
 		count()
 
 	def stop(self):
-		#os.killpg(os.getpgid(self.pid), signal.SIGINT)
 		print("[*] Stop sniffing")
 		self.sniffer.join(2.0)
 
@@ -196,12 +193,13 @@ def main():
 
 		if (AirTrack.connect_to_db(username, password) != -1):
 		#AirTrack.connect_to_db(username, password)
-			print("Start sniffing...\n")
 			sniffer = AirTrack.Sniffer(sys.argv[1] + " " + sys.argv[2])
 			sniffer.start()
-			try:
+			numberOfpresences = 0
+			try:										# questo try non avviene mai dopo l'interrupt ctrl+c
 				while True:
 					sleep(100)
+						
 			except KeyboardInterrupt:
 				print("[*] Stop sniffing")
 				sniffer.join(2.0)

@@ -8,6 +8,8 @@ netaddr
 psutil
 couchdb
 
+#if not works try using sudo
+
 
 
 
