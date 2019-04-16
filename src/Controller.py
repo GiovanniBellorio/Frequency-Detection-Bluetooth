@@ -226,10 +226,13 @@ def search_data_log():
     user = current_user
     username = user.username
     data = strip_tags(request.form['data']).strip()
+    print(data)
     data = data.replace("/", "-", 2)
     data = data[8:10] + "-" + data[5:7] + "-" + data[0:4]
+    print(data)
     utenti_per_data = app.model.getUtentiPerData(data)
     utenti_per_data = sorted(utenti_per_data, key=lambda utenti: utenti[0]['cognome'])
+    print(utenti_per_data)
     return render_template('datalog.html', username=username, utenti_per_data=utenti_per_data)
 
 @app.route("/download_data_log", methods=['POST'])
