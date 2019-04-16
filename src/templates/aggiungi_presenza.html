@@ -15,6 +15,25 @@
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/util.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/main_table.css')}}">
+	<script>
+	    var datefield = document.createElement("input")
+	    datefield.setAttribute("type", "date")
+	    if (datefield.type != "date") { // if browser doesn't support input type="date", load files for jQuery UI Date Picker
+	        document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
+	        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"><\/script>\n')
+	        document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"><\/script>\n')
+	    }
+	</script>
+
+	<script>
+	    if (datefield.type != "date") { // if browser doesn't support input type="date", initialize date picker widget:
+	        jQuery(function($) { // on document.ready
+	            $('#data').datepicker({
+	                dateFormat: 'yy/mm/dd'
+	            });
+	        })
+	    }
+	</script>
 </head>
 <body>
 	<form class="login100-form validate-form" method="POST">
@@ -99,7 +118,7 @@
 				<div class="wrap-login100 p-t-190 p-b-30" style="padding-top:20px">
 					<form class="login100-form validate-form" action="/aggiungi_presenza" method="POST">
 						<div class="wrap-input100 m-b-10">
-							<input class="input100" type="date" name="data" placeholder="gg-mm-aaaa">
+							<input class="input100" type="date" name="data" id="data" placeholder="gg-mm-aaaa">
 							<span class="focus-input100"></span>
 							<span class="symbol-input100">
 								<i class="fa fa-calendar"></i>
