@@ -151,17 +151,10 @@
 									{%- for rilevazione in frequenza_profilo %}
 										<tr class="row100 body table100-body">
 												<td class="cell100 column1">{{ count[0] }}</td>
-										{%- for key,value in rilevazione.items() %}
-											{%- if key == "data" %}
-												<td class="cell100 column2">{{ value }}</td>
-											{%- elif key == "ora_inizio" %}
-												<td class="cell100 column3">{{ value }}</td>
-											{%- elif key == "ora_fine" %}
-												<td class="cell100 column4">{{ value }}</td>
-											{%- elif key == "intervallo" %}
-												<td class="cell100 column5">{{ value }}</td>
-											{%- endif %}
-										{%- endfor %}
+												<td class="cell100 column2">{{ rilevazione['data'] }}</td>
+												<td class="cell100 column3">{{ rilevazione['ora_inizio'] }}</td>
+												<td class="cell100 column4">{{ rilevazione['ora_fine'] }}</td>
+												<td class="cell100 column5">{{ rilevazione['intervallo'] }}</td>
 												<td class="cell100 column6"><button type="submit" value="{{ count[0] }}" name="idx_presenza" formaction="/elimina_presenza">Elimina</button></td>
 												{%- set __ = count.append(count.pop()+1) -%}
 										</tr>
