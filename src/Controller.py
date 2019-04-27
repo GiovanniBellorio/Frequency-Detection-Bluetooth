@@ -70,7 +70,7 @@ def home():
 def login():
     username = strip_tags(request.form['username'])
     password = strip_tags(request.form['pass'])
-    password_codificata = app.model.make_sha256(app.model.make_sha256(password))
+    password_codificata = app.model.make_md5(app.model.make_md5(password))
     num_rows, id_utente = app.model.getCountUsernamePassword(username, password_codificata)
     ruolo = app.model.getRuoloUsername(id_utente)
     if num_rows == 1:
