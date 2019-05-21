@@ -18,6 +18,7 @@ from flask.templating import render_template
 from Model import Model
 import os
 import csv
+import datetime
 
 # Classe di appoggio per i dati che arrivano dal DB
 class User(UserMixin):
@@ -108,7 +109,7 @@ def modify_pwd():
     password2 = strip_tags(request.form['pass2']).strip()
     if password1 == password2:
         user = current_user
-        password_codificata = app.model.make_sha256(app.model.make_sha256(password2))
+        password_codificata = app.model.make_md5(app.model.make_md5(password2))
         if matricola_profilo == 'admin':
             ack_pwd = app.model.updateUserPwd(user.id, password_codificata)
         else:
@@ -161,6 +162,7 @@ def registro():
         elif user.ruolo == 2:
             ruolo_profilo = "utente"
         frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
+        frequenza_profilo = sorted(frequenza_profilo, key=lambda data: datetime.datetime.strptime(data['data'], '%d-%m-%Y').date())
         return render_template('registro.html', mac=mac, username=user.username, id_utente=user.id, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo, ruolo=user.ruolo)
     elif user.ruolo == 0:
         utenti_punteggi = app.model.getUtentiPunteggi()
@@ -206,7 +208,16 @@ def profilo():
     elif ruolo_profilo == 2:
         ruolo_profilo = "utente"
     frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
-    return render_template('profilo.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
+    
+    frequenza_profilo_id = []
+    id = 1
+    for presenza in frequenza_profilo:
+        presenza.update({"id":id})
+        frequenza_profilo_id.append(presenza)
+        id += 1
+
+    frequenza_profilo_id = sorted(frequenza_profilo_id, key=lambda data: datetime.datetime.strptime(data['data'], '%d-%m-%Y').date())
+    return render_template('profilo.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo_id=frequenza_profilo_id, ruolo_profilo=ruolo_profilo)
 
 @app.route("/view_aggiungi_utente", methods=['POST'])
 @login_required
@@ -282,7 +293,7 @@ def aggiungi_utente():
     matricola = str(strip_tags(request.form['matricola']).strip()).upper()
     mac = strip_tags(request.form['mac']).strip()
     pwd = strip_tags(request.form['password']).strip()
-    password_codificata = str(app.model.make_sha256(app.model.make_sha256(pwd)))
+    password_codificata = str(app.model.make_md5(app.model.make_md5(pwd)))
     ack_user = app.model.addUser(username, nome, cognome, matricola, mac, password_codificata)
     return redirect('/registro')
 
@@ -313,7 +324,16 @@ def profilo_aggiungi_presenza():
     elif ruolo_profilo == 2:
         ruolo_profilo = "utente"
     frequenza_profilo = app.model.getFrequenzaUsername(id_profilo)
-    return render_template('aggiungi_presenza.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo=frequenza_profilo, ruolo_profilo=ruolo_profilo)
+    
+    frequenza_profilo_id = []
+    id = 1
+    for presenza in frequenza_profilo:
+        presenza.update({"id":id})
+        frequenza_profilo_id.append(presenza)
+        id += 1
+
+    frequenza_profilo_id = sorted(frequenza_profilo_id, key=lambda data: datetime.datetime.strptime(data['data'], '%d-%m-%Y').date())
+    return render_template('aggiungi_presenza.html', mac=mac, username=username, id_utente=id_utente, utente_profilo=utente_profilo, frequenza_profilo_id=frequenza_profilo_id, ruolo_profilo=ruolo_profilo)
 
 @app.route("/aggiungi_presenza", methods=['POST'])
 @login_required
@@ -323,6 +343,12 @@ def aggiungi_presenza():
     data = strip_tags(request.form['data']).strip()
     data = data.replace("/", "-", 2)
     data = data[8:10] + "-" + data[5:7] + "-" + data[0:4]
+    
+    try:
+        date_error = datetime.datetime.strptime(data, '%d-%m-%Y').date()
+    except:
+        return profilo()
+        
     id_profilo, utente_profilo = app.model.getProfiloUtente(matricola_profilo)
     ack_aggiungi_presenza = app.model.aggiungi_presenza(id_profilo, data)
     return profilo()

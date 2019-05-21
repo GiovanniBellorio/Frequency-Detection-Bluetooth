@@ -112,14 +112,14 @@
 								</thead>
 								<tbody>
 									{%- set count = [1] -%}
-									{%- for rilevazione in frequenza_profilo %}
+									{%- for rilevazione in frequenza_profilo_id %}
 										<tr class="row100 body table100-body">
 											<td class="cell100 column1">{{ count[0] }}</td>
 											<td class="cell100 column2">{{ rilevazione['data'] }}</td>
 											<td class="cell100 column3">{{ rilevazione['ora_inizio'] }}</td>
 											<td class="cell100 column4">{{ rilevazione['ora_fine'] }}</td>
 											<td class="cell100 column5">{{ rilevazione['intervallo'] }}</td>
-											<td class="cell100 column6"><button type="submit" value="{{ count[0] }}" name="idx_presenza" formaction="/elimina_presenza">Elimina</button></td>
+											<td class="cell100 column6"><button type="submit" value="{{ rilevazione['id'] }}" name="idx_presenza" formaction="/elimina_presenza">Elimina</button></td>
 											{%- set __ = count.append(count.pop()+1) -%}
 										</tr>
 									{%- endfor %}
