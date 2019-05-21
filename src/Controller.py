@@ -399,6 +399,7 @@ def export_punteggi():
         for d in utente[3]:
             data = d['data']
             data_list.append(data)
+        data_list = sorted(data_list, key=lambda data: datetime.datetime.strptime(data, '%d-%m-%Y').date())
         dati.append({'cognome':cognome,'nome':nome,'matricola':matricola,'tempo':tempo,'punteggio':punteggio,'frequenze':data_list})
         
     nomeFile = 'log_punteggi.csv'
