@@ -34,4 +34,4 @@ Si avvia nel seguente modo:
 
 `$ ./make_cython.sh nome_utente nome_app` 
 
-dove `nome_utente` e `nome_app` sono due parametri specifici della macchina e dell'applicazione prodotta.
+dove `nome_utente` e `nome_app` sono due parametri specifici della macchina e dell'applicazione prodotta rispettivamente.
